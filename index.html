@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Future Begins – Portfolio by Thanaphat</title>
+  <link rel="shortcut icon" href="./assets/images/icon.png" type="image/x-icon">
+
+  <link rel="stylesheet" href="style.css" />
+  <!-- AOS CSS: สำหรับการทำอนิเมชันเมื่อเลื่อนหน้าเว็บ -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Open Graph Meta Tags: สำหรับการแสดงผลเมื่อแชร์ลิงก์บนโซเชียลมีเดีย -->
+  <meta property="og:title" content="The Future Begins – Portfolio by Thanaphat" />
+  <meta property="og:description" content="Thanaphat Karajhac's personal portfolio showcasing skills, projects, and experiences." />
+  <meta property="og:image" content="https://placehold.co/1200x630/3498db/ffffff?text=Thanaphat+Portfolio" /> <!-- เปลี่ยนเป็น URL รูปภาพโปรไฟล์ของคุณ -->
+  <meta property="og:image" content="https://yourdomain.com/assets/images/icon.png" />
+  <meta property="og:url" content="https://yourwebsite.com" /> <!-- เปลี่ยนเป็น URL เว็บไซต์จริงของคุณ -->
+  <meta property="og:type" content="website" />
+</head>
+
+<body>
+  <!-- Preloader: ส่วนที่แสดงขึ้นมาก่อนที่เนื้อหาหลักของหน้าจะโหลดเสร็จสมบูรณ์ -->
+  <div id="preloader">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Main Content: เนื้อหาหลักของเว็บไซต์ทั้งหมดจะอยู่ในแท็กนี้ เพื่อให้ Preloader สามารถซ่อนได้เมื่อโหลดเสร็จ -->
+  <main id="main-content" style="display: none;">
+    <header class="header-section">
+      <div class="header-logo">
+        <a href="#Home">Thanaphat</a>
+        <!-- จุดตกแต่งในโลโก้ -->
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <nav class="header-list">
+        <ul class="header-nav">
+          <li><a href="#Home">Home</a></li>
+          <li><a href="#About">About</a></li>
+          <li><a href="#Skills">Skills</a></li>
+          <li><a href="#Projects">Projects</a></li>
+          <li><a href="#Certificates">Certificates</a></li>
+        </ul>
+
+        <div class="header-contact">
+          <a href="#Contact">Contact</a>
+          <!-- จุดตกแต่งในปุ่ม Contact -->
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+      <!-- ปุ่มสลับเมนูสำหรับ Mobile (Hamburger icon) -->
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </header>
+
+    <!-- Hero Section: ส่วนแรกของหน้าเว็บที่แนะนำตัวและแสดงข้อมูลเบื้องต้น -->
+    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <section id="Home" class="hero-section" data-aos="fade-up" data-aos-duration="1000">
+      <div class="hero-container">
+        <div class="hero-contant">
+          <div class="hero-name">
+            <h3>Hello, <strong>My name is,</strong></h3>
+            <h1>Thanaphat Karajhac</h1>
+          </div>
+          <div class="hero-paragraph">
+            <p>
+              ผมเป็นนักเรียนที่มีความกระตือรือร้นในการเรียนรู้สิ่งใหม่ ๆ
+              และชอบเก็บเกี่ยวประสบการณ์ต่าง ๆ อยู่เสมอ
+              ผมเชื่อว่าการเรียนรู้ไม่ได้จำกัดแค่ในห้องเรียน
+              แต่รวมถึงประสบการณ์จากการลงมือทำจริงด้วย
+              ผมกำลังมองหาโอกาสในการพัฒนาตัวเองและเปิดรับประสบการณ์ใหม่ ๆ
+              เพื่อเติบโตในเส้นทางที่ผมรัก
+              สามารถดูผลงานของผมเพิ่มเติมได้ด้านล่างครับ
+            </p>
+          </div>
+        </div>
+
+        <div class="hero-profile">
+          <img class="profile" src="./assets/images/profile.jpg" alt="รูปโปรไฟล์ของ Thanaphat" />
+        </div>
+      </div>
+
+      <div class="hero-btn-primary">
+        <p>เลื่อนลง</p>
+      </div>
+    </section>
+
+    <!-- About Section: ส่วนที่แสดงข้อมูลส่วนตัว ความสนใจ คติประจำใจ และเป้าหมายในชีวิต -->
+    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <section id="About" class="about-section" data-aos="fade-right" data-aos-duration="1000">
+      <div class="about-container">
+        <div class="about-profile">
+          <img src="./assets/images/profile.jpg" alt="รูปโปรไฟล์สำหรับส่วน About" class="profile-img" />
+        </div>
+
+        <div class="about-content">
+          <div class="about-history about-card" data-aos="fade-up" data-aos-delay="100">
+            <h2>ข้อมูลส่วนตัว</h2>
+            <ul>
+              <li><strong>ชื่อเล่น:</strong> Mk</li>
+              <li><strong>วันเกิด:</strong> 24 / 10 / 2550</li>
+              <li>
+                <strong>โรงเรียน (มัธยมศึกษาปีที่ 1 - 6):</strong>
+                โรงเรียนน้ำปลีกศึกษา
+              </li>
+              <li>
+                <strong>โรงเรียน (อนุบาล - ป.6):</strong>
+                โรงเรียนมารีย์นุเคราะห์ (โรงเรียนเซนต์แมรี่ยโสธร)
+              </li>
+            </ul>
+          </div>
+
+          <div class="about-attention about-card" data-aos="fade-up" data-aos-delay="200">
+            <h2>ความสนใจ</h2>
+            <p>
+              ผมมีความสนใจในด้านคอมพิวเตอร์ ระบบปฏิบัติการที่ซับซ้อน
+              และเครือข่ายอินเทอร์เน็ต ผมหลงใหลในเทคโนโลยีที่พัฒนาอย่างรวดเร็ว
+              และอยากเข้าใจสิ่งที่อยู่เบื้องหลังการทำงานของระบบต่าง ๆ
+            </p>
+          </div>
+
+          <div class="about-motto about-card" data-aos="fade-up" data-aos-delay="300">
+            <h2>คติประจำใจ</h2>
+            <p>"ไม่มีคำว่าสาย สำหรับคนที่ตั้งใจเริ่มต้นจริง ๆ"</p>
+          </div>
+
+          <div class="about-life-goals about-card" data-aos="fade-up" data-aos-delay="400">
+            <h2>เป้าหมายในชีวิต</h2>
+            <p>
+              ผมอยากพัฒนาทักษะของตัวเองให้ดีที่สุด
+              เพื่อให้ครอบครัวของผมมีชีวิตที่ดีขึ้น เพราะผมเคยลำบากมาก่อน
+              จึงเข้าใจว่าความมั่นคงคือสิ่งสำคัญ
+              ถึงแม้ผมจะเริ่มวางแผนอนาคตจริงจังตอน ม.5 แต่ผมเชื่อว่ามันยังไม่สาย
+              เป้าหมายของผมคือการติดมหาวิทยาลัยขอนแก่นให้ได้ ถ้าหากไม่สำเร็จ
+              ผมก็พร้อมเดินสายอาชีพที่สามารถเลี้ยงดูครอบครัวได้
+              ผมรู้ว่าการแข่งขันสูงมาก แต่ผมอยากลองดูสักครั้งในชีวิต ขอบคุณครับ
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills & Experience Section: ส่วนที่แสดงทักษะและประสบการณ์การทำงาน/กิจกรรมต่างๆ -->
+    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <section id="Skills" class="skills-experience-section" data-aos="fade-up" data-aos-duration="1000">
+      <div class="container">
+        <!-- Skills: ส่วนแสดงทักษะ -->
+        <div class="skills-part" data-aos="fade-right" data-aos-duration="1000">
+          <h2>Skills</h2>
+
+          <!-- Hard Skills: ทักษะด้านเทคนิค -->
+          <div class="hard-skills">
+            <h3>🔧 Hard Skills</h3>
+            <ul>
+              <li>Microsoft Word, Canva</li>
+              <li>Adobe After Effects, Premiere Pro, Lightroom Classic, Photoshop</li>
+              <li>Netsetman, Jperf, XAMPP</li>
+              <li>สามารถลงโปรแกรมคอมพิวเตอร์ได้เอง</li>
+              <li>เขียนโปรแกรมพื้นฐาน: HTML, CSS, JavaScript (basic), PHP</li>
+              <li>จัดการความเร็วอินเทอร์เน็ตด้วยสาย LAN CAT5e และ CAT6</li>
+              <li>เข้าหัวสายแลน CAT5e และ CAT6</li>
+              <li>
+                ช่วยอาจารย์เดินระบบอินเทอร์เน็ตในโรงเรียนร่วมกับอาจารย์และพี่ ๆ
+              </li>
+              <li>เป็นตากล้องและช่วยแต่งภาพกิจกรรมโรงเรียน</li>
+              <li>
+                เข้าร่วมแข่งขันหุ่นยนต์ระดับมัธยมศึกษาตอนปลายและได้รับเหรียญทอง
+              </li>
+            </ul>
+          </div>
+
+          <!-- Soft Skills: ทักษะด้านอารมณ์และสังคม -->
+          <div class="soft-skills">
+            <h3>💬 Soft Skills</h3>
+            <ul>
+              <li>ปรับตัวเข้ากับสังคมได้ดีและชอบช่วยเหลือคนอื่น</li>
+              <li>
+                เคยทำงานแบบผู้ใหญ่เป็นเด็กปั๊มแก๊ส
+                ได้รับประสบการณ์การทำงานกับผู้ใหญ่หลายวัย
+              </li>
+              <li>
+                ทำงานร่วมกับผู้อื่นได้ดี
+                ได้รับความไว้วางใจและความรักจากคนรอบข้าง
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Experience: ส่วนแสดงประสบการณ์ -->
+        <div class="experience-part" data-aos="fade-left" data-aos-duration="1000">
+          <h2>Experience</h2>
+
+          <div class="experience-block" data-aos="fade-up" data-aos-delay="100">
+            <h3>งานไฟฟ้าและระบบเครือข่าย</h3>
+            <p>
+              มีประสบการณ์จั้มไฟเข้ากล่องไฟ
+              และร่วมเดินระบบอินเทอร์เน็ตในโรงเรียนกับอาจารย์และรุ่นพี่
+              รับผิดชอบเช็คสปีดเน็ต เข้าหัวสายแลน
+              และออกแบบผังการเดินสายให้เหมาะสม
+            </p>
+          </div>
+
+          <div class="experience-block" data-aos="fade-up" data-aos-delay="200">
+            <h3>กิจกรรมสภานักเรียน</h3>
+            <p>
+              เคยเป็นสมาชิกสภานักเรียน รับผิดชอบจัดการอุปกรณ์เครื่องเสียง
+              และออกแบบโปสเตอร์ประชาสัมพันธ์ในโอกาสต่าง ๆ
+            </p>
+          </div>
+
+          <div class="experience-block" data-aos="fade-up" data-aos-delay="300">
+            <h3>การแข่งขันหุ่นยนต์</h3>
+            <p>
+              เข้าร่วมการแข่งขันหุ่นยนต์ระดับกลาง
+              ได้รับเหรียญทองจากงานศิลปหัตถกรรมนักเรียนระดับเขตพื้นที่การศึกษา
+              ครั้งที่ 71
+            </p>
+          </div>
+
+          <div class="experience-block" data-aos="fade-up" data-aos-delay="400">
+            <h3>งานจริงในปั๊มแก๊ส</h3>
+            <p>
+              ฝึกงานและทำงานจริงเป็นเด็กปั๊มแก๊ส
+              เรียนรู้การสื่อสารและการทำงานร่วมกับผู้ใหญ่หลายวัย
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section: ส่วนแสดงผลงานและกิจกรรมต่างๆ -->
+    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <section id="Projects" class="projects-section" data-aos="fade-up" data-aos-duration="1000">
+      <div class="projects-header">
+        <h2>
+          Projects
+          <span></span>
+        </h2>
+        <h1>/</h1>
+        <h2>
+          Activities
+          <span></span>
+        </h2>
+      </div>
+      <!-- Filter Buttons: ปุ่มสำหรับกรองผลงานตามหมวดหมู่ -->
+      <div id="filters" class="filters" data-aos="fade-up" data-aos-delay="200">
+        <button class="active" data-filter="all">ทั้งหมด</button>
+        <button data-filter="it">งาน IT</button>
+        <button data-filter="แต่งภาพ">แต่งภาพ</button>
+        <button data-filter="เเข่งหุ่นยนต์">เเข่งหุ่นยนต์</button>
+        <button data-filter="ตัดต่อ">ตัดต่อ</button>
+        <button data-filter="code">code</button>
+      </div>
+
+      <!-- Gallery Grid: ส่วนแสดงผลงานที่เป็นรูปภาพหรือวิดีโอ -->
+      <div id="gallery" class="gallery-grid" data-aos="fade-up" data-aos-delay="300">
+        <!-- ไอเท็มผลงานจะถูกแทรกด้วย JavaScript -->
+      </div>
+    </section>
+
+    <!-- Lightbox: หน้าต่าง Pop-up สำหรับแสดงรูปภาพหรือวิดีโอขนาดใหญ่ขึ้น -->
+    <div id="lightbox" class="lightbox" style="display:none;">
+      <span id="lightbox-close" class="lightbox-close">
+        <!-- SVG icon สำหรับปุ่มปิด Lightbox -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"
+          class="text-gray-600 hover:text-red-500 cursor-pointer">
+          <path fill-rule="evenodd"
+            d="M6.225 4.811a1 1 0 011.414 0L12 9.172l4.361-4.361a1 1 0 111.414 1.414L13.414 10.586l4.361 4.361a1 1 0 01-1.414 1.414L12 12l-4.361 4.361a1 1 0 01-1.414-1.414l4.361-4.361-4.361-4.361a1 1 0 010-1.414z"
+            clip-rule="evenodd" />
+        </svg>
+      </span>
+      <div id="lightbox-content"></div>
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
+    <!-- Certificates Section: ส่วนแสดงใบรับรองและรางวัลต่างๆ -->
+    <section id="Certificates">
+      <div class="cert-wrapper" aria-hidden="true">
+        <div class="cert-header" style="width: 100%; text-align:center;">
+          <h2>Certificates &amp; Awards</h2>
+          <p class="intro">
+            นี่คือสิ่งที่ช่วยรับรอง ความสามารถของผมเองครับ เลื่อนดูได้เลยครับ
+          </p>
+        </div>
+
+        <!-- การ์ดใบรับรอง 11 ใบ -->
+        <div class="cert-card" data-index="0">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_003.jpg" alt="Certificate 1" />
+        </div>
+
+        <div class="cert-card" data-index="1">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_002.jpg" alt="Certificate 2" />
+        </div>
+
+        <div class="cert-card" data-index="2">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_001.jpg" alt="Certificate 3" />
+        </div>
+
+        <div class="cert-card" data-index="3">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_004.jpg" alt="Certificate 4" />
+        </div>
+
+        <div class="cert-card" data-index="4">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_005.jpg" alt="Certificate 5" />
+        </div>
+
+        <div class="cert-card" data-index="5">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_006.jpg" alt="Certificate 6" />
+        </div>
+
+        <div class="cert-card" data-index="6">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_007.jpg" alt="Certificate 7" />
+        </div>
+
+        <div class="cert-card" data-index="7">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_008.jpg" alt="Certificate 8" />
+        </div>
+
+        <div class="cert-card" data-index="8">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_009.jpg" alt="Certificate 9" />
+        </div>
+
+        <div class="cert-card" data-index="9">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_010.jpg" alt="Certificate 10" />
+        </div>
+
+        <div class="cert-card" data-index="10">
+          <span class="rank"></span>
+          <img src="./assets/Certificate/Certificate_011.jpg" alt="Certificate 11" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Time Section: ส่วนแสดงเวลาที่เว็บไซต์ออนไลน์, คำคม และจำนวนผู้เข้าชม -->
+    <section class="time-section">
+      <p id="uptime"></p>
+      <p id="quote"></p>
+      <p>+<span id="visitor-count">0</span></p>
+    </section>
+
+    <!-- Contact Section: ส่วนสำหรับติดต่อ -->
+    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <section id="Contact" class="contact-section" data-aos="fade-up" data-aos-duration="1000">
+      <h2>Contact</h2>
+
+      <div class="contact-contant">
+        <ul class="contact-list">
+          <li><a href="mailto:ertyualexs04@gmail.com">ertyualexs04@gmail.com</a></li>
+          <li><a href="tel:+66800163734">+66 80 016 3734</a></li>
+          <li><a href="https://github.com/ertyu007/" target="_blank">GitHub</a></li>
+          <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank">Facebook</a></li>
+          <li><a href="https://www.youtube.com/@amazingwuji" target="_blank">Youtube</a></li>
+          <li>
+            <span class="qr-label">QR Code Line</span>
+            <img src="./assets/images/qrLine.jpg" alt="QR Code to Line" width="120">
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Footer Section: ส่วนท้ายของเว็บไซต์ -->
+    <footer class="footer-section">
+      <div class="footer-container">
+        <div class="footer-logo">
+          <a href="#">Thanaphat</a>
+          <!-- จุดตกแต่งในโลโก้ Footer -->
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-column">
+            <h3>Navigation</h3>
+            <ul>
+              <li><a href="#Home">Home</a></li>
+              <li><a href="#About">About</a></li>
+              <li><a href="#Skills">Skills</a></li>
+              <li><a href="#Projects">Projects</a></li>
+              <li><a href="#Certificates">Certificates</a></li>
+              <li><a href="#Contact">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Connect</h3>
+            <ul>
+              <li><a href="mailto:ertyualexs04@gmail.com">Email</a></li>
+              <li><a href="tel:+66800163734">Phone</a></li>
+              <li><a href="https://github.com/ertyu007/" target="_blank">GitHub</a></li>
+              <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank">Facebook</a></li>
+              <li><a href="https://www.youtube.com/@amazingwuji" target="_blank">YouTube</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Resources</h3>
+            <ul>
+              <li><a href="#">Portfolio PDF</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Use</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Thanaphat Karajhac. All rights reserved.</p>
+        <p>Made with ❤️ and ☕ in Thailand</p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- AOS JavaScript: โค้ดสำหรับเริ่มต้น AOS library -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- เชื่อมโยงไฟล์ JavaScript หลักของเว็บไซต์ -->
+  <script src="script.js" defer></script>
+</body>
+
+</html>
