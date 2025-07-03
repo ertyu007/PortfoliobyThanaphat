@@ -268,9 +268,9 @@ document.addEventListener("DOMContentLoaded", function () {
       "title": "ผมเคยเป็นผู้ช่วยตัดต่อและกำกับหนังสั้น",
       "category": "ตัดต่อ",
       "year": 2025,
-      "type": "video",
+      "type": "image",
       "thumbnail": "assets/images/204654.png",
-      "src": "assets/video/01_1.mp4",
+      "src": "assets/images/204654.png",
       "desc": "สามารถ ดูคริปได้เลยครับ"
     },
     {
