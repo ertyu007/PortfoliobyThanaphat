@@ -11,9 +11,6 @@ let dbConfig; // ประกาศ dbConfig ไว้ด้านนอกเ�
 
 // Handler function สำหรับ Netlify Function
 exports.handler = async (event) => {
-  // *** สำคัญ: เพิ่ม logging ของ event object เพื่อ Debugging ***
-  console.log("Incoming event:", JSON.stringify(event, null, 2)); // Log event object แบบเต็ม
-
   // ดึงค่า parameters จาก Query String
   const id = event.queryStringParameters?.id; // project_id
   const type = event.queryStringParameters?.type; // 'like', 'share', 'view'
@@ -25,15 +22,6 @@ exports.handler = async (event) => {
     // ตรวจสอบและตั้งค่า dbConfig หากยังไม่ถูกตั้งค่า
     if (!dbConfig) {
       const databaseUrl = process.env.NETLIFY_DATABASE_URL; // ดึง NETLIFY_DATABASE_URL
-      // *** เพิ่มบรรทัดนี้เพื่อ log ค่า databaseUrl ที่อ่านได้ ***
-      console.log("NETLIFY_DATABASE_URL from environment:", databaseUrl ? "Set" : "Not Set");
-      if (databaseUrl) {
-          // Log เฉพาะส่วนที่สำคัญ ไม่ใช่รหัสผ่านทั้งหมด
-          const parsedUrl = url.parse(databaseUrl);
-          console.log(`DB User: ${parsedUrl.auth.split(':')[0]}, DB Host: ${parsedUrl.hostname}, DB Name: ${parsedUrl.pathname.split('/')[1]}`);
-      }
-      // ******************************************************
-
       if (!databaseUrl) {
         console.error("NETLIFY_DATABASE_URL is not set in environment variables.");
         // ส่งข้อความ error ที่ชัดเจนกลับไป
