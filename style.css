@@ -18,6 +18,7 @@
 
 /* Variables: ตัวแปร CSS สำหรับสีและเงา เพื่อให้ง่ายต่อการจัดการธีม */
 :root {
+  /* Light Mode Colors */
   --color-bg: #f8f9fa;
   /* พื้นหลังสีอ่อน */
   --color-primary: #3498db;
@@ -32,6 +33,18 @@
   /* สีขาวบริสุทธิ์ */
   --color-shadow: rgba(0, 0, 0, 0.08);
   /* เงาจางๆ */
+  --color-card-bg: var(--color-white); /* พื้นหลังการ์ด */
+  --color-border-light: #eee; /* เส้นแบ่งเบาๆ */
+
+  /* Dark Mode Colors (Default values, will be overridden by .dark-mode) */
+  --color-bg-dark: #2c3e50;
+  --color-primary-dark: #6cb6ff;
+  --color-accent-dark: #4a90e2;
+  --color-text-dark-mode: #ecf0f1;
+  --color-text-light-dark-mode: #bdc3c7;
+  --color-card-dark: #34495e;
+  --color-shadow-dark: rgba(0, 0, 0, 0.3);
+  --color-border-dark: #4a627a;
 
   /* Specific accent colors for header/footer dots or other small elements */
   --color-dot-red: #e74c3c;
@@ -40,6 +53,192 @@
 
   /* Colors for like button burst effect */
   --color-heart-liked: #e63946;
+
+  /* RGB values for primary color for rgba() usage */
+  --color-primary-rgb: 52, 152, 219;
+}
+
+/* Dark Mode Overrides */
+body.dark-mode {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-dark-mode);
+}
+
+body.dark-mode .header-section {
+  background-color: var(--color-card-dark);
+  box-shadow: 0 4px 15px var(--color-shadow-dark); /* ปรับเงาสำหรับ Dark Mode */
+}
+
+body.dark-mode .header-logo a,
+body.dark-mode .header-nav li a,
+body.dark-mode .projects-header h2,
+body.dark-mode .skills-part h2,
+body.dark-mode .experience-part h2,
+body.dark-mode .cert-header h2,
+body.dark-mode .contact-section h2,
+body.dark-mode .contact-list a,
+body.dark-mode #uptime,
+body.dark-mode #visitor-count {
+  color: var(--color-text-dark-mode);
+}
+
+body.dark-mode .header-nav li a:hover,
+body.dark-mode .header-nav li a.active,
+body.dark-mode .projects-header h2:hover {
+  color: var(--color-primary-dark);
+}
+
+body.dark-mode .header-nav li a::after,
+body.dark-mode .header-nav li a.active::after,
+body.dark-mode .header-contact,
+body.dark-mode .hero-btn-primary a,
+body.dark-mode .project-meta .category,
+body.dark-mode .filter-btn.active,
+body.dark-mode .filter-btn:hover,
+body.dark-mode .experience-block::before,
+body.dark-mode .skills-part h2::after,
+body.dark-mode .experience-part h2::after,
+body.dark-mode .cert-header h2::after,
+body.dark-mode .contact-section h2::after,
+body.dark-mode .footer-column h3::after {
+  background-color: var(--color-primary-dark);
+}
+
+body.dark-mode .header-contact:hover {
+  background-color: var(--color-accent-dark);
+  box-shadow: 0 4px 8px rgba(var(--color-primary-rgb), 0.3); /* Keep original primary for consistent shadow */
+}
+
+body.dark-mode .hero-section {
+  background: linear-gradient(135deg, var(--color-bg-dark) 0%, #3a506b 100%);
+  box-shadow: 0 8px 20px var(--color-shadow-dark); /* เงาสำหรับ Dark Mode */
+}
+
+body.dark-mode .hero-name h3,
+body.dark-mode .hero-paragraph p,
+body.dark-mode .about-card ul li,
+body.dark-mode .experience-block p,
+body.dark-mode .cert-header .intro,
+body.dark-mode .project-content p,
+body.dark-mode .project-meta .stat-item,
+body.dark-mode #quote {
+  color: var(--color-text-light-dark-mode);
+}
+
+body.dark-mode .about-section {
+  background: linear-gradient(135deg, var(--color-bg-dark) 0%, #3a506b 100%);
+}
+
+body.dark-mode .about-card,
+body.dark-mode .hard-skills,
+body.dark-mode .soft-skills,
+body.dark-mode .experience-block,
+body.dark-mode .project-item,
+body.dark-mode .cert-card,
+body.dark-mode .contact-contant,
+body.dark-mode .contact-list li {
+  background-color: var(--color-card-dark);
+  box-shadow: 0 5px 15px var(--color-shadow-dark);
+}
+
+body.dark-mode .about-card:hover,
+body.dark-mode .hard-skills:hover,
+body.dark-mode .soft-skills:hover,
+body.dark-mode .experience-block:hover,
+body.dark-mode .project-item:hover,
+body.dark-mode .cert-card:hover,
+body.dark-mode .contact-list li:hover {
+  box-shadow: 0 15px 30px var(--color-shadow-dark);
+}
+
+body.dark-mode .about-card::before,
+body.dark-mode .cert-info {
+  border-left-color: var(--color-primary-dark);
+}
+
+body.dark-mode .about-card h2::after {
+  background: linear-gradient(to right, var(--color-primary-dark), var(--color-accent-dark));
+}
+
+body.dark-mode .skills-part li {
+  border-bottom-color: var(--color-border-dark);
+}
+
+body.dark-mode .project-overlay {
+  background: rgba(var(--color-primary-rgb), 0.9); /* Keep original primary for overlay */
+}
+
+body.dark-mode .project-overlay .view-button {
+  background-color: var(--color-accent-dark);
+}
+
+body.dark-mode .project-overlay .view-button:hover {
+  background-color: var(--color-text-dark-mode);
+  color: var(--color-primary-dark);
+}
+
+body.dark-mode .project-item.most-viewed {
+  border-color: var(--color-accent-dark);
+  box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.5); /* Keep original primary for glow */
+}
+
+body.dark-mode .project-item.most-viewed::before {
+  background-color: var(--color-accent-dark);
+  color: var(--color-text-dark-mode);
+}
+
+body.dark-mode .lightbox {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+body.dark-mode .lightbox-close {
+  color: var(--color-text-dark-mode);
+}
+
+body.dark-mode .lightbox-close:hover {
+  color: var(--color-heart-liked);
+}
+
+body.dark-mode .lightbox-caption {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: var(--color-text-dark-mode);
+}
+
+body.dark-mode .lightbox .like-btn,
+body.dark-mode .lightbox .share-btn,
+body.dark-mode .lightbox .view-display {
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--color-text-dark-mode);
+}
+
+body.dark-mode .lightbox .like-btn:hover,
+body.dark-mode .lightbox .share-btn:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+body.dark-mode .share-btn.shared i,
+body.dark-mode .share-btn:hover i {
+  color: var(--color-primary-dark);
+}
+
+body.dark-mode .view-display i {
+  color: var(--color-text-light-dark-mode);
+}
+
+body.dark-mode .time-section {
+  background-color: #3a506b; /* A darker shade for the time section */
+}
+
+body.dark-mode .contact-list li:last-child {
+  background: linear-gradient(135deg, #3a506b, #4a627a);
+}
+
+body.dark-mode .footer-section {
+  background-color: #1a252f; /* Even darker for footer */
+}
+
+body.dark-mode .footer-bottom {
+  background-color: #111820;
 }
 
 /* Base Styles: สไตล์พื้นฐานสำหรับทุกองค์ประกอบ */
@@ -49,6 +248,12 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow-x: hidden;
+  /* ป้องกันการเลื่อนแนวนอน */
+  max-width: 100vw; /* เพิ่ม: ตรวจสอบให้แน่ใจว่า body ไม่เกิน viewport */
+}
+
 body {
   background-color: var(--color-bg);
   /* ใช้ฟอนต์ NotoSansTamil และกำหนดน้ำหนักเริ่มต้นเป็น 500 */
@@ -56,8 +261,8 @@ body {
   font-weight: 500; /* กำหนดน้ำหนักฟอนต์เริ่มต้น */
   color: var(--color-text-dark);
   line-height: 1.6;
-  overflow-x: hidden;
-  /* ป้องกันการเลื่อนแนวนอน */
+  /* overflow-x: hidden; */ /* ย้ายไปรวมกับ html, body ด้านบน */
+  transition: background-color 0.3s ease, color 0.3s ease; /* เพิ่ม transition สำหรับ Dark Mode */
 }
 
 /* คลาสสำหรับล็อคการเลื่อนเมื่อ Lightbox เปิดอยู่ */
@@ -69,16 +274,19 @@ body.lightbox-open {
 /* สไตล์สำหรับส่วน Header */
 .header-section {
   background-color: var(--color-white);
-  box-shadow: 0 2px 10px var(--color-shadow);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* ปรับเงาให้นุ่มนวลขึ้น */
   position: fixed;
   width: 100%;
+  max-width: 100%; /* เพิ่ม: ตรวจสอบให้แน่ใจว่า Header ไม่เกินความกว้างของ Parent */
   top: 0;
   z-index: 1000;
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem; /* ปรับ padding */
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: all 0.6s ease;
+  border-bottom-left-radius: 15px; /* เพิ่มขอบมน */
+  border-bottom-right-radius: 15px; /* เพิ่มขอบมน */
 }
 
 /* สไตล์ Header เมื่อถูกย่อขนาด (shrink) */
@@ -92,9 +300,9 @@ body.lightbox-open {
 }
 
 /* สไตล์ Header เมื่อถูกซ่อน (hide) */
-.header-section.hide {
+/* .header-section.hide {
   transform: translateY(-100%);
-}
+} */
 
 /* สไตล์สำหรับโลโก้ใน Header */
 .header-logo {
@@ -194,12 +402,13 @@ body.lightbox-open {
   background-color: var(--color-primary);
   border-radius: 50px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2); /* เพิ่มเงาเริ่มต้น */
 }
 
 .header-contact:hover {
   background-color: var(--color-accent);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4); /* เงาเข้มขึ้นเมื่อ hover */
 }
 
 .header-contact a {
@@ -251,6 +460,34 @@ body.lightbox-open {
   transition-delay: 0.2s;
 }
 
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 50%;
+}
+
+.dark-mode-toggle:hover {
+  color: var(--color-primary);
+  transform: rotate(30deg);
+}
+
+body.dark-mode .dark-mode-toggle {
+  color: var(--color-text-dark-mode);
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+  color: var(--color-primary-dark);
+  transform: rotate(30deg);
+}
+
+
 /* Mobile Menu Toggle Styles: ปุ่ม Hamburger สำหรับเมนูมือถือ */
 .menu-toggle {
   display: none;
@@ -273,6 +510,10 @@ body.lightbox-open {
   left: 0;
   transform: rotate(0deg);
   transition: .25s ease-in-out;
+}
+
+body.dark-mode .menu-toggle span {
+  background: var(--color-text-dark-mode);
 }
 
 .menu-toggle span:nth-child(1) {
@@ -317,7 +558,16 @@ body.lightbox-open {
 
 @media (max-width: 768px) {
   .header-section {
-    padding: 1rem;
+    padding: 0.5rem;
+    /* width: 84%; */
+  }
+
+  .header-logo a {
+    font-size: 1.1rem;
+  }
+
+  .menu-toggle {
+    margin-right: 1rem;
   }
 
   .menu-toggle {
@@ -326,25 +576,41 @@ body.lightbox-open {
 
   .header-list {
     position: fixed;
-    top: 0;
-    right: -100%;
-    /* ซ่อนเมนูไว้ด้านขวาของหน้าจอ */
-    width: 80%;
-    max-width: 300px;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    max-width: 100%; /* เพิ่ม: ตรวจสอบให้แน่ใจว่า header-list ไม่เกินความกว้าง */
+    /* max-width: 500px; */
     height: 100vh;
     background: var(--color-white);
     flex-direction: column;
     justify-content: center;
     align-items: center;
     box-shadow: -5px 0 15px var(--color-shadow);
-    transition: right 0.3s ease;
     padding: 2rem;
+
+    /* เพิ่มเอฟเฟกต์ซูม */
+    transform: scale(0);
+    transform-origin: top right;
+
+    transition: transform 0.6s ease,border-radius 1.2s ease, opacity 0.3s ease;
+    pointer-events: none;
+    border-radius: 150px;
+    /* ป้องกันคลิกเมนูตอนยังไม่ active */
+  }
+  
+  .header-list.active {
+    border-radius: 0px;
+    right: inherit;
+    transform: scale(1);
+    pointer-events: auto;
   }
 
-  .header-list.active {
-    right: 0;
-    /* เลื่อนเมนูเข้ามาเมื่อ Active */
+  body.dark-mode .header-list {
+    background: var(--color-card-dark);
+    box-shadow: -5px 0 15px var(--color-shadow-dark);
   }
+
 
   .header-nav {
     flex-direction: column;
@@ -376,6 +642,13 @@ body.lightbox-open {
   .header-section.shrink+.hero-section {
     padding-top: 6rem;
   }
+
+  .dark-mode-toggle {
+    margin: 0;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+  }
 }
 
 /* |==================================== Hero Section Styles ========================================| */
@@ -387,6 +660,12 @@ body.lightbox-open {
   margin-top: 3rem;
   color: var(--color-text-dark);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-bottom-left-radius: 20px;
+  /* เพิ่มขอบมน */
+  border-bottom-right-radius: 20px;
+  /* เพิ่มขอบมน */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  /* เพิ่มเงา */
 }
 
 .hero-container {
@@ -485,6 +764,11 @@ body.lightbox-open {
   height: auto;
 }
 
+body.dark-mode .profile {
+  border: 5px solid var(--color-card-dark);
+  box-shadow: 0 10px 20px var(--color-shadow-dark);
+}
+
 .profile:hover {
   transform: scale(1.05);
 }
@@ -534,14 +818,14 @@ body.lightbox-open {
 /* Profile Image Styles: สไตล์สำหรับรูปโปรไฟล์ในส่วน About */
 .about-profile {
   width: 350px;
-  height: 400px; /* กำหนดความสูงตายตัว */
+  height: 400px;
+  /* กำหนดความสูงตายตัว */
   border-radius: 50px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   transition: transform 0.5s ease, box-shadow 0.5s ease;
   position: relative;
   max-width: 90%;
-  /* ทำให้รูปภาพย่อขนาดลงบนหน้าจอเล็ก */
   /* height: auto; ถูกลบออกเนื่องจากมีการกำหนด height แบบตายตัว */
 }
 
@@ -580,7 +864,7 @@ body.lightbox-open {
 }
 
 .about-card {
-  background: var(--color-white);
+  background: var(--color-card-bg);
   padding: 25px;
   border-radius: 15px;
   box-shadow: 0 5px 15px var(--color-shadow);
@@ -654,6 +938,10 @@ body.lightbox-open {
   top: -2px;
 }
 
+body.dark-mode .about-card ul li::before {
+  color: var(--color-primary-dark);
+}
+
 .about-card p {
   line-height: 1.6;
   margin-bottom: 0;
@@ -665,6 +953,10 @@ body.lightbox-open {
   text-align: center;
   color: var(--color-primary);
   font-weight: 500;
+}
+
+body.dark-mode .about-motto p {
+  color: var(--color-primary-dark);
 }
 
 /* Responsive About Section: การปรับส่วน About สำหรับหน้าจอขนาดต่างๆ */
@@ -732,7 +1024,7 @@ body.lightbox-open {
 
 .hard-skills,
 .soft-skills {
-  background: var(--color-white);
+  background: var(--color-card-bg);
   border-radius: 10px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -755,6 +1047,11 @@ body.lightbox-open {
   align-items: center;
 }
 
+body.dark-mode .hard-skills h3,
+body.dark-mode .soft-skills h3 {
+  color: var(--color-primary-dark);
+}
+
 /* เพิ่มไอคอนให้กับหัวข้อ Hard Skills */
 .hard-skills h3::before {
   content: '🔧';
@@ -774,7 +1071,7 @@ body.lightbox-open {
 
 .skills-part li {
   padding: 0.8rem 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border-light);
   position: relative;
   padding-left: 1.5rem;
   line-height: 1.5;
@@ -792,9 +1089,13 @@ body.lightbox-open {
   color: var(--color-primary);
 }
 
+body.dark-mode .skills-part li::before {
+  color: var(--color-primary-dark);
+}
+
 /* Experience Part: สไตล์สำหรับส่วนประสบการณ์ */
 .experience-block {
-  background: var(--color-white);
+  background: var(--color-card-bg);
   border-radius: 10px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
@@ -869,6 +1170,10 @@ body.lightbox-open {
   margin: 0;
 }
 
+body.dark-mode .projects-header h1 {
+  color: var(--color-primary-dark);
+}
+
 .projects-header h2 {
   font-size: 2rem;
   margin: 0;
@@ -897,7 +1202,7 @@ body.lightbox-open {
   width: 100%;
 }
 
-/* Filter Buttons: สไตล์สำหรับปุ่มกรองผลงาน */
+/* Filter Buttons: ปุ่มสำหรับกรองผลงานตามหมวดหมู่ */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -906,7 +1211,7 @@ body.lightbox-open {
   margin-bottom: 2.5rem;
 }
 
-.filters button {
+.filter-btn { /* Changed from .filters button */
   padding: 0.6rem 1.5rem;
   border: none;
   border-radius: 50px;
@@ -918,38 +1223,32 @@ body.lightbox-open {
   font-size: 0.95rem;
   position: relative;
   overflow: hidden;
+  border: 1px solid transparent; /* Add border for consistency */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* เพิ่มเงาให้ปุ่ม Filter */
 }
 
-/* สไตล์สำหรับเส้นใต้ปุ่ม Filter */
-.filters button::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
+body.dark-mode .filter-btn {
+  background-color: #4a627a;
+  color: var(--color-text-dark-mode);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* สไตล์สำหรับเส้นใต้ปุ่ม Filter (removed, now using full background change) */
+.filter-btn:hover {
   background-color: var(--color-primary);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease;
-}
-
-.filters button:hover {
-  background-color: #dee2e6;
+  color: var(--color-white);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
   transform: translateY(-2px);
 }
 
 /* สไตล์สำหรับปุ่ม Filter ที่ Active */
-.filters button.active {
-  background-color: var(--color-primary);
+.filter-btn.active {
+  background-color: var(--color-accent);
   color: var(--color-white);
   box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  border-color: var(--color-accent); /* Ensure border matches active color */
 }
 
-.filters button.active::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
 
 /* Gallery Grid: สไตล์สำหรับตารางแสดงผลงาน */
 .gallery-grid {
@@ -960,79 +1259,199 @@ body.lightbox-open {
   max-width: 1400px;
 }
 
-.gallery-item {
-  position: relative;
+/* New Project Item Styles */
+.project-item {
+  background-color: var(--color-card-bg);
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 5px 15px var(--color-shadow);
-  transition: all 0.4s ease;
-  aspect-ratio: 16/9;
-  background-color: var(--color-white);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer; /* Make the whole card clickable */
 }
 
-.gallery-item:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+.project-item:hover {
+  transform: translateY(-8px); /* Lift the card on hover */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
 }
 
-.gallery-item img {
+.project-item img {
+  width: 100%;
+  height: 220px; /* Fixed height for consistent card size */
+  object-fit: cover;
+  display: block;
+}
+
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.gallery-item:hover img {
-  transform: scale(1.1);
-}
-
-/* สไตล์สำหรับข้อมูลผลงานที่แสดงเมื่อ Hover */
-.gallery-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1.5rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  background: rgba(var(--color-primary-rgb), 0.9); /* Dynamic primary color with transparency */
   color: var(--color-white);
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.3s ease;
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: 10px;
+  pointer-events: none; /* Allow clicks to pass through to the item itself */
 }
 
-.gallery-item:hover .gallery-info {
-  transform: translateY(0);
+.project-item:hover .project-overlay {
+  opacity: 1; /* Show overlay on hover */
+  pointer-events: auto; /* Enable pointer events on overlay content */
 }
 
-.gallery-info h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.2rem;
+.project-overlay h4 {
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-white);
 }
 
-.gallery-info p {
-  margin: 0;
+.project-overlay p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255,255,255,0.9);
+}
+
+.project-overlay .view-button {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  padding: 0.8rem 1.8rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* เพิ่ม box-shadow transition */
+  pointer-events: auto; /* Make button clickable */
+  border: none; /* Make sure it's a button, remove default button border */
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* เพิ่มเงาให้ปุ่ม View */
+}
+
+.project-overlay .view-button:hover {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3); /* เงาเข้มขึ้นเมื่อ hover */
+}
+
+.project-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-content h3 {
+  font-size: 1.4rem;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+body.dark-mode .project-content h3 {
+  color: var(--color-primary-dark);
+}
+
+.project-content p {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.project-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 0.9rem;
-  opacity: 0;
-  transition: opacity 0.3s ease 0.1s;
+  color: var(--color-text-light);
+  margin-top: 1rem;
 }
 
-.gallery-item:hover .gallery-info p {
-  opacity: 0.9;
-}
-
-/* Type Badge: ป้ายบอกประเภทของผลงาน */
-.gallery-item::after {
-  content: attr(data-type);
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background-color: rgba(52, 152, 219, 0.9);
+.project-meta .category {
+  background-color: var(--color-primary);
   color: var(--color-white);
   padding: 0.3rem 0.8rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  z-index: 1;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 0.85rem;
 }
+
+/* Stat Buttons (inside project-meta) */
+.project-meta .stats {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.project-meta .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+}
+
+.project-meta .stat-item i {
+  color: var(--color-primary); /* Default icon color */
+}
+
+body.dark-mode .project-meta .stat-item i {
+  color: var(--color-primary-dark);
+}
+
+/* Specific icon colors */
+.project-meta .stat-item.likes i {
+  color: var(--color-heart-liked);
+}
+.project-meta .stat-item.shares i {
+  color: var(--color-accent);
+}
+.project-meta .stat-item.views i {
+  color: var(--color-text-light);
+}
+
+
+/* Most Viewed Badge */
+.project-item.most-viewed {
+  border: 3px solid var(--color-accent);
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+}
+
+.project-item.most-viewed::before {
+  content: 'ยอดนิยม ✨';
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  z-index: 3;
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
 
 /* Lightbox: สไตล์สำหรับหน้าต่าง Pop-up แสดงรูปภาพ/วิดีโอ */
 .lightbox {
@@ -1111,35 +1530,75 @@ body.lightbox-open {
   font-size: 1rem;
 }
 
-/* Like Button: สไตล์สำหรับปุ่ม Like */
-.like-btn {
-  display: inline-flex;
+/* Stat Buttons Container (inside Lightbox) */
+.lightbox .like-btn,
+.lightbox .share-btn,
+.lightbox .view-display {
+  position: absolute;
+  top: 1rem;
+  z-index: 10;
+  color: var(--color-white);
+  text-shadow: 0 0px 3px #333333;
+  background: rgba(0,0,0,0.6); /* เพิ่มความเข้มของพื้นหลัง */
+  border-radius: 50px;
+  padding: 0.5rem 0.8rem;
+  display: flex; /* ใช้ flex เพื่อจัดเรียงไอคอนและข้อความ */
   align-items: center;
   gap: 0.25rem;
-  background: transparent;
-  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.2s ease;
   cursor: pointer;
-  font: inherit;
-  position: relative;
-  overflow: visible;
+  border: none;
 }
 
-.like-btn .heart {
-  fill: var(--color-text-light);
-  transition: fill 0.2s;
+.lightbox .like-btn {
+  left: 1rem;
+}
+
+.lightbox .share-btn {
+  left: 5.5rem; /* Adjusted position */
+}
+
+.lightbox .view-display {
+  left: 10rem; /* Adjusted position */
+  cursor: default; /* ไม่ให้มี cursor pointer สำหรับ view display */
+}
+
+.lightbox .like-btn:hover,
+.lightbox .share-btn:hover {
+  background-color: rgba(0,0,0,0.8); /* ทำให้เข้มขึ้นเมื่อ hover */
+  transform: translateY(-2px);
+}
+
+.like-btn .heart, .share-btn i, .view-display i { /* เปลี่ยนจาก svg เป็น i สำหรับ Font Awesome */
+  font-size: 1.1rem; /* ปรับขนาดไอคอน */
+  transition: color 0.2s;
 }
 
 .like-btn.liked .heart,
 .like-btn:hover .heart {
-  fill: var(--color-heart-liked);
+  color: var(--color-heart-liked); /* เปลี่ยนจาก fill เป็น color */
 }
 
-.like-count {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-white);
-  text-shadow: 0 0px 3px #333333;
+.share-btn.shared i,
+.share-btn:hover i {
+  color: var(--color-primary); /* สีสำหรับปุ่มแชร์เมื่อกดแล้ว/hover */
 }
+
+body.dark-mode .share-btn.shared i,
+body.dark-mode .share-btn:hover i {
+  color: var(--color-primary-dark);
+}
+
+.view-display i {
+  color: var(--color-text-light); /* สีไอคอนวิว */
+}
+
+body.dark-mode .view-display i {
+  color: var(--color-text-light-dark-mode);
+}
+
 
 /* แอนิเมชันหัวใจกระจายเมื่อกด Like */
 .heart-burst {
@@ -1257,7 +1716,7 @@ body.lightbox-open {
     gap: 0.5rem;
   }
 
-  .filters button {
+  .filter-btn {
     padding: 0.5rem 1.2rem;
     font-size: 0.85rem;
   }
@@ -1271,6 +1730,27 @@ body.lightbox-open {
     font-size: 0.9rem;
     border-radius: 8px;
   }
+
+  .lightbox .like-btn {
+    left: 0.5rem;
+    top: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .lightbox .share-btn {
+    left: 4.5rem;
+    top: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .lightbox .view-display {
+    left: 8.5rem;
+    top: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1278,14 +1758,16 @@ body.lightbox-open {
     grid-template-columns: 1fr;
   }
 
-  .gallery-info {
-    transform: translateY(0);
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.6);
+  /* For smaller screens, always show content below image */
+  .project-item:hover .project-overlay {
+    opacity: 0;
+    /* Hide overlay on small screens */
+    pointer-events: none;
   }
 
-  .gallery-info p {
-    opacity: 0.9;
+  .project-content {
+    opacity: 1;
+    /* Always visible */
   }
 
   .lightbox-close {
@@ -1299,171 +1781,183 @@ body.lightbox-open {
   }
 }
 
-/* Certificates Section - Sticky Scroll Version: สไตล์สำหรับส่วนใบรับรอง */
+/* Certificates Section - Infinity Loop Slider */
 #Certificates {
-  position: relative;
-  height: calc(110vh * 6);
-  /* ปรับความสูงเพื่อสร้างเอฟเฟกต์การเลื่อน */
+  padding: 5rem 0; /* Adjust padding as needed */
   background-color: var(--color-bg);
+  overflow: hidden; /* Hide overflowing cards */
 }
 
-.cert-wrapper {
-  position: sticky;
-  top: 0;
-  height: 125vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 20px 0;
-  pointer-events: none;
+body.dark-mode #Certificates {
+  background-color: var(--color-bg-dark);
 }
 
 .cert-header {
-  padding-bottom: 66rem;
-}
-
-.cert-wrapper>div:first-child {
   text-align: center;
-  margin-bottom: 6rem;
+  margin-bottom: 3rem;
 }
 
-.cert-wrapper h2 {
-  font-size: 2rem;
+.cert-header h2 {
+  font-size: 2.5rem;
   color: var(--color-text-dark);
-  margin-top: 4rem;
   margin-bottom: 1rem;
   position: relative;
+  display: inline-block;
 }
 
-/* สไตล์สำหรับเส้นใต้หัวข้อ Certificates */
-.cert-wrapper h2::after {
+body.dark-mode .cert-header h2 {
+  color: var(--color-text-dark-mode);
+}
+
+.cert-header h2::after {
   content: '';
   position: absolute;
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
-  height: 3px;
+  height: 4px;
   background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 2px;
 }
 
-.cert-wrapper .intro {
-  max-width: 620px;
-  margin: 0 auto 6rem;
+.cert-header .intro {
+  max-width: 700px;
+  margin: 0 auto;
   font-size: 1.1rem;
   color: var(--color-text-light);
   line-height: 1.6;
 }
 
-/* Certificate Cards: สไตล์สำหรับแต่ละการ์ดใบรับรอง */
-.cert-card {
-  position: absolute;
-  left: 50%;
-  top: calc(50% + 40px);
+body.dark-mode .cert-header .intro {
+  color: var(--color-text-light-dark-mode);
+}
+
+.cert-slider-container {
   width: 100%;
-  max-width: 720px;
-  padding: 1.5rem;
+  overflow: hidden; /* This is crucial to hide the duplicated content outside the view */
+  position: relative;
+  padding: 2rem 0; /* Add some vertical padding for cards */
+}
+
+.cert-slider-track {
   display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  background: var(--color-white);
+  width: max-content; /* Allow content to dictate width */
+  animation: scrollCertificates 30s linear infinite; /* Adjust duration as needed */
+}
+
+.cert-slider-track:hover {
+  animation-play-state: paused; /* Pause on hover */
+}
+
+.cert-card {
+  flex-shrink: 0; /* Prevent cards from shrinking */
+  width: 300px; /* Adjust card width as needed */
+  margin: 0 1rem; /* Space between cards */
+  background: var(--color-card-bg);
   border-radius: 0.75rem;
-  box-shadow: 0 10px 30px var(--color-shadow);
-  transform: translate(0%, -50%) scale(0);
-  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 1s ease,
-    box-shadow 0.3s ease;
-  will-change: transform, opacity;
+  box-shadow: 0 5px 15px var(--color-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column; /* Stack image and info vertically */
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
 }
 
-/* Rank badge: ป้ายบอกอันดับ */
-.cert-card .rank {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(0, 0, 0, 0.7);
-  color: var(--color-white);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 12px;
-  pointer-events: none;
+body.dark-mode .cert-card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.cert-card:nth-child(even) {
-  left: 48%;
-  rotate: 3deg;
-  transform: translate(-50%, -50%) scale(0);
+.cert-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .cert-card img {
   width: 100%;
+  height: 200px; /* Fixed height for certificate images */
   object-fit: cover;
   border-radius: 0.5rem;
-  flex-shrink: 0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.cert-card:hover img {
-  transform: scale(1.02);
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .cert-info {
-  flex: 1;
-  font-size: 1rem;
-  border-left: 4px solid var(--color-primary);
-  padding-left: 1.2rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .cert-info strong {
   color: var(--color-text-dark);
-  line-height: 1.4;
+  display: block; /* Make strong text a block element for better spacing */
+  margin-bottom: 0.25rem;
 }
 
-.cert-info br+* {
+body.dark-mode .cert-info strong {
+  color: var(--color-text-dark-mode);
+}
+
+.cert-info span {
   color: var(--color-text-light);
-  line-height: 1.5;
 }
 
-/* Active States: สไตล์เมื่อการ์ดใบรับรอง Active */
-.cert-card.shown {
-  opacity: 0.7;
-  transform: translate(-50%, 0%) scale(0.85);
+body.dark-mode .cert-info span {
+  color: var(--color-text-light-dark-mode);
 }
 
-.cert-card.active {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-  z-index: 2;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+/* Keyframes for continuous scrolling */
+@keyframes scrollCertificates {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%); /* Scroll half the track width to loop seamlessly */
+  }
 }
 
-/* Responsive Certificates Section: การปรับส่วน Certificates สำหรับหน้าจอขนาดต่างๆ */
-@media (max-width: 640px) {
-
-  .cert-card,
-  .cert-card:nth-child(even) {
-    flex-direction: column;
-    text-align: center;
-    padding: 6px;
-    top: 42%;
-    width: 90%;
-    left: 50% !important;
+/* Responsive adjustments for certificates */
+@media (max-width: 768px) {
+  .cert-card {
+    width: 250px; /* Smaller card width for mobile */
+    margin: 0 0.75rem;
   }
 
   .cert-card img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+    height: 180px;
   }
 
   .cert-info {
-    border-left: none;
-    border-top: 4px solid var(--color-primary);
-    padding-left: 0;
-    padding-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .cert-slider-track {
+    animation-duration: 20s; /* Faster scroll on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .cert-header h2 {
+    font-size: 2rem;
+  }
+
+  .cert-header .intro {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .cert-card {
+    width: 200px;
+    margin: 0 0.5rem;
+  }
+
+  .cert-card img {
+    height: 150px;
+  }
+  .cert-slider-track {
+    animation-duration: 15s; /* Even faster scroll on very small screens */
   }
 }
 
@@ -1498,6 +1992,89 @@ body.lightbox-open {
   color: var(--color-accent);
   font-weight: bold; /* เปลี่ยน font-style เป็น font-weight */
 }
+
+/* Custom Modal Styles */
+.custom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(5px);
+  animation: fadeInModal 0.3s ease-out;
+}
+
+.custom-modal-content {
+  background-color: var(--color-card-bg);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  animation: slideInModal 0.3s ease-out;
+}
+
+.custom-modal-content p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: var(--color-text-dark);
+}
+
+.custom-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.custom-modal-btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* เพิ่มเงาเริ่มต้น */
+}
+
+.custom-modal-btn.confirm {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.custom-modal-btn.confirm:hover {
+  background-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); /* เงาเข้มขึ้นเมื่อ hover */
+}
+
+.custom-modal-btn.cancel {
+  background-color: #ccc;
+  color: var(--color-text-dark);
+}
+
+.custom-modal-btn.cancel:hover {
+  background-color: #bbb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* เงาเข้มขึ้นเมื่อ hover */
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInModal {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 
 @media (max-width: 640px) {
 
@@ -1553,7 +2130,7 @@ body.lightbox-open {
 .contact-contant {
   max-width: 800px;
   margin: 0 auto;
-  background: var(--color-white);
+  background: var(--color-card-bg);
   border-radius: 16px;
   padding: 3rem;
   box-shadow: 0 10px 25px var(--color-shadow);
@@ -1573,15 +2150,24 @@ body.lightbox-open {
   display: flex;
   align-items: center;
   padding: 1rem;
+  background: #f8fafc; /* Specific light background for contact list items */
   border-radius: 8px;
-  background: #f8fafc;
   transition: all 0.3s ease;
+}
+
+body.dark-mode .contact-list li {
+  background: #3a506b; /* Darker background for contact list items in dark mode */
 }
 
 .contact-list li:hover {
   cursor: pointer;
   background: #f1f5f9;
   box-shadow: 0 5px 15px var(--color-shadow);
+}
+
+body.dark-mode .contact-list li:hover {
+  background: #4a627a;
+  box-shadow: 0 5px 15px var(--color-shadow-dark);
 }
 
 /* สไตล์สำหรับจุดนำหน้าในรายการ Contact */
@@ -1593,6 +2179,10 @@ body.lightbox-open {
   border-radius: 50%;
   background: var(--color-primary);
   margin-right: 12px;
+}
+
+body.dark-mode .contact-list li::before {
+  background: var(--color-primary-dark);
 }
 
 .contact-list a {
@@ -1639,12 +2229,20 @@ body.lightbox-open {
   color: var(--color-accent);
 }
 
+body.dark-mode .contact-list li:last-child a {
+  color: var(--color-accent-dark);
+}
+
 .qr-label {
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 600;
   color: var(--color-accent);
+}
+
+body.dark-mode .qr-label {
+  color: var(--color-accent-dark);
 }
 
 /* Responsive Contact Section: การปรับส่วน Contact สำหรับหน้าจอขนาดต่างๆ */
@@ -1819,6 +2417,19 @@ body.lightbox-open {
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  /* Add transition for fade out */
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  opacity: 1;
+  visibility: visible;
+}
+
+body.dark-mode #preloader {
+  background: var(--color-bg-dark);
+}
+
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
 }
 
 /* ตัวโหลดแบบหมุน */
@@ -1831,8 +2442,33 @@ body.lightbox-open {
   animation: spin 1s linear infinite;
 }
 
+body.dark-mode .loader {
+  border: 6px solid #555;
+  border-top: 6px solid var(--color-primary-dark);
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Projects Section Loading Spinner Styles */
+.projects-loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px; /* เพื่อให้มีพื้นที่แสดง spinner */
+  width: 100%;
+  text-align: center;
+  color: var(--color-text-light);
+}
+
+body.dark-mode .projects-loading-spinner {
+  color: var(--color-text-light-dark-mode);
+}
+
+.projects-loading-spinner .loader {
+  margin-bottom: 1rem;
 }

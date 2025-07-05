@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="style.css" />
   <!-- AOS CSS: สำหรับการทำอนิเมชันเมื่อเลื่อนหน้าเว็บ -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <!-- Open Graph Meta Tags: สำหรับการแสดงผลเมื่อแชร์ลิงก์บนโซเชียลมีเดีย -->
   <meta property="og:title" content="The Future Begins – Portfolio by Thanaphat" />
@@ -55,6 +57,10 @@
           <span></span>
           <span></span>
         </div>
+        <!-- Dark Mode Toggle Button -->
+        <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+          <i class="fas fa-cog"></i> <!-- Font Awesome gear icon -->
+        </button>
       </nav>
       <!-- ปุ่มสลับเมนูสำหรับ Mobile (Hamburger icon) -->
       <div class="menu-toggle">
@@ -239,6 +245,12 @@
       </div>
     </section>
 
+    <section class="time-section">
+      <p>ยอดไลก์รวม: <span id="total-likes">0</span></p>
+      <p>ยอดแชร์รวม: <span id="total-shares">0</span></p> <!-- เพิ่มส่วนแสดงยอดแชร์รวม -->
+      <p>ยอดวิวรวม: <span id="total-views">0</span></p>   <!-- เพิ่มส่วนแสดงยอดวิวรวม -->
+    </section>
+
     <!-- Projects Section: ส่วนแสดงผลงานและกิจกรรมต่างๆ -->
     <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
     <section id="Projects" class="projects-section" data-aos="fade-up" data-aos-duration="1000">
@@ -255,12 +267,12 @@
       </div>
       <!-- Filter Buttons: ปุ่มสำหรับกรองผลงานตามหมวดหมู่ -->
       <div id="filters" class="filters" data-aos="fade-up" data-aos-delay="200">
-        <button class="active" data-filter="all">ทั้งหมด</button>
-        <button data-filter="it">งาน IT</button>
-        <button data-filter="แต่งภาพ">แต่งภาพ</button>
-        <button data-filter="เเข่งหุ่นยนต์">เเข่งหุ่นยนต์</button>
-        <button data-filter="ตัดต่อ">ตัดต่อ</button>
-        <button data-filter="code">code</button>
+        <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+        <button class="filter-btn" data-filter="it">งาน IT</button>
+        <button class="filter-btn" data-filter="แต่งภาพ">แต่งภาพ</button>
+        <button class="filter-btn" data-filter="เเข่งหุ่นยนต์">เเข่งหุ่นยนต์</button>
+        <button class="filter-btn" data-filter="ตัดต่อ">ตัดต่อ</button>
+        <button class="filter-btn" data-filter="code">code</button>
       </div>
 
       <!-- Gallery Grid: ส่วนแสดงผลงานที่เป็นรูปภาพหรือวิดีโอ -->
@@ -285,69 +297,59 @@
     </div>
 
     <!-- Certificates Section: ส่วนแสดงใบรับรองและรางวัลต่างๆ -->
-    <section id="Certificates">
-      <div class="cert-wrapper" aria-hidden="true">
-        <div class="cert-header" style="width: 100%; text-align:center;">
-          <h2>Certificates &amp; Awards</h2>
-          <p class="intro">
-            นี่คือสิ่งที่ช่วยรับรอง ความสามารถของผมเองครับ เลื่อนดูได้เลยครับ
-          </p>
-        </div>
+    <section id="Certificates" class="certificates-section">
+      <div class="cert-header">
+        <h2>Certificates &amp; Awards</h2>
+        <p class="intro">
+          นี่คือสิ่งที่ช่วยรับรอง ความสามารถของผมเองครับ เลื่อนดูได้เลยครับ
+        </p>
+      </div>
+      <div class="cert-slider-container">
+        <div class="cert-slider-track">
+          <!-- การ์ดใบรับรอง 11 ใบ -->
+          <div class="cert-card" data-index="0">
+            <img src="./assets/Certificate/Certificate_003.jpg" alt="Certificate 1" />
+          </div>
 
-        <!-- การ์ดใบรับรอง 11 ใบ -->
-        <div class="cert-card" data-index="0">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_003.jpg" alt="Certificate 1" />
-        </div>
+          <div class="cert-card" data-index="1">
+            <img src="./assets/Certificate/Certificate_002.jpg" alt="Certificate 2" />
+          </div>
 
-        <div class="cert-card" data-index="1">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_002.jpg" alt="Certificate 2" />
-        </div>
+          <div class="cert-card" data-index="2">
+            <img src="./assets/Certificate/Certificate_001.jpg" alt="Certificate 3" />
+          </div>
 
-        <div class="cert-card" data-index="2">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_001.jpg" alt="Certificate 3" />
-        </div>
+          <div class="cert-card" data-index="3">
+            <img src="./assets/Certificate/Certificate_004.jpg" alt="Certificate 4" />
+          </div>
 
-        <div class="cert-card" data-index="3">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_004.jpg" alt="Certificate 4" />
-        </div>
+          <div class="cert-card" data-index="4">
+            <img src="./assets/Certificate/Certificate_005.jpg" alt="Certificate 5" />
+          </div>
 
-        <div class="cert-card" data-index="4">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_005.jpg" alt="Certificate 5" />
-        </div>
+          <div class="cert-card" data-index="5">
+            <img src="./assets/Certificate/Certificate_006.jpg" alt="Certificate 6" />
+          </div>
 
-        <div class="cert-card" data-index="5">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_006.jpg" alt="Certificate 6" />
-        </div>
+          <div class="cert-card" data-index="6">
+            <img src="./assets/Certificate/Certificate_007.jpg" alt="Certificate 7" />
+          </div>
 
-        <div class="cert-card" data-index="6">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_007.jpg" alt="Certificate 7" />
-        </div>
+          <div class="cert-card" data-index="7">
+            <img src="./assets/Certificate/Certificate_008.jpg" alt="Certificate 8" />
+          </div>
 
-        <div class="cert-card" data-index="7">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_008.jpg" alt="Certificate 8" />
-        </div>
+          <div class="cert-card" data-index="8">
+            <img src="./assets/Certificate/Certificate_009.jpg" alt="Certificate 9" />
+          </div>
 
-        <div class="cert-card" data-index="8">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_009.jpg" alt="Certificate 9" />
-        </div>
+          <div class="cert-card" data-index="9">
+            <img src="./assets/Certificate/Certificate_010.jpg" alt="Certificate 10" />
+          </div>
 
-        <div class="cert-card" data-index="9">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_010.jpg" alt="Certificate 10" />
-        </div>
-
-        <div class="cert-card" data-index="10">
-          <span class="rank"></span>
-          <img src="./assets/Certificate/Certificate_011.jpg" alt="Certificate 11" />
+          <div class="cert-card" data-index="10">
+            <img src="./assets/Certificate/Certificate_011.jpg" alt="Certificate 11" />
+          </div>
         </div>
       </div>
     </section>
@@ -356,7 +358,7 @@
     <section class="time-section">
       <p id="uptime"></p>
       <p id="quote"></p>
-      <p>+<span id="visitor-count">0</span></p>
+      <p>ผู้เข้าชม: <span id="visitor-count">0</span></p>
     </section>
 
     <!-- Contact Section: ส่วนสำหรับติดต่อ -->
@@ -427,7 +429,7 @@
 
       <div class="footer-bottom">
         <p>&copy; 2025 Thanaphat Karajhac. All rights reserved.</p>
-        <p>Made with ❤️ and ☕ in Thailand</p>
+        <p>Made in Thailand</p>
       </div>
     </footer>
   </main>
