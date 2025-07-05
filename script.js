@@ -186,9 +186,9 @@ document.addEventListener("DOMContentLoaded", function () {
       "title": "ซ้อมแข่งหุ่นยนต์ระดับกลาง",
       "category": "เเข่งหุ่นยนต์",
       "year": 2024,
-      "type": "video",
+      "type": "image",
       "thumbnail": "assets/images/093739.png",
-      "src": "assets/video/received_651238003846627.mp4",
+      "src": "aassets/images/093739.png",
       "desc": "ซ้อมแข่งหุ่นยนต์ระดับกลาง แต่ก็ได้เหรียญทองนะค้าบบบ",
       "shortDesc": "ฝึกซ้อมแข่งขันหุ่นยนต์"
     },
@@ -197,9 +197,9 @@ document.addEventListener("DOMContentLoaded", function () {
       "title": "ตัดต่ออินโทร โลโก",
       "category": "ตัดต่อ",
       "year": 2024,
-      "type": "video",
+      "type": "image",
       "thumbnail": "assets/images/094024.png",
-      "src": "assets/video/received_1793334780.mp4",
+      "src": "assets/images/094024.png",
       "desc": "ตัดต่ออินโทร โลโก และตัดต่อ VTR ให้โรงเรียน",
       "shortDesc": "ตัดต่อ Intro และ VTR"
     },
@@ -208,9 +208,9 @@ document.addEventListener("DOMContentLoaded", function () {
       "title": "ลองเล่น esp32",
       "category": "it",
       "year": 2024,
-      "type": "video",
+      "type": "image",
       "thumbnail": "assets/images/095615.png",
-      "src": "assets/video/VID_20250512065631.mp4",
+      "src": "assets/images/095615.png",
       "desc": "ลองเล่น esp32 โดยให้เล่น อนิเมชั่นง่ายๆ",
       "shortDesc": "ทดลองเล่น ESP32"
     },
@@ -230,9 +230,9 @@ document.addEventListener("DOMContentLoaded", function () {
       "title": "ลองสร้างโค้ด python ด้วย ai",
       "category": "code",
       "year": 2025,
-      "type": "video",
+      "type": "image",
       "thumbnail": "assets/images/113700.png",
-      "src": "assets/video/125002.mp4",
+      "src": "assets/images/113700.png",
       "desc": "ช่วงนั่นผมได้ดึงไฟล์จาดกล้องมา แล้วผมไม่ได้ติดตั้ง แอพแปลงไฟล์เลย ลองทำโค้ดนี้ขึ้นมา โค้ดนี้สามารถดูใน github",
       "shortDesc": "สร้างโค้ด Python ด้วย AI"
     },
@@ -267,7 +267,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const lightboxOverlay = document.getElementById('lightbox-overlay');
   const lightboxContainer = document.getElementById('lightbox-content-container');
   const lightboxImage = document.getElementById('lightbox-image');
-  const lightboxVideo = document.getElementById('lightbox-video');
   const lightboxCaption = document.getElementById('lightbox-caption');
   const lightboxClose = document.getElementById('lightbox-close');
 
@@ -571,7 +570,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <h4>${project.title}</h4>
             <p>${project.shortDesc || project.desc}</p>
             <button class="view-button">
-              ${project.type === 'video' ? 'ดูวิดีโอ' : 'ดูรูปภาพ'}
+              ดูรูปภาพ
             </button>
         </div>
         <div class="project-content">
@@ -639,73 +638,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ===== Lightbox functions =====
-  // ฟังก์ชันสำหรับเปิด Lightbox และแสดงภาพ/วิดีโอ
+  // ฟังก์ชันสำหรับเปิด Lightbox และแสดงภาพ
   async function openLightbox(project, initialProjectStats, triggerRect) {
     // รีเซ็ตองค์ประกอบสื่อก่อนเปิดรายการใหม่
     lightboxImage.style.display = 'none';
-    lightboxVideo.style.display = 'none';
     lightboxImage.src = '';
-    lightboxVideo.src = '';
     
     let mediaElement;
     const controls = lightboxContainer.querySelector('.lightbox-controls');
 
     // กำหนดตำแหน่งเริ่มต้นของสื่อให้ตรงกับตำแหน่งของภาพขนาดย่อที่คลิก
-    if (project.type === "video") {
-      mediaElement = lightboxVideo;
-      mediaElement.src = project.src;
-      mediaElement.controls = true;
-      mediaElement.autoplay = true;
-      mediaElement.loop = true;
-      mediaElement.muted = true;
-      mediaElement.style.display = 'block'; 
-
-      // เพิ่มตัวบ่งชี้การโหลดสำหรับวิดีโอ
-      const loadingSpinner = document.createElement('div');
-      loadingSpinner.className = 'lightbox-video-loading';
-      loadingSpinner.innerHTML = '<div class="loader"></div><p>กำลังโหลดวิดีโอ...</p>';
-      lightboxContainer.appendChild(loadingSpinner);
-      
-      // ฟังก์ชันสำหรับแสดงวิดีโอและลบตัวบ่งชี้การโหลด
-      const showVideoAndRemoveSpinner = function() {
-        mediaElement.style.display = 'block'; // แสดงวิดีโอ
-        loadingSpinner.remove(); // ลบตัวบ่งชี้การโหลด
-        // เรียก animateLightbox อีกครั้งเพื่อปรับขนาดให้ถูกต้องตามสัดส่วนจริงของวิดีโอ
-        animateLightbox(mediaElement, controls); 
-      };
-
-      // ฟัง Event เมื่อวิดีโอโหลดข้อมูลเพียงพอที่จะเล่นได้อย่างราบรื่น
-      mediaElement.addEventListener('canplaythrough', showVideoAndRemoveSpinner, { once: true });
-      // ฟัง Event เมื่อเมตาดาต้าของวิดีโอโหลดเสร็จ (เพื่อให้ได้ videoWidth/Height ที่ถูกต้อง)
-      mediaElement.addEventListener('loadedmetadata', function() {
-        // หากวิดีโอพร้อมเล่นแล้ว ก็แสดงผลทันที
-        if (mediaElement.readyState >= 4) { // HAVE_ENOUGH_DATA
-            showVideoAndRemoveSpinner();
-        } else {
-            // หากยังไม่พร้อมเล่น แต่เมตาดาต้าโหลดแล้ว ให้อัปเดตแอนิเมชันด้วยสัดส่วนที่ถูกต้อง
-            animateLightbox(mediaElement, controls); 
-        }
-      }, { once: true });
-
-
-      // ตรวจสอบสถานะวิดีโอในกรณีที่โหลดจากแคชแล้ว
-      if (mediaElement.readyState >= 4) { // HAVE_ENOUGH_DATA
-        showVideoAndRemoveSpinner();
-      } else {
-        // เรียก animateLightbox ทันทีสำหรับแอนิเมชันเริ่มต้น (อาจใช้สัดส่วน 16:9 เป็นค่าเริ่มต้น)
-        animateLightbox(mediaElement, controls);
-      }
-      
-      mediaElement.addEventListener('ended', function() {
-        this.currentTime = 0;
-        this.play();
-      });
-    } else { // Image
-      mediaElement = lightboxImage;
-      mediaElement.src = project.src;
-      mediaElement.alt = project.title;
-      mediaElement.style.display = 'block'; // แสดงภาพทันที
-    }
+    mediaElement = lightboxImage;
+    mediaElement.src = project.src;
+    mediaElement.alt = project.title;
+    mediaElement.style.display = 'block'; // แสดงภาพทันที
 
     // กำหนดสไตล์เริ่มต้นสำหรับแอนิเมชัน
     mediaElement.style.left = `${triggerRect.left}px`;
@@ -718,15 +664,10 @@ document.addEventListener("DOMContentLoaded", function () {
     currentMediaElement = mediaElement;
 
     // สำหรับรูปภาพ ให้เรียก animateLightbox เมื่อรูปภาพโหลดเสร็จ
-    if (project.type === 'image') {
-      mediaElement.onload = () => {
-        animateLightbox(mediaElement, controls);
-      };
-    } 
-    // สำหรับวิดีโอ animateLightbox ถูกเรียกไปแล้วในบล็อก if ด้านบน
-    // หรือจะถูกเรียกอีกครั้งเมื่อวิดีโอพร้อมเล่น (ใน showVideoAndRemoveSpinner)
-
-
+    mediaElement.onload = () => {
+      animateLightbox(mediaElement, controls);
+    };
+    
     controls.innerHTML = '';
 
     const local = loadLocalStats();
@@ -783,14 +724,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (mediaElement.tagName === 'IMG') {
       aspectRatio = mediaElement.naturalWidth / mediaElement.naturalHeight;
-    } else { // VIDEO
-      // ใช้ videoWidth/videoHeight หากมีข้อมูลแล้ว มิฉะนั้นใช้ค่าเริ่มต้น 16:9
-      if (mediaElement.videoWidth && mediaElement.videoHeight) {
-        aspectRatio = mediaElement.videoWidth / mediaElement.videoHeight;
-      } else {
-        // สัดส่วนเริ่มต้น (เช่น 16:9) หากเมตาดาต้ายังไม่โหลด
-        aspectRatio = 16 / 9;
-      }
+    } else { // VIDEO - This block is now effectively removed as video functionality is removed
+      // This part will not be reached if project.type is always 'image'
+      aspectRatio = 16 / 9; // Fallback or default for video if it were present
     }
 
     const maxViewportWidth = windowWidth * 0.9;
@@ -846,23 +782,14 @@ document.addEventListener("DOMContentLoaded", function () {
         currentMediaElement.style.transition = ''; // ลบ transition ที่นี่
         currentMediaElement.removeAttribute('style');
         currentMediaElement.src = '';
-        if (currentMediaElement.tagName === 'VIDEO') {
-          currentMediaElement.pause();
-          currentMediaElement.currentTime = 0;
-          currentMediaElement.removeAttribute('controls');
-          currentMediaElement.removeAttribute('autoplay');
-          currentMediaElement.removeAttribute('loop');
-          currentMediaElement.removeAttribute('muted');
-        }
         currentMediaElement = null;
       }
 
       lightboxImage.style.display = 'none';
-      lightboxVideo.style.display = 'none';
       document.body.classList.remove("lightbox-open");
       document.documentElement.classList.remove("lightbox-open"); // เพิ่มการปลดล็อกการเลื่อนบน html
 
-      // ตรวจสอบและลบตัวบ่งชี้การโหลดหากยังคงอยู่
+      // ตรวจสอบและลบตัวบ่งชี้การโหลดหากยังคงอยู่ (สำหรับวิดีโอ ซึ่งตอนนี้ถูกลบออกแล้ว)
       const loadingSpinner = lightboxContainer.querySelector('.lightbox-video-loading');
       if (loadingSpinner) {
         loadingSpinner.remove();

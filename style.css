@@ -1672,6 +1672,8 @@ body.dark-mode .project-meta .stat-item i {
 /* No specific .zoom-animation class needed if transition is on .lightbox-media directly */
 /* The animation is driven by changing inline styles */
 
+/* The following styles were related to video loading and are now removed */
+/*
 .lightbox-video-loading {
   position: absolute;
   top: 50%;
@@ -1703,8 +1705,10 @@ body.dark-mode .project-meta .stat-item i {
   font-size: 1rem;
   font-weight: 500;
 }
+*/
 
-/* สไตล์สำหรับวิดีโอใน Lightbox */
+/* สไตล์สำหรับวิดีโอใน Lightbox - Removed */
+/*
 .lightbox-video {
   background-color: #000;
   max-width: 90vw;
@@ -1713,8 +1717,10 @@ body.dark-mode .project-meta .stat-item i {
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
+*/
 
-/* สไตล์เมื่อโหมดกลางคืนเปิดใช้งาน */
+/* สไตล์เมื่อโหมดกลางคืนเปิดใช้งาน - Removed */
+/*
 body.dark-mode .lightbox-video-loading {
   background: rgba(30, 30, 30, 0.9);
 }
@@ -1722,8 +1728,10 @@ body.dark-mode .lightbox-video-loading {
 body.dark-mode .lightbox-video-loading .loader {
   border-top-color: #4fc3f7;
 }
+*/
 
-/* ปรับปรุงการแสดงผลบนมือถือ */
+/* ปรับปรุงการแสดงผลบนมือถือ - Removed */
+/*
 @media (max-width: 768px) {
   .lightbox-video-loading {
     padding: 1rem 1.5rem;
@@ -1736,10 +1744,12 @@ body.dark-mode .lightbox-video-loading .loader {
     border-width: 3px;
   }
 }
+*/
 
 .lightbox-caption {
   position: fixed;
-  bottom: 1rem; /* Adjusted to be closer to the bottom */
+  bottom: 1rem;
+  /* Adjusted to be closer to the bottom */
   left: 50%;
   transform: translateX(-50%);
   color: white;
@@ -1766,8 +1776,10 @@ body.dark-mode .lightbox-video-loading .loader {
 
 .lightbox-close {
   position: fixed;
-  top: 1rem; /* Adjusted to be closer to the top */
-  right: 1rem; /* Adjusted to be closer to the right */
+  top: 1rem;
+  /* Adjusted to be closer to the top */
+  right: 1rem;
+  /* Adjusted to be closer to the right */
   color: white;
   font-size: 2rem;
   cursor: pointer;
@@ -1786,8 +1798,9 @@ body.dark-mode .lightbox-video-loading .loader {
 
 .lightbox-controls {
   position: fixed;
-  bottom: 4rem; /* Adjusted to be above the caption */
-  left: 50%;
+  top: 1rem;
+  /* Adjusted to be above the caption */
+  left: 10rem;
   transform: translateX(-50%);
   display: flex;
   gap: 0.5rem;
@@ -1949,14 +1962,16 @@ body.dark-mode .lightbox-video-loading .loader {
   }
 
   .lightbox-caption {
-    bottom: 0.5rem; /* Further adjusted for mobile */
+    bottom: 0.5rem;
+    /* Further adjusted for mobile */
     width: 90%;
     font-size: 0.8rem;
     padding: 0.6rem 0.8rem;
   }
 
   .lightbox-controls {
-    bottom: 6rem; /* Adjusted for mobile */
+    top: 6rem;
+    /* Adjusted for mobile */
     left: 50%;
     transform: translateX(-50%);
     gap: 1rem;
@@ -2107,6 +2122,19 @@ body.dark-mode .cert-card {
   object-fit: cover;
   border-radius: 0.5rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+
+  .cert-card {
+    width: 200px;
+    height: 100%;
+    margin: 0 0.5rem;
+    padding: 0.2rem;
+  }
+  .cert-header .intro {
+    padding: 0 1rem;
+  }
 }
 
 /* Keyframes for continuous scrolling */
@@ -2304,7 +2332,7 @@ body.dark-mode .cert-card {
   }
 
   #quote {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 }
 
@@ -2650,6 +2678,12 @@ body.dark-mode .qr-label {
   transition: opacity 0.5s ease, visibility 0.5s ease;
   opacity: 1;
   visibility: visible;
+}
+
+.preloader-message {
+  padding-top: 2rem;
+  text-align: center;
+  width: 80%;
 }
 
 body.dark-mode #preloader {
