@@ -28,6 +28,7 @@
   <!-- Preloader: ส่วนที่แสดงขึ้นมาก่อนที่เนื้อหาหลักของหน้าจะโหลดเสร็จสมบูรณ์ -->
   <div id="preloader">
     <div class="loader"></div>
+    <p class="preloader-message">กำลังจัดเตรียมเนื้อหาอย่างตั้งใจ เพื่อให้คุณได้รับประสบการณ์ที่ดีที่สุด</p>
   </div>
 
   <!-- Main Content: เนื้อหาหลักของเว็บไซต์ทั้งหมดจะอยู่ในแท็กนี้ เพื่อให้ Preloader สามารถซ่อนได้เมื่อโหลดเสร็จ -->
@@ -78,6 +79,7 @@
           <div class="hero-name">
             <h3>Hello, <strong>My name is,</strong></h3>
             <h1>Thanaphat Karajhac</h1>
+            <p id="quote"></p>
           </div>
           <div class="hero-paragraph">
             <p>
@@ -98,7 +100,7 @@
       </div>
 
       <div class="hero-btn-primary">
-        <p>เลื่อนลง</p>
+        <a href="#Projects">เลื่อนลง</a>
       </div>
     </section>
 
@@ -245,12 +247,6 @@
       </div>
     </section>
 
-    <section class="time-section">
-      <p>ยอดไลก์รวม: <span id="total-likes">0</span></p>
-      <p>ยอดแชร์รวม: <span id="total-shares">0</span></p> <!-- เพิ่มส่วนแสดงยอดแชร์รวม -->
-      <p>ยอดวิวรวม: <span id="total-views">0</span></p>   <!-- เพิ่มส่วนแสดงยอดวิวรวม -->
-    </section>
-
     <!-- Projects Section: ส่วนแสดงผลงานและกิจกรรมต่างๆ -->
     <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
     <section id="Projects" class="projects-section" data-aos="fade-up" data-aos-duration="1000">
@@ -280,21 +276,6 @@
         <!-- ไอเท็มผลงานจะถูกแทรกด้วย JavaScript -->
       </div>
     </section>
-
-    <!-- Lightbox: หน้าต่าง Pop-up สำหรับแสดงรูปภาพหรือวิดีโอขนาดใหญ่ขึ้น -->
-    <div id="lightbox" class="lightbox" style="display:none;">
-      <span id="lightbox-close" class="lightbox-close">
-        <!-- SVG icon สำหรับปุ่มปิด Lightbox -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"
-          class="text-gray-600 hover:text-red-500 cursor-pointer">
-          <path fill-rule="evenodd"
-            d="M6.225 4.811a1 1 0 011.414 0L12 9.172l4.361-4.361a1 1 0 111.414 1.414L13.414 10.586l4.361 4.361a1 1 0 01-1.414 1.414L12 12l-4.361 4.361a1 1 0 01-1.414-1.414l4.361-4.361-4.361-4.361a1 1 0 010-1.414z"
-            clip-rule="evenodd" />
-        </svg>
-      </span>
-      <div id="lightbox-content"></div>
-      <div id="lightbox-caption" class="lightbox-caption"></div>
-    </div>
 
     <!-- Certificates Section: ส่วนแสดงใบรับรองและรางวัลต่างๆ -->
     <section id="Certificates" class="certificates-section">
@@ -354,11 +335,13 @@
       </div>
     </section>
 
-    <!-- Time Section: ส่วนแสดงเวลาที่เว็บไซต์ออนไลน์, คำคม และจำนวนผู้เข้าชม -->
+    <!-- Time Section: ส่วนแสดงเวลาที่เว็บไซต์ออนไลน์, และจำนวนผู้เข้าชม, แสดงยอดแชร์รวม, ยอดวิวรวม -->
     <section class="time-section">
       <p id="uptime"></p>
-      <p id="quote"></p>
-      <p>ผู้เข้าชม: <span id="visitor-count">0</span></p>
+      <span class="stat-item" title="Total Likes"><i class="fas fa-heart"></i> <span id="total-likes">0</span></span>
+      <span class="stat-item" title="Total Shares"><i class="fas fa-share-alt"></i> <span
+          id="total-shares">0</span></span>
+      <span class="stat-item" title="Total Views"><i class="fas fa-eye"></i> <span id="total-views">0</span></span>
     </section>
 
     <!-- Contact Section: ส่วนสำหรับติดต่อ -->
@@ -433,6 +416,19 @@
       </div>
     </footer>
   </main>
+
+  <!-- Lightbox Elements (New) -->
+  <div id="lightbox-overlay" class="lightbox-overlay"></div>
+  <div id="lightbox-content-container" class="lightbox-content-container">
+    <!-- These elements will be dynamically updated by JavaScript -->
+    <img id="lightbox-image" class="lightbox-media" src="" alt="Lightbox Image" style="display: none;">
+    <video id="lightbox-video" class="lightbox-media" src="" controls loop muted style="display: none;"></video>
+    <div class="lightbox-controls"></div>
+  </div>
+  <div id="lightbox-caption" class="lightbox-caption"></div>
+  <button id="lightbox-close" class="lightbox-close">
+    <i class="fas fa-times"></i>
+  </button>
 
   <!-- AOS JavaScript: โค้ดสำหรับเริ่มต้น AOS library -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

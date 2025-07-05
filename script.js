@@ -1,7 +1,5 @@
 // เหตุการณ์ DOMContentLoaded: ตรวจสอบให้แน่ใจว่า HTML ถูกโหลดและแยกวิเคราะห์เรียบร้อยแล้วก่อนที่จะรันสคริปต์
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOMContentLoaded event fired.");
-
   // Active link highlighting based on scroll position:
   // ไฮไลต์ลิงก์เมนูนำทางที่ตรงกับส่วนของหน้าเว็บที่กำลังมองเห็น
   const sections = document.querySelectorAll("section");
@@ -14,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // วนลูปผ่านแต่ละส่วนของหน้า
     sections.forEach((section) => {
       const sectionTop = section.offsetTop;
-      // const sectionHeight = section.clientHeight; // ไม่ได้ใช้งาน
       // ตรวจสอบว่าส่วนนั้นอยู่ในขอบเขตการมองเห็นหรือไม่ (ปรับค่า offset เล็กน้อย)
       if (pageYOffset >= sectionTop - 100) {
         current = section.getAttribute("id");
@@ -60,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
         menuToggle.classList.remove('open');
         headerList.classList.remove('active');
         document.body.style.overflow = '';
+        document.documentElement.style.overflow = ''; // เพิ่มการปลดล็อกการเลื่อนบน html
       }
     });
   });
@@ -83,236 +81,236 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ====== DATA ======
   // ข้อมูลโปรเจกต์ทั้งหมด (สามารถเพิ่มหรือแก้ไขได้ตามต้องการ)
-  const projects = [{
-    "id": "project-1", // เปลี่ยน id เป็น string เพื่อให้เข้ากับ Netlify Function
-    "title": "ออกแบบ แผนผังอินเตอร์เน็ต",
-    "category": "it",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/1741780829154.jpg",
-    "src": "assets/images/1741780829154.jpg",
-    "desc": "ออกแบบ แผนผังโครงสร้างท่อร้อยสายเน็ตบนอาคารจากห้อง server ถึงชั้น 3 ของอาคาร",
-    "shortDesc": "ออกแบบแผนผังโครงสร้างท่อร้อยสายเน็ต" // เพิ่ม shortDesc สำหรับ overlay
-  },
-  {
-    "id": "project-2",
-    "title": "อัพเดตโปรแกรมต่างๆ",
-    "category": "it",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/1739578807758.jpg",
-    "src": "assets/images/1739578807758.jpg",
-    "desc": "อัพเดตโปรแกรมต่างๆ ในคอมพิวเตอร์",
-    "shortDesc": "อัพเดตโปรแกรมในคอมพิวเตอร์"
-  },
-  {
-    "id": "project-3",
-    "title": "เข้าหัวสายแลน",
-    "category": "it",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/IMG20250329132925.jpg",
-    "src": "assets/images/IMG20250329132925.jpg",
-    "desc": "เข้าหัวสายแลนและเอาเข้าตู้ และเตรียมเทสสปีด",
-    "shortDesc": "เข้าหัวสายแลนและเตรียมเทสสปีด"
-  },
-  {
-    "id": "project-4",
-    "title": "เทสสปีดเน็ต",
-    "category": "it",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/IMG20250506092117.jpg",
-    "src": "assets/images/IMG20250506092117.jpg",
-    "desc": "เทสสปีดเน็ต ให้ได้มาตรฐาน คือ 900Mb",
-    "shortDesc": "ทดสอบความเร็วอินเทอร์เน็ต"
-  },
-  {
-    "id": "project-5",
-    "title": "ตัดสายไฟ เข้าบล็อกไฟเพื่อติดตั้งภายในห้องคอม",
-    "category": "it",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/IMG20250507104510.jpg",
-    "src": "assets/images/IMG20250507104510.jpg",
-    "desc": "ตัดสายไฟ เข้าบล็อกไฟเพื่ิติดตัดภายในห้องคอม",
-    "shortDesc": "ติดตั้งสายไฟในห้องคอมพิวเตอร์"
-  },
-  {
-    "id": "project-6",
-    "title": "ทำโปสเตอร์ ประกาศ",
-    "category": "แต่งภาพ",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/39a4db3b-f6e8-467f-88ce-c40193c8972aphoto.png",
-    "src": "assets/images/39a4db3b-f6e8-467f-88ce-c40193c8972aphoto.png",
-    "desc": "ทำโปสเตอร์ ประกาศ การเลือกตั้งประธานนักเรียน",
-    "shortDesc": "ออกแบบโปสเตอร์เลือกตั้งประธานนักเรียน"
-  },
-  {
-    "id": "project-7",
-    "title": "เป็นตากล้อง ถ่ายรูปกิจกรรมต่างๆ",
-    "category": "แต่งภาพ",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/1751162337512.jpg",
-    "src": "assets/images/1751162337512.jpg",
-    "desc": "เป็นตากล้อง ถ่ายรูปกิจกรรมต่างๆ",
-    "shortDesc": "ถ่ายภาพกิจกรรมต่างๆ"
-  },
-  {
-    "id": "project-8",
-    "title": "ซ้อมคอมพิวเตอร์ให้กลับมาใช้งานได้",
-    "category": "it",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/IMG_20250313_053720.jpg",
-    "src": "assets/images/IMG_20250313_053720.jpg",
-    "desc": "เปลี่ยน ssd และจัดระเบียบสายไฟ",
-    "shortDesc": "ซ่อมคอมพิวเตอร์และจัดระเบียบสายไฟ"
-  },
-  {
-    "id": "project-9",
-    "title": "ช่วยคอมคุมเพลงและเพิ่มเกมผ่านโปรเจคเตอร์ในกิจกรรม",
-    "category": "it",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/IMG20250529092723.jpg",
-    "src": "assets/images/IMG20250529092723.jpg",
-    "desc": "ช่วยคอมคุมเพลงและเพิ่มเกมผ่านโปรเจคเตอร์ในกิจกรรม เพื่อเพิ่มความสนุกสนานในกิจกรรม",
-    "shortDesc": "ควบคุมเพลงและเกมในกิจกรรม"
-  },
-  {
-    "id": "project-10",
-    "title": "ซ้อมแข่งหุ่นยนต์ระดับกลาง",
-    "category": "เเข่งหุ่นยนต์",
-    "year": 2024,
-    "type": "video",
-    "thumbnail": "assets/images/093739.png",
-    "src": "assets/video/received_651238003846627.mp4",
-    "desc": "ซ้อมแข่งหุ่นยนต์ระดับกลาง แต่ก็ได้เหรียญทองนะค้าบบบ",
-    "shortDesc": "ฝึกซ้อมแข่งขันหุ่นยนต์"
-  },
-  {
-    "id": "project-11",
-    "title": "ตัดต่ออินโทร โลโก",
-    "category": "ตัดต่อ",
-    "year": 2024,
-    "type": "video",
-    "thumbnail": "assets/images/094024.png",
-    "src": "assets/video/received_1793334780.mp4",
-    "desc": "ตัดต่ออินโทร โลโก และตัดต่อ VTR ให้โรงเรียน",
-    "shortDesc": "ตัดต่อ Intro และ VTR"
-  },
-  {
-    "id": "project-12",
-    "category": "it",
-    "year": 2024,
-    "type": "video",
-    "thumbnail": "assets/images/095615.png",
-    "src": "assets/video/VID_20250512065631.mp4",
-    "desc": "ลองเล่น esp32 โดยให้เล่น อนิเมชั่นง่ายๆ",
-    "shortDesc": "ทดลองเล่น ESP32"
-  },
-  {
-    "id": "project-13",
-    "title": "เขียนบอทเกมใน Discord",
-    "category": "code",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/IMG_20241212_215204.jpg",
-    "src": "assets/images/IMG_20241212_215204.jpg",
-    "desc": "ลองสร้างเกมง่ายๆบน discord เพื่อการศึกษา",
-    "shortDesc": "พัฒนา Discord Bot Game"
-  },
-  {
-    "id": "project-14",
-    "title": "ลองสร้างโค้ด python ด้วย ai",
-    "category": "code",
-    "year": 2025,
-    "type": "video",
-    "thumbnail": "assets/images/113700.png",
-    "src": "assets/video/125002.mp4",
-    "desc": "ช่วงนั่นผมได้ดึงไฟล์จาดกล้องมา แล้วผมไม่ได้ติดตั้ง แอพแปลงไฟล์เลย ลองทำโค้ดนี้ขึ้นมา โค้ดนี้สามารถดูใน github",
-    "shortDesc": "สร้างโค้ด Python ด้วย AI"
-  },
-  {
-    "id": "project-15",
-    "title": "ผมเคยเป็นผู้ช่วยตัดต่อและกำกับหนังสั้น",
-    "category": "ตัดต่อ",
-    "year": 2025,
-    "type": "image",
-    "thumbnail": "assets/images/204654.png",
-    "src": "assets/images/204654.png",
-    "desc": "สามารถ ดูคริปได้เลยครับ",
-    "shortDesc": "ผู้ช่วยตัดต่อและกำกับหนังสั้น"
-  },
-  {
-    "id": "project-16",
-    "title": "ผมได้เป็นหนึ่งในสมาชิกสภานักเรียน",
-    "category": "code",
-    "year": 2024,
-    "type": "image",
-    "thumbnail": "assets/images/IMG_20250223_115236.jpg",
-    "src": "assets/images/IMG_20250223_115236.jpg",
-    "desc": "ผมได้ทำหน้าที่เป็นหัวหน้าฝ่ายโสตทัศนะ",
-    "shortDesc": "สมาชิกสภานักเรียนฝ่ายโสตทัศนะ"
-  },
+  const projects = [
+    {
+      "id": "project-1",
+      "title": "ออกแบบ แผนผังอินเตอร์เน็ต",
+      "category": "it",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/1741780829154.jpg",
+      "src": "assets/images/1741780829154.jpg",
+      "desc": "ออกแบบ แผนผังโครงสร้างท่อร้อยสายเน็ตบนอาคารจากห้อง server ถึงชั้น 3 ของอาคาร",
+      "shortDesc": "ออกแบบแผนผังโครงสร้างท่อร้อยสายเน็ต"
+    },
+    {
+      "id": "project-2",
+      "title": "อัพเดตโปรแกรมต่างๆ",
+      "category": "it",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/1739578807758.jpg",
+      "src": "assets/images/1739578807758.jpg",
+      "desc": "อัพเดตโปรแกรมต่างๆ ในคอมพิวเตอร์",
+      "shortDesc": "อัพเดตโปรแกรมในคอมพิวเตอร์"
+    },
+    {
+      "id": "project-3",
+      "title": "เข้าหัวสายแลน",
+      "category": "it",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/IMG20250329132925.jpg",
+      "src": "assets/images/IMG20250329132925.jpg",
+      "desc": "เข้าหัวสายแลนและเอาเข้าตู้ และเตรียมเทสสปีด",
+      "shortDesc": "เข้าหัวสายแลนและเตรียมเทสสปีด"
+    },
+    {
+      "id": "project-4",
+      "title": "เทสสปีดเน็ต",
+      "category": "it",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/IMG20250506092117.jpg",
+      "src": "assets/images/IMG20250506092117.jpg",
+      "desc": "เทสสปีดเน็ต ให้ได้มาตรฐาน คือ 900Mb",
+      "shortDesc": "ทดสอบความเร็วอินเทอร์เน็ต"
+    },
+    {
+      "id": "project-5",
+      "title": "ตัดสายไฟ เข้าบล็อกไฟเพื่อติดตั้งภายในห้องคอม",
+      "category": "it",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/IMG20250507104510.jpg",
+      "src": "assets/images/IMG20250507104510.jpg",
+      "desc": "ตัดสายไฟ เข้าบล็อกไฟเพื่ิติดตัดภายในห้องคอม",
+      "shortDesc": "ติดตั้งสายไฟในห้องคอมพิวเตอร์"
+    },
+    {
+      "id": "project-6",
+      "title": "ทำโปสเตอร์ ประกาศ",
+      "category": "แต่งภาพ",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/39a4db3b-f6e8-467f-88ce-c40193c8972aphoto.png",
+      "src": "assets/images/39a4db3b-f6e8-467f-88ce-c40193c8972aphoto.png",
+      "desc": "ทำโปสเตอร์ ประกาศ การเลือกตั้งประธานนักเรียน",
+      "shortDesc": "ออกแบบโปสเตอร์เลือกตั้งประธานนักเรียน"
+    },
+    {
+      "id": "project-7",
+      "title": "เป็นตากล้อง ถ่ายรูปกิจกรรมต่างๆ",
+      "category": "แต่งภาพ",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/1751162337512.jpg",
+      "src": "assets/images/1751162337512.jpg",
+      "desc": "เป็นตากล้อง ถ่ายรูปกิจกรรมต่างๆ",
+      "shortDesc": "ถ่ายภาพกิจกรรมต่างๆ"
+    },
+    {
+      "id": "project-8",
+      "title": "ซ้อมคอมพิวเตอร์ให้กลับมาใช้งานได้",
+      "category": "it",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/IMG_20250313_053720.jpg",
+      "src": "assets/images/IMG_20250313_053720.jpg",
+      "desc": "เปลี่ยน ssd และจัดระเบียบสายไฟ",
+      "shortDesc": "ซ่อมคอมพิวเตอร์และจัดระเบียบสายไฟ"
+    },
+    {
+      "id": "project-9",
+      "title": "ช่วยคอมคุมเพลงและเพิ่มเกมผ่านโปรเจคเตอร์ในกิจกรรม",
+      "category": "it",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/IMG20250529092723.jpg",
+      "src": "assets/images/IMG20250529092723.jpg",
+      "desc": "ช่วยคอมคุมเพลงและเพิ่มเกมผ่านโปรเจคเตอร์ในกิจกรรม เพื่อเพิ่มความสนุกสนานในกิจกรรม",
+      "shortDesc": "ควบคุมเพลงและเกมในกิจกรรม"
+    },
+    {
+      "id": "project-10",
+      "title": "ซ้อมแข่งหุ่นยนต์ระดับกลาง",
+      "category": "เเข่งหุ่นยนต์",
+      "year": 2024,
+      "type": "video",
+      "thumbnail": "assets/images/093739.png",
+      "src": "assets/video/received_651238003846627.mp4",
+      "desc": "ซ้อมแข่งหุ่นยนต์ระดับกลาง แต่ก็ได้เหรียญทองนะค้าบบบ",
+      "shortDesc": "ฝึกซ้อมแข่งขันหุ่นยนต์"
+    },
+    {
+      "id": "project-11",
+      "title": "ตัดต่ออินโทร โลโก",
+      "category": "ตัดต่อ",
+      "year": 2024,
+      "type": "video",
+      "thumbnail": "assets/images/094024.png",
+      "src": "assets/video/received_1793334780.mp4",
+      "desc": "ตัดต่ออินโทร โลโก และตัดต่อ VTR ให้โรงเรียน",
+      "shortDesc": "ตัดต่อ Intro และ VTR"
+    },
+    {
+      "id": "project-12",
+      "title": "ลองเล่น esp32",
+      "category": "it",
+      "year": 2024,
+      "type": "video",
+      "thumbnail": "assets/images/095615.png",
+      "src": "assets/video/VID_20250512065631.mp4",
+      "desc": "ลองเล่น esp32 โดยให้เล่น อนิเมชั่นง่ายๆ",
+      "shortDesc": "ทดลองเล่น ESP32"
+    },
+    {
+      "id": "project-13",
+      "title": "เขียนบอทเกมใน Discord",
+      "category": "code",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/IMG_20241212_215204.jpg",
+      "src": "assets/images/IMG_20241212_215204.jpg",
+      "desc": "ลองสร้างเกมง่ายๆบน discord เพื่อการศึกษา",
+      "shortDesc": "พัฒนา Discord Bot Game"
+    },
+    {
+      "id": "project-14",
+      "title": "ลองสร้างโค้ด python ด้วย ai",
+      "category": "code",
+      "year": 2025,
+      "type": "video",
+      "thumbnail": "assets/images/113700.png",
+      "src": "assets/video/125002.mp4",
+      "desc": "ช่วงนั่นผมได้ดึงไฟล์จาดกล้องมา แล้วผมไม่ได้ติดตั้ง แอพแปลงไฟล์เลย ลองทำโค้ดนี้ขึ้นมา โค้ดนี้สามารถดูใน github",
+      "shortDesc": "สร้างโค้ด Python ด้วย AI"
+    },
+    {
+      "id": "project-15",
+      "title": "ผมเคยเป็นผู้ช่วยตัดต่อและกำกับหนังสั้น",
+      "category": "ตัดต่อ",
+      "year": 2025,
+      "type": "image",
+      "thumbnail": "assets/images/204654.png",
+      "src": "assets/images/204654.png",
+      "desc": "สามารถ ดูคริปได้เลยครับ",
+      "shortDesc": "ผู้ช่วยตัดต่อและกำกับหนังสั้น"
+    },
+    {
+      "id": "project-16",
+      "title": "ผมได้เป็นหนึ่งในสมาชิกสภานักเรียน",
+      "category": "code",
+      "year": 2024,
+      "type": "image",
+      "thumbnail": "assets/images/IMG_20250223_115236.jpg",
+      "src": "assets/images/IMG_20250223_115236.jpg",
+      "desc": "ผมได้ทำหน้าที่เป็นหัวหน้าฝ่ายโสตทัศนะ",
+      "shortDesc": "สมาชิกสภานักเรียนฝ่ายโสตทัศนะ"
+    },
   ];
 
   // ===== DOM Elements =====
   const filtersEl = document.getElementById("filters");
   const galleryEl = document.getElementById("gallery");
-  const lightboxEl = document.getElementById("lightbox");
-  const lightboxContent = document.getElementById("lightbox-content");
-  const lightboxCaption = document.getElementById("lightbox-caption");
-  const lightboxClose = document.getElementById("lightbox-close");
-  const totalLikesEl = document.getElementById("total-likes"); // อ้างอิงถึง element สำหรับแสดงยอดไลก์รวม
-  const totalSharesEl = document.getElementById("total-shares"); // อ้างอิงถึง element สำหรับแสดงยอดแชร์รวม
-  const totalViewsEl = document.getElementById("total-views");   // อ้างอิงถึง element สำหรับแสดงยอดวิวรวม
-  const clearLikesBtn = document.getElementById("clear-likes-btn"); // ปุ่มสำหรับล้างไลก์ทั้งหมด
-  const darkModeToggle = document.getElementById("dark-mode-toggle"); // ปุ่ม Dark Mode
+  // New Lightbox DOM Elements
+  const lightboxOverlay = document.getElementById('lightbox-overlay');
+  const lightboxContainer = document.getElementById('lightbox-content-container');
+  const lightboxImage = document.getElementById('lightbox-image');
+  const lightboxVideo = document.getElementById('lightbox-video');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const lightboxClose = document.getElementById('lightbox-close');
 
-  // Certificates Carousel Elements (Removed as replaced by GSAP stack animation)
-  // const carouselTrack = document.querySelector('.carousel-track');
-  // const carouselPrevBtn = document.querySelector('.carousel-button.prev');
-  // const carouselNextBtn = document.querySelector('.carousel-button.next');
-  // const carouselDotsContainer = document.querySelector('.carousel-dots');
-  // const certCards = document.querySelectorAll('.certificates-section .cert-card'); // This will now refer to the GSAP animated cards
-  // let currentSlideIndex = 0;
+  const totalLikesEl = document.getElementById("total-likes");
+  const totalSharesEl = document.getElementById("total-shares");
+  const totalViewsEl = document.getElementById("total-views");
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+  // Global variable to store the original bounding rectangle of the clicked image
+  let originalRect = {};
+  let currentMediaElement = null;
 
   // ===== Local stats registry =====
-  // คีย์สำหรับเก็บสถานะการกด Like, Share, View ใน Local Storage
   const LOCAL_KEY = "project-stats";
-  // โหลดสถานะการกด Like, Share, View จาก Local Storage
   function loadLocalStats() { return JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}"); }
-  // บันทึกสถานะการกด Like, Share, View ลง Local Storage
   function saveLocalStats(d) { localStorage.setItem(LOCAL_KEY, JSON.stringify(d)); }
 
-  // ฟังก์ชันสำหรับล้างสถานะสถิติทั้งหมดใน Local Storage
-  function clearAllLocalStats() {
-    localStorage.removeItem(LOCAL_KEY);
-    console.log("Local stats cleared.");
+  // ฟังก์ชันสำหรับแสดง Modal ข้อความ
+  function showInfoModal(message) {
+    const modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+      <div class="custom-modal-content">
+        <p>${message}</p>
+        <div class="custom-modal-actions">
+          <button class="custom-modal-btn confirm">ตกลง</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
 
-    // Explicitly remove 'liked' class from all buttons and reset count
-    document.querySelectorAll('.like-btn.liked').forEach(btn => {
-      btn.classList.remove('liked');
-      const likeCountSpan = btn.querySelector('.like-count');
-      if (likeCountSpan) {
-        likeCountSpan.textContent = '0'; // Reset displayed count to 0
-      }
+    modal.querySelector('.custom-modal-btn.confirm').addEventListener('click', () => {
+      modal.remove();
     });
 
-    // Reset share and view counts in UI
-    document.querySelectorAll('.share-count').forEach(span => span.textContent = '0');
-    document.querySelectorAll('.view-count').forEach(span => span.textContent = '0');
-
-    // Re-initialize the gallery to fetch fresh counts and re-render
-    init();
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.remove();
+      }
+    });
   }
 
   // ===== Heart burst animation =====
-  // ฟังก์ชันสำหรับเรียกใช้แอนิเมชันหัวใจกระจาย
   function triggerHeartBurst(btn) {
     const burst = document.createElement("div");
     burst.className = "heart-burst";
@@ -322,17 +320,15 @@ document.addEventListener("DOMContentLoaded", function () {
       burst.appendChild(h);
     }
     btn.appendChild(burst);
-    setTimeout(() => burst.remove(), 800); // ลบแอนิเมชันออกหลังจาก 0.8 วินาที
+    setTimeout(() => burst.remove(), 800);
   }
 
   // ===== Stat handler functions =====
-  // ฟังก์ชันสำหรับดึงจำนวน Like, Share, View จาก Netlify Function สำหรับโปรเจกต์เดียว
   async function fetchProjectStats(id) {
     try {
       const response = await fetch(`/.netlify/functions/projectStats?id=${id}`);
       if (!response.ok) {
-        // พยายามอ่านข้อความ error จาก response body
-        const errorData = await response.json().catch(() => ({})); // พยายาม parse JSON, ถ้าไม่ได้ให้เป็น object ว่าง
+        const errorData = await response.json().catch(() => ({}));
         const errorMessage = errorData.error || `HTTP error! status: ${response.status}`;
         throw new Error(`Error fetching project stats for project ${id}: ${errorMessage}`);
       }
@@ -341,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
         likes: data.likes || 0,
         shares: data.shares || 0,
         views: data.views || 0,
-        userHasLiked: data.userHasLiked || false // รับค่า userHasLiked กลับมา
+        userHasLiked: data.userHasLiked || false
       };
     } catch (error) {
       console.error('Error fetching project stats:', error);
@@ -349,7 +345,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ฟังก์ชันสำหรับดึงยอดไลก์, แชร์, วิว ทั้งหมดสำหรับทุกโปรเจกต์พร้อมกัน
   async function fetchAllProjectStats(projectIds) {
     const statPromises = projectIds.map(id => fetchProjectStats(id));
     const results = await Promise.all(statPromises);
@@ -360,13 +355,11 @@ document.addEventListener("DOMContentLoaded", function () {
     return allStatsMap;
   }
 
-  // ฟังก์ชันสำหรับดึงยอดรวมทั้งหมดตามประเภท
   async function fetchTotalStat(type) {
     try {
       const response = await fetch(`/.netlify/functions/projectStats?total=true&type=${type}`);
       if (!response.ok) {
-        // พยายามอ่านข้อความ error จาก response body
-        const errorData = await response.json().catch(() => ({})); // พยายาม parse JSON, ถ้าไม่ได้ให้เป็น object ว่าง
+        const errorData = await response.json().catch(() => ({}));
         const errorMessage = errorData.error || `HTTP error! status: ${response.status}`;
         throw new Error(`Error fetching total ${type}: ${errorMessage}`);
       }
@@ -378,15 +371,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ฟังก์ชันหลักสำหรับจัดการการกด Like (Optimistic UI)
   async function handleLike(id, btn) {
     const local = loadLocalStats();
-    if (local[id] && local[id].liked) { // ตรวจสอบสถานะการไลก์จาก Local Storage
-      console.log(`Project ${id} already liked locally.`);
-      return; // ไม่ต้องทำอะไรถ้ากดไลก์ไปแล้ว
+    if (local[id] && local[id].liked) {
+      return;
     }
 
-    // Optimistic UI Update: อัปเดต UI ทันที
     let currentLikeCount = parseInt(btn.querySelector(".like-count").textContent);
     currentLikeCount++;
     btn.querySelector(".like-count").textContent = currentLikeCount;
@@ -397,77 +387,62 @@ document.addEventListener("DOMContentLoaded", function () {
     local[id].liked = true;
     saveLocalStats(local);
 
-    // ส่งข้อมูลไปยังเซิร์ฟเวอร์แบบ Asynchronous
     try {
-      const updatedStats = await pushStat(id, 'like'); // เรียก API เพื่อบันทึกไลก์
+      const updatedStats = await pushStat(id, 'like');
       if (updatedStats) {
-        updateTotalStatsDisplay(); // อัปเดตยอดไลก์รวม
+        updateTotalStatsDisplay();
       } else {
-        console.error("Failed to update like count on server. Reverting UI.");
-        // Rollback UI ถ้าเซิร์ฟเวอร์ไม่ยืนยันการไลก์
         btn.classList.remove("liked");
         const actualStats = await fetchProjectStats(id);
         btn.querySelector(".like-count").textContent = actualStats.likes;
-        delete local[id].liked; // ลบสถานะ liked ใน Local Storage
+        delete local[id].liked;
         saveLocalStats(local);
         await showInfoModal('เกิดข้อผิดพลาดในการบันทึกไลก์ กรุณาลองใหม่อีกครั้ง');
       }
     } catch (error) {
       console.error("Error in handleLike (server call):", error);
-      // Rollback UI ถ้าเกิดข้อผิดพลาดในการเชื่อมต่อ
       btn.classList.remove("liked");
       const actualStats = await fetchProjectStats(id);
       btn.querySelector(".like-count").textContent = actualStats.likes;
-      delete local[id].liked; // ลบสถานะ liked ใน Local Storage
+      delete local[id].liked;
       saveLocalStats(local);
       await showInfoModal('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาตรวจสอบอินเทอร์เน็ตและลองใหม่อีกครั้ง');
     }
   }
 
-  // ฟังก์ชันสำหรับจัดการการแชร์ (Optimistic UI)
   async function handleShare(id, btn) {
     const local = loadLocalStats();
-    if (local[id] && local[id].shared) { // ตรวจสอบว่าเคยแชร์แล้วหรือไม่
-      console.log(`Project ${id} already shared locally.`);
+    if (local[id] && local[id].shared) {
       return;
     }
 
-    // Optimistic UI Update
     let currentShareCount = parseInt(btn.querySelector(".share-count").textContent);
     currentShareCount++;
     btn.querySelector(".share-count").textContent = currentShareCount;
-    btn.classList.add("shared"); // อาจเพิ่มคลาส 'shared' เพื่อเปลี่ยนสไตล์ปุ่มแชร์
+    btn.classList.add("shared");
 
     local[id] = local[id] || {};
     local[id].shared = true;
     saveLocalStats(local);
 
-    // ส่งข้อมูลไปยังเซิร์ฟเวอร์แบบ Asynchronous
     try {
       const updatedStats = await pushStat(id, 'share');
       if (updatedStats) {
         updateTotalStatsDisplay();
-        // สามารถเพิ่ม Web Share API ได้ที่นี่
         if (navigator.share) {
           try {
             await navigator.share({
               title: projects.find(p => p.id === id)?.title || 'My Portfolio Project',
               text: projects.find(p => p.id === id)?.desc || 'Check out this amazing project!',
-              url: window.location.href, // หรือ URL เฉพาะของโปรเจกต์
+              url: window.location.href,
             });
-            console.log('Content shared successfully');
           } catch (shareError) {
-            console.error('Error sharing:', shareError);
-            // ถ้าผู้ใช้ยกเลิกการแชร์ หรือเกิดข้อผิดพลาดในการแชร์ ไม่ต้อง rollback
+            console.log('User cancelled share');
           }
         } else {
-          // Fallback for browsers that do not support Web Share API
-          console.log('Web Share API not supported. Please copy the link manually.');
-          // อาจจะแสดง modal ให้คัดลอกลิงก์แทน
           await showInfoModal('เบราว์เซอร์ของคุณไม่รองรับการแชร์โดยตรง กรุณาคัดลอกลิงก์ด้วยตนเอง');
         }
       } else {
-        console.error("Failed to update share count on server. Reverting UI.");
         btn.classList.remove("shared");
         delete local[id].shared;
         saveLocalStats(local);
@@ -486,11 +461,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ฟังก์ชันสำหรับจัดการการนับ View (Optimistic UI)
   async function handleView(id) {
     const local = loadLocalStats();
-    if (local[id] && local[id].viewed) { // ตรวจสอบว่าเคยดูแล้วหรือไม่
-      console.log(`Project ${id} already viewed locally.`);
+    if (local[id] && local[id].viewed) {
       return;
     }
 
@@ -498,15 +471,11 @@ document.addEventListener("DOMContentLoaded", function () {
     local[id].viewed = true;
     saveLocalStats(local);
 
-    // ส่งข้อมูลไปยังเซิร์ฟเวอร์แบบ Asynchronous
     try {
       const updatedStats = await pushStat(id, 'view');
       if (updatedStats) {
         updateTotalStatsDisplay();
-        // ไม่จำเป็นต้องอัปเดต view count ใน gallery item หรือ lightbox ที่นี่
-        // เพราะ openLightbox จะจัดการการแสดงผลแบบ optimistic แล้ว
       } else {
-        console.error("Failed to update view count on server.");
         delete local[id].viewed;
         saveLocalStats(local);
       }
@@ -517,27 +486,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
-  // ฟังก์ชันสำหรับส่งการอัปเดตสถิติไปยัง Netlify Function
   async function pushStat(id, type) {
     try {
       const response = await fetch(`/.netlify/functions/projectStats?id=${id}&type=${type}`, {
         method: "POST"
       });
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({})); // พยายาม parse JSON, ถ้าไม่ได้ให้เป็น object ว่าง
+        const errorData = await response.json().catch(() => ({}));
         const errorMessage = errorData.error || `Server error: ${response.status} - Unknown error`;
         throw new Error(errorMessage);
       }
       const data = await response.json();
-      return data; // คาดหวัง { likes, shares, views, userHasLiked (ถ้า type เป็น like) }
+      return data;
     } catch (error) {
       console.error(`Error pushing ${type}:`, error);
       return null;
     }
   }
 
-  // ฟังก์ชันสำหรับอัปเดตการแสดงผลยอดรวมทั้งหมด
   async function updateTotalStatsDisplay() {
     if (totalLikesEl) {
       const total = await fetchTotalStat('likes');
@@ -553,60 +519,52 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ฟังก์ชันสำหรับแสดง/ซ่อน loading animation ในส่วน Projects
   function showProjectsLoading(show) {
     if (show) {
-      // ซ่อน gallery และแสดง loading spinner
       galleryEl.innerHTML = `
         <div class="projects-loading-spinner">
           <div class="loader"></div>
           <p>กำลังโหลดโปรเจกต์...</p>
         </div>
       `;
-      galleryEl.style.display = 'flex'; // ใช้ flex เพื่อจัดตำแหน่ง spinner
+      galleryEl.style.display = 'flex';
       galleryEl.style.justifyContent = 'center';
       galleryEl.style.alignItems = 'center';
-      galleryEl.style.minHeight = '200px'; // กำหนดความสูงขั้นต่ำ
+      galleryEl.style.minHeight = '200px';
     } else {
-      // ซ่อน loading spinner และแสดง gallery
-      galleryEl.innerHTML = ''; // ล้าง spinner ออก
-      galleryEl.style.display = 'grid'; // กลับไปใช้ grid layout
+      galleryEl.innerHTML = '';
+      galleryEl.style.display = 'grid';
       galleryEl.style.justifyContent = '';
       galleryEl.style.alignItems = '';
       galleryEl.style.minHeight = '';
     }
   }
 
-  // ===== Gallery render (ปรับปรุงใหม่) =====
-  // ฟังก์ชันสำหรับแสดงผลงานใน Gallery
+  // ===== Gallery render =====
   async function renderGallery(data, allStatsMap, mostViewedProjectId) {
-    console.log(`Rendering gallery with ${data.length} projects.`);
-    showProjectsLoading(false); // ซ่อน loading spinner ก่อน render จริง
-    galleryEl.innerHTML = ""; // ล้าง gallery ก่อน render ใหม่
-    const local = loadLocalStats(); // โหลด local stats เพื่อตรวจสอบสถานะ liked/shared
+    showProjectsLoading(false);
+    galleryEl.innerHTML = "";
+    const local = loadLocalStats();
 
     if (data.length === 0) {
       galleryEl.innerHTML = '<p class="no-projects-message">ไม่พบโปรเจกต์ในหมวดหมู่นี้</p>';
-      galleryEl.style.display = 'block'; // Ensure it's not flex if no projects
+      galleryEl.style.display = 'block';
       return;
     }
 
     for (const project of data) {
       const item = document.createElement("div");
-      item.classList.add("project-item"); // เปลี่ยนจาก gallery-item เป็น project-item
+      item.classList.add("project-item");
       item.setAttribute('data-aos', 'fade-up');
       item.setAttribute('data-aos-duration', '800');
-      item.setAttribute('data-id', project.id); // เพิ่ม data-id สำหรับการอ้างอิง
+      item.setAttribute('data-id', project.id);
 
-      // ดึงจำนวน Like, Share, View จาก allStatsMap ที่โหลดไว้ล่วงหน้า
       const projectStats = allStatsMap[project.id] || { likes: 0, shares: 0, views: 0 };
 
-      // เพิ่มคลาส 'most-viewed' ถ้าเป็นโปรเจกต์ที่มีคนดูมากที่สุด
       if (project.id === mostViewedProjectId && mostViewedProjectId !== null) {
         item.classList.add('most-viewed');
       }
 
-      // สร้างโครงสร้าง HTML ใหม่
       item.innerHTML = `
         <img src="${project.thumbnail}" alt="${project.title}">
         <div class="project-overlay">
@@ -639,35 +597,39 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `;
 
-      // Event listener สำหรับเปิด Lightbox เมื่อคลิกที่ project-item
-      item.addEventListener("click", () => openLightbox(project, projectStats));
+      item.addEventListener("click", function(e) {
+        if (!e.target.closest('.stat-item') && !e.target.classList.contains('view-button')) {
+          const clickedImage = this.querySelector('img');
+          originalRect = clickedImage.getBoundingClientRect();
+          openLightbox(project, projectStats, originalRect);
+        }
+      });
 
-      // Event listener สำหรับปุ่ม "ดูวิดีโอ" / "ดูรูปภาพ" ภายใน overlay
       const viewButton = item.querySelector(".view-button");
       if (viewButton) {
         viewButton.addEventListener("click", (e) => {
-          e.stopPropagation(); // หยุด event propagation เพื่อไม่ให้เปิด lightbox ซ้ำซ้อน หรือเกิดการนำทาง
-          openLightbox(project, projectStats);
+          e.stopPropagation();
+          const clickedImage = item.querySelector('img');
+          originalRect = clickedImage.getBoundingClientRect();
+          openLightbox(project, projectStats, originalRect);
         });
       }
 
-      // Event listeners สำหรับปุ่ม Like/Share ภายใน overlay (ถ้ามี) หรือใน content
       const likeBtn = item.querySelector(".stat-item.likes");
       if (likeBtn) {
         likeBtn.addEventListener("click", (e) => {
-          e.stopPropagation(); // หยุด event propagation เพื่อไม่ให้เปิด lightbox
+          e.stopPropagation();
           handleLike(project.id, likeBtn);
         });
       }
 
       const shareBtn = item.querySelector(".stat-item.shares");
       if (shareBtn) {
-        // ตรวจสอบสถานะ shared จาก local storage และเพิ่มคลาส
         if (local[project.id] && local[project.id].shared) {
           shareBtn.classList.add("shared");
         }
         shareBtn.addEventListener("click", (e) => {
-          e.stopPropagation(); // หยุด event propagation เพื่อไม่ให้เปิด lightbox
+          e.stopPropagation();
           handleShare(project.id, shareBtn);
         });
       }
@@ -677,104 +639,250 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ===== Lightbox functions =====
-  // ฟังก์ชันสำหรับเปิด Lightbox
-  async function openLightbox(project, initialProjectStats) { // รับ initialProjectStats เข้ามา
-    lightboxContent.innerHTML = "";
-    const media = document.createElement(project.type === "video" ? "video" : "img");
-    media.src = project.src;
-    media.alt = project.title;
-    if (project.type === "image") {
-      media.setAttribute("loading", "lazy");
-    }
+  // ฟังก์ชันสำหรับเปิด Lightbox และแสดงภาพ/วิดีโอ
+  async function openLightbox(project, initialProjectStats, triggerRect) {
+    // รีเซ็ตองค์ประกอบสื่อก่อนเปิดรายการใหม่
+    lightboxImage.style.display = 'none';
+    lightboxVideo.style.display = 'none';
+    lightboxImage.src = '';
+    lightboxVideo.src = '';
+    
+    let mediaElement;
+    const controls = lightboxContainer.querySelector('.lightbox-controls');
+
+    // กำหนดตำแหน่งเริ่มต้นของสื่อให้ตรงกับตำแหน่งของภาพขนาดย่อที่คลิก
     if (project.type === "video") {
-      media.controls = true;
-      media.autoplay = true;
-      media.setAttribute("preload", "none");
+      mediaElement = lightboxVideo;
+      mediaElement.src = project.src;
+      mediaElement.controls = true;
+      mediaElement.autoplay = true;
+      mediaElement.loop = true;
+      mediaElement.muted = true;
+      mediaElement.style.display = 'block'; 
+
+      // เพิ่มตัวบ่งชี้การโหลดสำหรับวิดีโอ
+      const loadingSpinner = document.createElement('div');
+      loadingSpinner.className = 'lightbox-video-loading';
+      loadingSpinner.innerHTML = '<div class="loader"></div><p>กำลังโหลดวิดีโอ...</p>';
+      lightboxContainer.appendChild(loadingSpinner);
+      
+      // ฟังก์ชันสำหรับแสดงวิดีโอและลบตัวบ่งชี้การโหลด
+      const showVideoAndRemoveSpinner = function() {
+        mediaElement.style.display = 'block'; // แสดงวิดีโอ
+        loadingSpinner.remove(); // ลบตัวบ่งชี้การโหลด
+        // เรียก animateLightbox อีกครั้งเพื่อปรับขนาดให้ถูกต้องตามสัดส่วนจริงของวิดีโอ
+        animateLightbox(mediaElement, controls); 
+      };
+
+      // ฟัง Event เมื่อวิดีโอโหลดข้อมูลเพียงพอที่จะเล่นได้อย่างราบรื่น
+      mediaElement.addEventListener('canplaythrough', showVideoAndRemoveSpinner, { once: true });
+      // ฟัง Event เมื่อเมตาดาต้าของวิดีโอโหลดเสร็จ (เพื่อให้ได้ videoWidth/Height ที่ถูกต้อง)
+      mediaElement.addEventListener('loadedmetadata', function() {
+        // หากวิดีโอพร้อมเล่นแล้ว ก็แสดงผลทันที
+        if (mediaElement.readyState >= 4) { // HAVE_ENOUGH_DATA
+            showVideoAndRemoveSpinner();
+        } else {
+            // หากยังไม่พร้อมเล่น แต่เมตาดาต้าโหลดแล้ว ให้อัปเดตแอนิเมชันด้วยสัดส่วนที่ถูกต้อง
+            animateLightbox(mediaElement, controls); 
+        }
+      }, { once: true });
+
+
+      // ตรวจสอบสถานะวิดีโอในกรณีที่โหลดจากแคชแล้ว
+      if (mediaElement.readyState >= 4) { // HAVE_ENOUGH_DATA
+        showVideoAndRemoveSpinner();
+      } else {
+        // เรียก animateLightbox ทันทีสำหรับแอนิเมชันเริ่มต้น (อาจใช้สัดส่วน 16:9 เป็นค่าเริ่มต้น)
+        animateLightbox(mediaElement, controls);
+      }
+      
+      mediaElement.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+      });
+    } else { // Image
+      mediaElement = lightboxImage;
+      mediaElement.src = project.src;
+      mediaElement.alt = project.title;
+      mediaElement.style.display = 'block'; // แสดงภาพทันที
     }
 
-    media.style.maxWidth = "90vw";
-    media.style.maxHeight = "80vh";
+    // กำหนดสไตล์เริ่มต้นสำหรับแอนิเมชัน
+    mediaElement.style.left = `${triggerRect.left}px`;
+    mediaElement.style.top = `${triggerRect.top}px`;
+    mediaElement.style.width = `${triggerRect.width}px`;
+    mediaElement.style.height = `${triggerRect.height}px`;
+    mediaElement.style.objectFit = 'cover'; 
+    mediaElement.style.transition = 'all 0.5s ease-in-out'; // เพิ่ม transition ที่นี่
+
+    currentMediaElement = mediaElement;
+
+    // สำหรับรูปภาพ ให้เรียก animateLightbox เมื่อรูปภาพโหลดเสร็จ
+    if (project.type === 'image') {
+      mediaElement.onload = () => {
+        animateLightbox(mediaElement, controls);
+      };
+    } 
+    // สำหรับวิดีโอ animateLightbox ถูกเรียกไปแล้วในบล็อก if ด้านบน
+    // หรือจะถูกเรียกอีกครั้งเมื่อวิดีโอพร้อมเล่น (ใน showVideoAndRemoveSpinner)
+
+
+    controls.innerHTML = '';
 
     const local = loadLocalStats();
 
-    // ใช้ initialProjectStats สำหรับการแสดงผลเริ่มต้นของ Likes, Shares, Views
     const currentLikes = initialProjectStats.likes;
     const currentShares = initialProjectStats.shares;
-    let currentViews = initialProjectStats.views; // ใช้ let เพราะจะเพิ่มค่าแบบ optimistic
+    let currentViews = initialProjectStats.views;
 
-    // เพิ่มยอดวิวแบบ Optimistic หากยังไม่เคยดูโปรเจกต์นี้ใน session ปัจจุบัน
     if (!(local[project.id] && local[project.id].viewed)) {
-      currentViews++; // เพิ่มค่าทันทีเพื่อแสดงผล
+      currentViews++;
     }
 
-    const likeBtn = document.createElement("button");
-    // ใช้ local[project.id].liked ในการกำหนดคลาส 'liked'
-    likeBtn.className = `like-btn ${local[project.id] && local[project.id].liked ? "liked" : ""}`;
-    likeBtn.innerHTML = `
-      <i class="fas fa-heart"></i>
-      <span class="like-count">${currentLikes}</span>
-    `;
-    likeBtn.addEventListener("click", (e) => {
+    const likeBtn = document.createElement('button');
+    likeBtn.className = `lightbox-btn like-btn ${local[project.id] && local[project.id].liked ? 'liked' : ''}`;
+    likeBtn.innerHTML = `<i class="fas fa-heart"></i> <span class="like-count">${currentLikes}</span>`;
+    likeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       handleLike(project.id, likeBtn);
     });
 
-    const shareBtn = document.createElement("button");
-    shareBtn.className = `share-btn ${local[project.id] && local[project.id].shared ? "shared" : ""}`;
-    shareBtn.innerHTML = `
-      <i class="fas fa-share-alt"></i>
-      <span class="share-count">${currentShares}</span>
-    `;
-    shareBtn.addEventListener("click", (e) => {
+    const shareBtn = document.createElement('button');
+    shareBtn.className = `lightbox-btn share-btn ${local[project.id] && local[project.id].shared ? 'shared' : ''}`;
+    shareBtn.innerHTML = `<i class="fas fa-share-alt"></i> <span class="share-count">${currentShares}</span>`;
+    shareBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       handleShare(project.id, shareBtn);
     });
 
-    const viewDisplay = document.createElement("div");
-    viewDisplay.className = "view-display";
-    viewDisplay.innerHTML = `
-      <i class="fas fa-eye"></i>
-      <span class="view-count">${currentViews}</span>
-    `;
+    const viewDisplay = document.createElement('div');
+    viewDisplay.className = 'lightbox-btn view-display';
+    viewDisplay.innerHTML = `<i class="fas fa-eye"></i> <span class="view-count">${currentViews}</span>`;
 
-    const container = document.createElement("div");
-    container.style.cssText = "position:relative;text-align:center;";
-    container.append(media, likeBtn, shareBtn, viewDisplay);
+    controls.append(likeBtn, shareBtn, viewDisplay);
 
-    lightboxContent.appendChild(container);
     lightboxCaption.textContent = `${project.title} — ${project.desc}`;
-    lightboxEl.style.display = "flex";
-    document.body.classList.add("lightbox-open");
 
-    // เรียก handleView ในเบื้องหลังหลังจากแสดง Lightbox ทันที
+    lightboxOverlay.classList.add('active');
+    lightboxContainer.classList.add('active');
+    lightboxClose.classList.add('active');
+    document.body.classList.add("lightbox-open");
+    document.documentElement.classList.add("lightbox-open"); // เพิ่มการล็อกการเลื่อนบน html
+    
     handleView(project.id);
   }
 
-  // Close lightbox
-  lightboxClose.addEventListener("click", () => {
-    lightboxEl.style.display = "none";
-    lightboxContent.innerHTML = "";
-    document.body.classList.remove("lightbox-open");
-  });
+  // ฟังก์ชันสำหรับภาพเคลื่อนไหว Lightbox
+  // การใช้ CSS transitions ช่วยให้การเคลื่อนไหวลื่นไหลและมีประสิทธิภาพ
+  function animateLightbox(mediaElement, controlsElement) {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
 
-  lightboxEl.addEventListener("click", (e) => {
-    if (e.target === lightboxEl) {
-      lightboxEl.style.display = "none";
-      lightboxContent.innerHTML = "";
-      document.body.classList.remove("lightbox-open");
+    let finalWidth, finalHeight;
+    let aspectRatio;
+
+    if (mediaElement.tagName === 'IMG') {
+      aspectRatio = mediaElement.naturalWidth / mediaElement.naturalHeight;
+    } else { // VIDEO
+      // ใช้ videoWidth/videoHeight หากมีข้อมูลแล้ว มิฉะนั้นใช้ค่าเริ่มต้น 16:9
+      if (mediaElement.videoWidth && mediaElement.videoHeight) {
+        aspectRatio = mediaElement.videoWidth / mediaElement.videoHeight;
+      } else {
+        // สัดส่วนเริ่มต้น (เช่น 16:9) หากเมตาดาต้ายังไม่โหลด
+        aspectRatio = 16 / 9;
+      }
     }
+
+    const maxViewportWidth = windowWidth * 0.9;
+    const maxViewportHeight = windowHeight * 0.9;
+
+    if (maxViewportWidth / maxViewportHeight > aspectRatio) {
+      finalHeight = maxViewportHeight;
+      finalWidth = finalHeight * aspectRatio;
+    } else {
+      finalWidth = maxViewportWidth;
+      finalHeight = finalWidth / aspectRatio;
+    }
+
+    const finalLeft = (windowWidth - finalWidth) / 2;
+    const finalTop = (windowHeight - finalHeight) / 2;
+
+    // กำหนดสไตล์เป้าหมายเพื่อทริกเกอร์ CSS transition
+    mediaElement.style.left = `${finalLeft}px`;
+    mediaElement.style.top = `${finalTop}px`;
+    mediaElement.style.width = `${finalWidth}px`;
+    mediaElement.style.height = `${finalHeight}px`;
+    mediaElement.style.objectFit = 'cover';
+
+    setTimeout(() => {
+      lightboxCaption.classList.add('active');
+      controlsElement.classList.add('active');
+    }, 300);
+  }
+
+  // ฟังก์ชันสำหรับปิด Lightbox
+  function closeLightbox() {
+    lightboxCaption.classList.remove('active');
+    const controls = lightboxContainer.querySelector('.lightbox-controls');
+    if (controls) controls.classList.remove('active');
+
+    if (currentMediaElement && originalRect) {
+      // กำหนด transition ก่อนที่จะเปลี่ยนสไตล์กลับ
+      currentMediaElement.style.transition = 'all 0.4s ease';
+      currentMediaElement.style.left = `${originalRect.left}px`;
+      currentMediaElement.style.top = `${originalRect.top}px`;
+      currentMediaElement.style.width = `${originalRect.width}px`;
+      currentMediaElement.style.height = `${originalRect.height}px`;
+      currentMediaElement.style.objectFit = 'cover';
+    }
+
+    setTimeout(() => {
+      lightboxOverlay.classList.remove('active');
+      lightboxContainer.classList.remove('active');
+      lightboxClose.classList.remove('active');
+      
+      if (currentMediaElement) {
+        // ลบ transition และสไตล์อินไลน์หลังจากแอนิเมชันเสร็จสิ้น
+        currentMediaElement.style.transition = ''; // ลบ transition ที่นี่
+        currentMediaElement.removeAttribute('style');
+        currentMediaElement.src = '';
+        if (currentMediaElement.tagName === 'VIDEO') {
+          currentMediaElement.pause();
+          currentMediaElement.currentTime = 0;
+          currentMediaElement.removeAttribute('controls');
+          currentMediaElement.removeAttribute('autoplay');
+          currentMediaElement.removeAttribute('loop');
+          currentMediaElement.removeAttribute('muted');
+        }
+        currentMediaElement = null;
+      }
+
+      lightboxImage.style.display = 'none';
+      lightboxVideo.style.display = 'none';
+      document.body.classList.remove("lightbox-open");
+      document.documentElement.classList.remove("lightbox-open"); // เพิ่มการปลดล็อกการเลื่อนบน html
+
+      // ตรวจสอบและลบตัวบ่งชี้การโหลดหากยังคงอยู่
+      const loadingSpinner = lightboxContainer.querySelector('.lightbox-video-loading');
+      if (loadingSpinner) {
+        loadingSpinner.remove();
+      }
+    }, 400);
+  }
+
+  // Event Listeners for lightbox
+  lightboxOverlay.addEventListener('click', closeLightbox);
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxContainer.addEventListener('click', (e) => {
+    e.stopPropagation();
   });
 
   // Initial render
   (async function init() {
-    console.log("Initializing project gallery...");
-    showProjectsLoading(true); // แสดง loading spinner ก่อนเริ่มโหลด
-    // ดึง project IDs ทั้งหมด
+    showProjectsLoading(true);
     const projectIds = projects.map(p => p.id);
-    // ดึงสถิติทั้งหมดพร้อมกัน
     const allStatsMap = await fetchAllProjectStats(projectIds);
 
-    // ค้นหาโปรเจกต์ที่มีคนดูมากที่สุด
     let mostViewedProjectId = null;
     let maxViews = -1;
     for (const id in allStatsMap) {
@@ -786,10 +894,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Render gallery โดยส่ง allStatsMap และ mostViewedProjectId เข้าไปด้วย
     await renderGallery(projects, allStatsMap, mostViewedProjectId);
-    await updateTotalStatsDisplay(); // เรียกใช้เมื่อโหลดหน้าเว็บ
-    console.log("Project gallery initialized.");
+    await updateTotalStatsDisplay();
   })();
 
   // Mobile Menu Toggle
@@ -801,8 +907,10 @@ document.addEventListener("DOMContentLoaded", function () {
     headerList.classList.toggle('active');
     if (headerList.classList.contains('active')) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden'; // เพิ่มการล็อกการเลื่อนบน html
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = ''; // เพิ่มการปลดล็อกการเลื่อนบน html
     }
   });
 
@@ -819,22 +927,13 @@ document.addEventListener("DOMContentLoaded", function () {
       header.classList.remove('shrink');
     }
 
-    // Optional: Hide header on scroll down, show on scroll up
-    // if (currentScrollPosition > lastScrollPosition && currentScrollPosition > 100) {
-    //   header.classList.add('hide');
-    // } else {
-    //   header.classList.remove('hide');
-    // }
-
     lastScrollPosition = currentScrollPosition;
   });
 
   // Filter functionality
   filtersEl.addEventListener('click', async function(e) {
     if (e.target.tagName === 'BUTTON') {
-      // Remove 'active' from all buttons
       filtersEl.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-      // Add 'active' to the clicked button
       e.target.classList.add('active');
 
       const filter = e.target.dataset.filter;
@@ -842,13 +941,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return filter === 'all' || project.category === filter;
       });
 
-      showProjectsLoading(true); // แสดง loading spinner ก่อนเริ่มกรอง
-      // ดึง project IDs ของโปรเจกต์ที่ถูกกรอง
+      showProjectsLoading(true);
       const filteredProjectIds = filteredProjects.map(p => p.id);
-      // ดึงสถิติทั้งหมดสำหรับโปรเจกต์ที่ถูกกรองพร้อมกัน
       const allStatsMapForFiltered = await fetchAllProjectStats(filteredProjectIds);
 
-      // ค้นหาโปรเจกต์ที่มีคนดูมากที่สุดในชุดข้อมูลที่ถูกกรอง
       let mostViewedProjectId = null;
       let maxViews = -1;
       for (const id in allStatsMapForFiltered) {
@@ -860,96 +956,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
-      // Render gallery โดยส่ง allStatsMapForFiltered และ mostViewedProjectId เข้าไปด้วย
       renderGallery(filteredProjects, allStatsMapForFiltered, mostViewedProjectId);
     }
   });
 
-  // Event listener for Clear All Likes button (เปลี่ยนเป็น Clear All Stats)
-  if (clearLikesBtn) {
-    clearLikesBtn.addEventListener('click', async () => {
-      const confirmClear = await showConfirmModal('คุณแน่ใจหรือไม่ว่าต้องการล้างยอดไลก์, แชร์, และวิวทั้งหมดในฐานข้อมูลและ Local Storage?');
-      if (confirmClear) {
-        try {
-          const response = await fetch('/.netlify/functions/projectStats?clear_all=true', { // เปลี่ยน endpoint
-            method: 'DELETE'
-          });
-          if (response.ok) {
-            await showInfoModal('ล้างสถิติทั้งหมดในฐานข้อมูลสำเร็จ!');
-            clearAllLocalStats(); // ล้าง local storage ด้วย
-          } else {
-            const errorData = await response.json().catch(() => ({})); // พยายาม parse JSON, ถ้าไม่ได้ให้เป็น object ว่าง
-            await showInfoModal('เกิดข้อผิดพลาดในการล้างสถิติในฐานข้อมูล: ' + (errorData.error || response.statusText));
-          }
-        } catch (error) {
-          console.error('Error clearing all stats:', error);
-          await showInfoModal('เกิดข้อผิดพลาดในการเชื่อมต่อเพื่อล้างสถิติ');
-        }
-      }
-    });
-  }
-
-  // --- Custom Modal UI Functions ---
-  // ฟังก์ชันสำหรับสร้างและแสดง Modal ข้อมูล
-  function showInfoModal(message) {
-    return new Promise(resolve => {
-      const modal = document.createElement('div');
-      modal.className = 'custom-modal';
-      modal.innerHTML = `
-        <div class="custom-modal-content">
-          <p>${message}</p>
-          <button id="modal-ok-btn" class="custom-modal-btn">ตกลง</button>
-        </div>
-      `;
-      document.body.appendChild(modal);
-
-      document.getElementById('modal-ok-btn').addEventListener('click', () => {
-        document.body.removeChild(modal);
-        resolve(true);
-      });
-    });
-  }
-
-  // ฟังก์ชันสำหรับสร้างและแสดง Modal ยืนยัน
-  function showConfirmModal(message) {
-    return new Promise(resolve => {
-      const modal = document.createElement('div');
-      modal.className = 'custom-modal';
-      modal.innerHTML = `
-        <div class="custom-modal-content">
-          <p>${message}</p>
-          <div class="custom-modal-actions">
-            <button id="modal-confirm-btn" class="custom-modal-btn confirm">ยืนยัน</button>
-            <button id="modal-cancel-btn" class="custom-modal-btn cancel">ยกเลิก</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(modal);
-
-      document.getElementById('modal-confirm-btn').addEventListener('click', () => {
-        document.body.removeChild(modal);
-        resolve(true);
-      });
-
-      document.getElementById('modal-cancel-btn').addEventListener('click', () => {
-        document.body.removeChild(modal);
-        resolve(false);
-      });
-    });
-  }
-
   // Dark Mode Toggle Logic
-  // ตรวจสอบสถานะ Dark Mode ที่บันทึกไว้ใน Local Storage เมื่อโหลดหน้าเว็บ
   const isDarkMode = localStorage.getItem('darkMode') === 'true';
   if (isDarkMode) {
     document.body.classList.add('dark-mode');
   }
 
-  // Event listener สำหรับปุ่มสลับ Dark Mode
   if (darkModeToggle) {
     darkModeToggle.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
-      // บันทึกสถานะ Dark Mode ลงใน Local Storage
       localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
     });
   }
@@ -957,16 +976,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // New Infinity Loop Slider for Certificates
   const certSliderTrack = document.querySelector('.cert-slider-track');
   if (certSliderTrack) {
-    const certCards = Array.from(certSliderTrack.children); // Get original cards
-
-    // Duplicate cards to create seamless loop
-    // We duplicate all cards to ensure a smooth transition when the animation loops
+    const certCards = Array.from(certSliderTrack.children);
     certCards.forEach(card => {
       const clonedCard = card.cloneNode(true);
       certSliderTrack.appendChild(clonedCard);
     });
 
-    // Pause on hover
     certSliderTrack.addEventListener('mouseenter', () => {
       certSliderTrack.style.animationPlayState = 'paused';
     });
@@ -980,22 +995,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const startTime = new Date("2025-07-03T00:14:20");
   function updateUptime() {
     const now = new Date();
-    const diff = Math.floor((now - startTime) / 1000);
-    const days = Math.floor(diff / 86400);
-    const hours = Math.floor((diff % 86400) / 3600);
-    const minutes = Math.floor((diff % 3600) / 60);
-    const seconds = diff % 60;
+    const diff = Math.floor((now - startTime) / 1000); // Total seconds
+    const days = Math.floor(diff / 86400); // Total days
+    const hours = Math.floor((diff % 86400) / 3600); // Remaining hours after days
+    const minutes = Math.floor((diff % 3600) / 60); // Remaining minutes after hours
+    const seconds = diff % 60; // Remaining seconds after minutes
     document.getElementById("uptime").textContent =
       ` ${days}d ${hours}h ${minutes}m ${seconds}s `;
   }
   setInterval(updateUptime, 1000);
   updateUptime();
-
-  // Visitor Counter
-  let count = localStorage.getItem("viewCount") || 0;
-  count++;
-  localStorage.setItem("viewCount", count);
-  document.getElementById("visitor-count").textContent = count;
 
   // Random Quote Display
   const quotes = [
@@ -1009,18 +1018,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Preloader Hide Logic
   window.addEventListener('load', () => {
-    console.log("Window loaded. Hiding preloader and showing main content.");
     const preloader = document.getElementById('preloader');
     const mainContent = document.getElementById('main-content');
 
     if (preloader) {
-      preloader.classList.add('hidden'); // เพิ่มคลาส hidden เพื่อ fade out
+      preloader.classList.add('hidden');
       preloader.addEventListener('transitionend', () => {
-        preloader.style.display = 'none'; // ซ่อนเมื่อ transition สิ้นสุด
+        preloader.style.display = 'none';
       }, { once: true });
     }
     if (mainContent) {
-      mainContent.style.display = 'block'; // แสดงเนื้อหาหลัก
+      mainContent.style.display = 'block';
     }
 
     AOS.init({
@@ -1031,5 +1039,4 @@ document.addEventListener("DOMContentLoaded", function () {
       anchorPlacement: 'top-bottom',
     });
   });
-
-}); // End DOMContentLoaded
+});
