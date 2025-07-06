@@ -6,12 +6,15 @@
   Built with HTML, CSS, and JavaScript | Hosted on Netlify
 </p>
 
-<p align="center">
+<p align="center" style="display:flex; gap:1rem;">
   <a href="https://app.netlify.com/projects/ertyuthanaphat/deploys">
     <img src="https://api.netlify.com/api/v1/badges/fbfc89c4-7665-4fea-8493-3ccff7690189/deploy-status" alt="Netlify Status">
   </a>
+  &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/HTML-5-orange?style=flat-square&logo=html5" />
+  &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/CSS-3-blue?style=flat-square&logo=css3" />
+  &nbsp;&nbsp;
   <img src="https://img.shields.io/badge/JavaScript-ES6-yellow?style=flat-square&logo=javascript" />
 </p>
 
