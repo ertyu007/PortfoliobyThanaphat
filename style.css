@@ -1,6 +1,4 @@
 /* Google Fonts */
-/* การประกาศ @font-face สำหรับฟอนต์ NotoSansTamil */
-/* กำหนด NotoSansTamil-Thin เป็นน้ำหนัก 300 (Light) */
 @font-face {
   font-family: 'NotoSansTamil';
   src: url(./fonts/NotoSansTamil-Thin.ttf);
@@ -8,7 +6,6 @@
   font-weight: 300;
 }
 
-/* กำหนด NotoSansTamil-Medium เป็นน้ำหนัก 500 (Medium) */
 @font-face {
   font-family: 'NotoSansTamil';
   src: url(./fonts/NotoSansTamil-Medium.ttf);
@@ -16,29 +13,20 @@
   font-weight: 500;
 }
 
-/* Variables: CSS variables for colors and shadows, for easy theme management */
+/* Variables */
 :root {
   /* Light Mode Colors */
   --color-bg: #f8f9fa;
-  /* Light background */
   --color-primary: #3498db;
-  /* Main blue color */
   --color-accent: #2980b9;
-  /* Darker blue for accents */
   --color-text-dark: #2c3e50;
-  /* Dark gray for main text */
   --color-text-light: #7f8c8d;
-  /* Light gray for secondary text */
   --color-white: #ffffff;
-  /* Pure white */
   --color-shadow: rgba(0, 0, 0, 0.08);
-  /* Faint shadow */
   --color-card-bg: var(--color-white);
-  /* Card background */
   --color-border-light: #eee;
-  /* Light divider line */
 
-  /* Dark Mode Colors (Default values, will be overridden by .dark-mode) */
+  /* Dark Mode Colors */
   --color-bg-dark: #2c3e50;
   --color-primary-dark: #6cb6ff;
   --color-accent-dark: #4a90e2;
@@ -60,14 +48,11 @@
 /* Dark Mode Overrides */
 body.dark-mode {
   background-color: #121212;
-  /* พื้นหลังที่เข้มแต่ไม่ดำสนิท */
   color: #e0e0e0;
-  /* สีข้อความหลักที่สว่างขึ้น */
 }
 
 body.dark-mode .header-section {
   background-color: #1e1e1e;
-  /* สีพื้นหลัง Header */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   border-bottom: 1px solid #333;
 }
@@ -80,17 +65,14 @@ body.dark-mode .experience-part h2,
 body.dark-mode .cert-header h2,
 body.dark-mode .contact-section h2,
 body.dark-mode .contact-list a,
-body.dark-mode #uptime,
-body.dark-mode #visitor-count {
+body.dark-mode #uptime {
   color: #f5f5f5;
-  /* สีข้อความที่สว่างขึ้นเล็กน้อย */
 }
 
 body.dark-mode .header-nav li a:hover,
 body.dark-mode .header-nav li a.active,
 body.dark-mode .projects-header h2:hover {
   color: #4fc3f7;
-  /* สี accent ที่นุ่มนวลขึ้น */
 }
 
 body.dark-mode .header-nav li a::after,
@@ -106,7 +88,6 @@ body.dark-mode .cert-header h2::after,
 body.dark-mode .contact-section h2::after,
 body.dark-mode .footer-column h3::after {
   background-color: #4fc3f7;
-  /* สี accent ที่นุ่มนวลขึ้น */
 }
 
 body.dark-mode .header-contact:hover {
@@ -128,7 +109,6 @@ body.dark-mode .project-content p,
 body.dark-mode .project-meta .stat-item,
 body.dark-mode #quote {
   color: #b0b0b0;
-  /* สีข้อความรองที่อ่านง่าย */
 }
 
 body.dark-mode .hero-name strong,
@@ -151,7 +131,6 @@ body.dark-mode .contact-list li {
   background-color: #1e1e1e;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   border: 1px solid #333;
-  /* เพิ่มเส้นขอบเพื่อความชัดเจน */
 }
 
 body.dark-mode .about-card:hover,
@@ -163,7 +142,6 @@ body.dark-mode .cert-card:hover,
 body.dark-mode .contact-list li:hover {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
   border-color: #4fc3f7;
-  /* เปลี่ยนสีขอบเมื่อ hover */
 }
 
 body.dark-mode .about-card h2 {
@@ -244,8 +222,6 @@ body.dark-mode .lightbox-caption {
   color: #e0e0e0;
 }
 
-/* Removed initial-circle and final-rectangle styles for lightbox-content-container */
-/* The animation will now be applied directly to lightbox-media */
 body.dark-mode .lightbox-controls .lightbox-btn {
   background: rgba(30, 30, 30, 0.8);
   color: #e0e0e0;
@@ -278,19 +254,16 @@ body.dark-mode .contact-list li:last-child {
 
 body.dark-mode .contact-list li:last-child a {
   color: #0288d1;
-  /* New Accent color */
 }
 
 body.dark-mode .qr-label {
   color: #0288d1;
-  /* New Accent color */
 }
 
 body.dark-mode .footer-bottom {
   background-color: #0a0a0a;
 }
 
-/* ปรับปรุง Preloader ใน Dark Mode */
 body.dark-mode #preloader {
   background: #121212;
 }
@@ -300,7 +273,7 @@ body.dark-mode .loader {
   border-top: 6px solid #4fc3f7;
 }
 
-/* Base Styles: Basic styles for all elements */
+/* Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -310,54 +283,41 @@ body.dark-mode .loader {
 html,
 body {
   overflow-x: hidden;
-  /* Prevent horizontal scrolling */
   max-width: 100vw;
-  /* Ensure body does not exceed viewport width */
 }
 
 body {
   background-color: var(--color-bg);
-  /* Use NotoSansTamil font and set initial weight to 500 */
   font-family: 'NotoSansTamil', sans-serif;
   font-weight: 500;
-  /* Set initial font weight */
   color: var(--color-text-dark);
   line-height: 1.6;
   transition: background-color 0.3s ease, color 0.3s ease;
-  /* Add transition for Dark Mode */
 }
 
-/* Class to lock scrolling when Lightbox is open */
 html.lightbox-open,
 body.lightbox-open {
   overflow: hidden;
 }
 
-/* |==================================== Header Styles ========================================| */
-/* Styles for the Header section */
+/* Header Styles */
 .header-section {
   background-color: var(--color-white);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  /* Soften shadow */
   position: fixed;
   width: 100%;
   max-width: 100%;
-  /* Ensure Header does not exceed parent width */
   top: 0;
   z-index: 1000;
   padding: 1.5rem 2rem;
-  /* Adjust padding */
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: padding 0.7s ease-in-out;
   border-bottom-left-radius: 15px;
-  /* Add rounded corners */
   border-bottom-right-radius: 15px;
-  /* Add rounded corners */
 }
 
-/* Header style when shrunk */
 .header-section.shrink {
   padding: 0.2rem 0.8rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -367,7 +327,6 @@ body.lightbox-open {
   font-size: 1.3rem;
 }
 
-/* Styles for the logo in Header */
 .header-logo {
   display: flex;
   align-items: center;
@@ -387,7 +346,6 @@ body.lightbox-open {
   color: var(--color-primary);
 }
 
-/* Styles for decorative dots in the logo */
 .header-logo span {
   display: inline-block;
   width: 6px;
@@ -399,20 +357,16 @@ body.lightbox-open {
 
 .header-logo span:nth-child(2) {
   background-color: #e74c3c;
-  /* --color-dot-red */
 }
 
 .header-logo span:nth-child(3) {
   background-color: #2ecc71;
-  /* --color-dot-green */
 }
 
 .header-logo span:nth-child(4) {
   background-color: #f39c12;
-  /* --color-dot-orange */
 }
 
-/* Styles for menu items in Header */
 .header-list {
   display: flex;
   align-items: center;
@@ -438,13 +392,11 @@ body.lightbox-open {
   transition: all 0.3s ease;
 }
 
-/* Styles on Hover or Active for navigation menu */
 .header-nav li a:hover,
 .header-nav li a.active {
   color: var(--color-primary);
 }
 
-/* Styles for underline of navigation menu */
 .header-nav li a::after {
   content: '';
   position: absolute;
@@ -458,27 +410,22 @@ body.lightbox-open {
 
 .header-nav li a:hover::after,
 body.dark-mode .header-nav li a.active::after {
-  /* Simplified */
   width: 100%;
 }
 
-/* Styles for Contact button in Header */
 .header-contact {
   position: relative;
   padding: 0.5rem 1.5rem;
   background-color: var(--color-primary);
   border-radius: 50px;
   transition: all 0.3s ease, box-shadow 0.3s ease;
-  /* Added box-shadow transition */
   box-shadow: 0 4px 8px rgba(var(--color-primary-rgb), 0.2);
-  /* Add initial shadow */
 }
 
 .header-contact:hover {
   background-color: var(--color-accent);
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(var(--color-primary-rgb), 0.4);
-  /* Darker shadow on hover */
 }
 
 .header-contact a {
@@ -487,7 +434,6 @@ body.dark-mode .header-nav li a.active::after {
   font-weight: 600;
 }
 
-/* Styles for decorative dots in Contact button */
 .header-contact span {
   position: absolute;
   width: 8px;
@@ -550,20 +496,16 @@ body.dark-mode .header-nav li a.active::after {
 
 body.dark-mode .dark-mode-toggle {
   color: #e0e0e0;
-  /* Main text color */
 }
 
 body.dark-mode .dark-mode-toggle:hover {
   color: #4fc3f7;
-  /* New Primary color */
   transform: rotate(30deg);
 }
 
-
-/* Mobile Menu Toggle Styles: Hamburger button for mobile menu */
+/* Mobile Menu Toggle Styles */
 .menu-toggle {
   display: none;
-  /* Hidden by default on large screens */
   cursor: pointer;
   width: 30px;
   height: 20px;
@@ -586,7 +528,6 @@ body.dark-mode .dark-mode-toggle:hover {
 
 body.dark-mode .menu-toggle span {
   background: #e0e0e0;
-  /* Main text color */
 }
 
 .menu-toggle span:nth-child(1) {
@@ -601,7 +542,6 @@ body.dark-mode .menu-toggle span {
   top: 20px;
 }
 
-/* Animation for Hamburger button when menu is open/closed */
 .menu-toggle.open span:nth-child(1) {
   top: 10px;
   transform: rotate(45deg);
@@ -618,7 +558,7 @@ body.dark-mode .menu-toggle span {
   transform: rotate(-45deg);
 }
 
-/* Responsive Header: Header adjustments for various screen sizes */
+/* Responsive Header */
 @media (max-width: 992px) {
   .header-nav {
     margin-right: 1rem;
@@ -652,7 +592,6 @@ body.dark-mode .menu-toggle span {
     left: 0px;
     width: 100%;
     max-width: 100%;
-    /* Ensure header-list does not exceed width */
     height: 100vh;
     background: var(--color-white);
     flex-direction: column;
@@ -661,7 +600,6 @@ body.dark-mode .menu-toggle span {
     box-shadow: -5px 0 15px var(--color-shadow);
     padding: 2rem;
 
-    /* Add zoom effect */
     transform: scale(0);
     transform-origin: top right;
 
@@ -679,7 +617,6 @@ body.dark-mode .menu-toggle span {
 
   body.dark-mode .header-list {
     background: #1e1e1e;
-    /* New Header background color */
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
   }
 
@@ -706,7 +643,6 @@ body.dark-mode .menu-toggle span {
     margin-top: 1rem;
   }
 
-  /* Adjust padding of hero section when header is shrunk */
   .hero-section {
     padding-top: 8rem;
   }
@@ -723,8 +659,7 @@ body.dark-mode .menu-toggle span {
   }
 }
 
-/* |==================================== Hero Section Styles ========================================| */
-/* Styles for the Hero section */
+/* Hero Section Styles */
 .hero-section {
   background-color: var(--color-bg);
   padding: 4rem;
@@ -732,13 +667,9 @@ body.dark-mode .menu-toggle span {
   margin-top: 3rem;
   color: var(--color-text-dark);
   font-family: 'NotoSansTamil', sans-serif;
-  /* Use NotoSansTamil */
   border-bottom-left-radius: 20px;
-  /* Add rounded corners */
   border-bottom-right-radius: 20px;
-  /* Add rounded corners */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  /* Add shadow */
 }
 
 .hero-container {
@@ -746,34 +677,28 @@ body.dark-mode .menu-toggle span {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  /* Vertical arrangement by default */
   gap: 1.5rem;
-  /* Adjusted gap for better responsiveness */
   padding: 0 1rem;
 }
 
 @media (min-width: 768px) {
   .hero-container {
     flex-direction: row;
-    /* Horizontal arrangement on large screens */
     align-items: center;
     justify-content: space-between;
     padding: 0;
     gap: 3rem;
-    /* Adjusted gap for larger screens */
   }
 }
 
 .hero-contant {
   flex: 1;
   order: 2;
-  /* Content after image on small screens */
 }
 
 @media (min-width: 768px) {
   .hero-contant {
     order: 1;
-    /* Content before image on large screens */
     padding-right: 2rem;
   }
 }
@@ -814,7 +739,6 @@ body.dark-mode .menu-toggle span {
 .hero-profile {
   flex: 1;
   order: 1;
-  /* Image before content on small screens */
   display: flex;
   justify-content: center;
   margin-bottom: 2rem;
@@ -823,18 +747,14 @@ body.dark-mode .menu-toggle span {
 @media (min-width: 768px) {
   .hero-profile {
     order: 2;
-    /* Image after content on large screens */
     margin-bottom: 0;
   }
 }
 
 .profile {
   width: 100%;
-  /* Make it fluid */
   height: auto;
-  /* Maintain aspect ratio */
   max-width: 300px;
-  /* Limit max width */
   border-radius: 50px;
   object-fit: cover;
   border: 5px solid var(--color-white);
@@ -844,7 +764,6 @@ body.dark-mode .menu-toggle span {
 
 body.dark-mode .profile {
   border: 5px solid #1e1e1e;
-  /* New profile image border color */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
@@ -866,24 +785,20 @@ body.dark-mode .profile {
   border-radius: 50px;
   font-weight: 600;
   transition: all 0.3s ease, box-shadow 0.3s ease;
-  /* Added box-shadow transition */
   box-shadow: 0 4px 6px rgba(var(--color-primary-rgb), 0.3);
-  /* Add initial shadow */
 }
 
 .hero-btn-primary a:hover {
   background-color: var(--color-accent);
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(var(--color-primary-rgb), 0.4);
-  /* Darker shadow on hover */
 }
 
-/* About Section: Styles for the About section */
+/* About Section Styles */
 .about-section {
   padding: 80px 0;
   background: linear-gradient(135deg, var(--color-bg) 0%, #dbe7f2 100%);
   font-family: 'NotoSansTamil', sans-serif;
-  /* Use NotoSansTamil */
   color: var(--color-text-dark);
 }
 
@@ -898,20 +813,16 @@ body.dark-mode .profile {
   padding: 0 20px;
 }
 
-/* Profile Image Styles: Styles for the profile image in the About section */
+/* Profile Image Styles */
 .about-profile {
   width: 100%;
-  /* Make it fluid */
   height: auto;
-  /* Maintain aspect ratio */
   max-width: 350px;
-  /* Limit max width */
   border-radius: 50px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   transition: transform 0.5s ease, box-shadow 0.5s ease;
   position: relative;
-  /* Changed from fixed to relative for better flow */
 }
 
 .about-profile:hover {
@@ -931,7 +842,7 @@ body.dark-mode .profile {
   transform: scale(1.1);
 }
 
-/* Content Styles: Styles for content in the About section */
+/* Content Styles */
 .about-content {
   flex: 1;
   min-width: 300px;
@@ -954,12 +865,10 @@ body.dark-mode .profile {
   border-radius: 15px;
   box-shadow: 0 5px 15px var(--color-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* Added box-shadow transition */
   position: relative;
   overflow: hidden;
 }
 
-/* Styles for the decorative line on the left of the card */
 .about-card::before {
   content: '';
   position: absolute;
@@ -974,7 +883,6 @@ body.dark-mode .profile {
 .about-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 15px 30px var(--color-shadow);
-  /* Use var(--color-shadow) */
 }
 
 .about-card:hover::before {
@@ -988,7 +896,6 @@ body.dark-mode .profile {
   display: inline-block;
 }
 
-/* Styles for the underline of the card title */
 .about-card h2::after {
   content: '';
   position: absolute;
@@ -1015,7 +922,6 @@ body.dark-mode .profile {
   position: relative;
 }
 
-/* Styles for bullet points in the list */
 .about-card ul li::before {
   content: '•';
   color: var(--color-primary);
@@ -1027,7 +933,6 @@ body.dark-mode .profile {
 
 body.dark-mode .about-card ul li::before {
   color: #4fc3f7;
-  /* New Primary color */
 }
 
 .about-card p {
@@ -1045,46 +950,37 @@ body.dark-mode .about-card ul li::before {
 
 body.dark-mode .about-motto p {
   color: #4fc3f7;
-  /* New Primary color */
 }
 
-/* Responsive About Section: About section adjustments for various screen sizes */
+/* Responsive About Section */
 @media (max-width: 768px) {
   .about-container {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    /* Adjusted gap for mobile */
   }
 
   .about-profile {
-    /* Removed fixed positioning for better flow on mobile */
     position: relative;
     transform: none;
     margin-bottom: 2rem;
-    /* Add some space below the image */
     width: 80%;
-    /* Adjust width for mobile */
     height: auto;
-    /* Ensure aspect ratio is maintained */
   }
 
   .about-card {
     padding-top: 25px;
-    /* Adjusted padding-top for mobile */
   }
 
   .about-content {
     width: 100%;
     gap: 15px;
-    /* Adjusted gap for mobile */
   }
 }
 
 @media (max-width: 375px) {
   .about-profile {
     width: 90%;
-    /* Further adjust width for very small screens */
     margin-bottom: 1.5rem;
   }
 
@@ -1093,13 +989,12 @@ body.dark-mode .about-motto p {
   }
 }
 
-/* Skills & Experience Section: Styles for skills and experience section */
+/* Skills & Experience Section Styles */
 .skills-experience-section {
   background-color: var(--color-bg);
   padding: 5rem 0;
   color: var(--color-text-dark);
   font-family: 'NotoSansTamil', sans-serif;
-  /* Use NotoSansTamil */
 }
 
 .container {
@@ -1118,7 +1013,7 @@ body.dark-mode .about-motto p {
   }
 }
 
-/* Skills Part: Styles for the skills section */
+/* Skills Part Styles */
 .skills-part h2,
 .experience-part h2 {
   font-size: 2.2rem;
@@ -1127,7 +1022,6 @@ body.dark-mode .about-motto p {
   color: var(--color-text-dark);
 }
 
-/* Styles for underline of Skills/Experience title */
 .skills-part h2::after,
 .experience-part h2::after {
   content: '';
@@ -1148,7 +1042,6 @@ body.dark-mode .about-motto p {
   margin-bottom: 2rem;
   box-shadow: 0 5px 15px var(--color-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* Added box-shadow transition */
 }
 
 .hard-skills:hover,
@@ -1169,16 +1062,13 @@ body.dark-mode .about-motto p {
 body.dark-mode .hard-skills h3,
 body.dark-mode .soft-skills h3 {
   color: #4fc3f7;
-  /* New Primary color */
 }
 
-/* Add icon to Hard Skills title */
 .hard-skills h3::before {
   content: '🔧';
   margin-right: 10px;
 }
 
-/* Add icon to Soft Skills title */
 .soft-skills h3::before {
   content: '💬';
   margin-right: 10px;
@@ -1201,7 +1091,6 @@ body.dark-mode .soft-skills h3 {
   border-bottom: none;
 }
 
-/* Add leading icon to skill list items */
 .skills-part li::before {
   content: '▹';
   position: absolute;
@@ -1211,10 +1100,9 @@ body.dark-mode .soft-skills h3 {
 
 body.dark-mode .skills-part li::before {
   color: #4fc3f7;
-  /* New Primary color */
 }
 
-/* Experience Part: Styles for the experience section */
+/* Experience Part Styles */
 .experience-block {
   background: var(--color-card-bg);
   border-radius: 10px;
@@ -1224,10 +1112,8 @@ body.dark-mode .skills-part li::before {
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* Added box-shadow transition */
 }
 
-/* Styles for the decorative line on the left of the experience block */
 .experience-block::before {
   content: '';
   position: absolute;
@@ -1251,10 +1137,8 @@ body.dark-mode .skills-part li::before {
   padding-left: 1rem;
 }
 
-/* Add leading icon to experience title (may need adjustment if not displayed) */
 .experience-block h3::before {
   content: '✨';
-  /* Can be changed to other icons, e.g., '💼' */
   position: absolute;
   padding: 12px;
   left: -1.5rem;
@@ -1267,16 +1151,15 @@ body.dark-mode .skills-part li::before {
   margin-bottom: 0;
 }
 
-/* Projects Section: Styles for the projects section */
+/* Projects Section Styles */
 .projects-section {
   padding: 5rem 2rem;
   background-color: var(--color-bg);
   font-family: 'NotoSansTamil', sans-serif;
-  /* Use NotoSansTamil */
   color: var(--color-text-dark);
 }
 
-/* Projects Header: Styles for Projects/Activities title */
+/* Projects Header Styles */
 .projects-header {
   display: flex;
   justify-content: center;
@@ -1296,7 +1179,6 @@ body.dark-mode .skills-part li::before {
 
 body.dark-mode .projects-header h1 {
   color: #4fc3f7;
-  /* New Primary color */
 }
 
 .projects-header h2 {
@@ -1312,7 +1194,6 @@ body.dark-mode .projects-header h1 {
   color: var(--color-primary);
 }
 
-/* Styles for underline of Projects/Activities title */
 .projects-header h2 span {
   position: absolute;
   bottom: -8px;
@@ -1327,7 +1208,7 @@ body.dark-mode .projects-header h1 {
   width: 100%;
 }
 
-/* Filter Buttons: Buttons for filtering projects by category */
+/* Filter Buttons Styles */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -1337,7 +1218,6 @@ body.dark-mode .projects-header h1 {
 }
 
 .filter-btn {
-  /* Changed from .filters button */
   padding: 0.6rem 1.5rem;
   border: none;
   border-radius: 50px;
@@ -1346,25 +1226,19 @@ body.dark-mode .projects-header h1 {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease, box-shadow 0.3s ease;
-  /* Added box-shadow transition */
   font-size: 0.95rem;
   position: relative;
   overflow: hidden;
   border: 1px solid transparent;
-  /* Add border for consistency */
   box-shadow: 0 2px 8px var(--color-shadow);
-  /* Add shadow to Filter button */
 }
 
 body.dark-mode .filter-btn {
   background-color: #303f5f;
-  /* New Filter button background color */
   color: #e0e0e0;
-  /* Main text color */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Styles for Filter button underline (removed, now using full background change) */
 .filter-btn:hover {
   background-color: var(--color-primary);
   color: var(--color-white);
@@ -1372,17 +1246,14 @@ body.dark-mode .filter-btn {
   transform: translateY(-2px);
 }
 
-/* Styles for active Filter button */
 .filter-btn.active {
   background-color: var(--color-accent);
   color: var(--color-white);
   box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.3);
   border-color: var(--color-accent);
-  /* Ensure border matches active color */
 }
 
-
-/* Gallery Grid: Styles for the project display grid */
+/* Gallery Grid Styles */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1391,7 +1262,7 @@ body.dark-mode .filter-btn {
   max-width: 1400px;
 }
 
-/* New Project Item Styles */
+/* Project Item Styles */
 .project-item {
   background-color: var(--color-card-bg);
   border-radius: 10px;
@@ -1402,20 +1273,16 @@ body.dark-mode .filter-btn {
   flex-direction: column;
   position: relative;
   cursor: pointer;
-  /* Make the whole card clickable */
 }
 
 .project-item:hover {
   transform: translateY(-8px);
-  /* Lift the card on hover */
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  /* Deeper shadow on hover */
 }
 
 .project-item img {
   width: 100%;
   height: 220px;
-  /* Fixed height for consistent card size */
   object-fit: cover;
   display: block;
 }
@@ -1428,27 +1295,22 @@ body.dark-mode .filter-btn {
   height: 100%;
   background: rgba(var(--color-primary-rgb), 0.9);
   backdrop-filter: contrast(180%);
-  /* Dynamic primary color with transparency */
   color: var(--color-white);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   opacity: 0;
-  /* Hidden by default */
   transition: opacity 0.3s ease;
   padding: 1.5rem;
   text-align: center;
   border-radius: 10px;
   pointer-events: none;
-  /* Allow clicks to pass through to the item itself */
 }
 
 .project-item:hover .project-overlay {
   opacity: 1;
-  /* Show overlay on hover */
   pointer-events: auto;
-  /* Enable pointer events on overlay content */
 }
 
 .project-overlay h4 {
@@ -1471,14 +1333,10 @@ body.dark-mode .filter-btn {
   text-decoration: none;
   font-weight: 500;
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  /* Add box-shadow transition */
   pointer-events: auto;
-  /* Make button clickable */
   border: none;
-  /* Make sure it's a button, remove default button border */
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  /* Add shadow to View button */
 }
 
 .project-overlay .view-button:hover {
@@ -1486,7 +1344,6 @@ body.dark-mode .filter-btn {
   color: var(--color-primary);
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  /* Darker shadow on hover */
 }
 
 .project-content {
@@ -1505,7 +1362,6 @@ body.dark-mode .filter-btn {
 
 body.dark-mode .project-content h3 {
   color: #4fc3f7;
-  /* New Primary color */
 }
 
 .project-content p {
@@ -1534,7 +1390,7 @@ body.dark-mode .project-content h3 {
   font-size: 0.85rem;
 }
 
-/* Stat Buttons (inside project-meta) */
+/* Stat Buttons */
 .project-meta .stats {
   display: flex;
   gap: 0.8rem;
@@ -1550,15 +1406,12 @@ body.dark-mode .project-content h3 {
 
 .project-meta .stat-item i {
   color: var(--color-primary);
-  /* Default icon color */
 }
 
 body.dark-mode .project-meta .stat-item i {
   color: #4fc3f7;
-  /* New Primary color */
 }
 
-/* Specific icon colors */
 .project-meta .stat-item.likes i {
   color: var(--color-heart-liked);
 }
@@ -1570,7 +1423,6 @@ body.dark-mode .project-meta .stat-item i {
 .project-meta .stat-item.views i {
   color: var(--color-text-light);
 }
-
 
 /* Most Viewed Badge */
 .project-item.most-viewed {
@@ -1605,8 +1457,7 @@ body.dark-mode .project-meta .stat-item i {
   }
 }
 
-
-/* Lightbox Styles (New) */
+/* Lightbox Styles */
 .lightbox-overlay {
   position: fixed;
   top: 0;
@@ -1622,7 +1473,6 @@ body.dark-mode .project-meta .stat-item i {
   justify-content: center;
   align-items: center;
   visibility: hidden;
-  /* Hidden by default, controlled by JS */
 }
 
 .lightbox-overlay.active {
@@ -1630,10 +1480,8 @@ body.dark-mode .project-meta .stat-item i {
   visibility: visible;
 }
 
-/* Lightbox Content Container - now just a wrapper for media and controls */
 .lightbox-content-container {
   position: relative;
-  /* Changed to relative */
   z-index: 10000;
   display: flex;
   flex-direction: column;
@@ -1641,115 +1489,28 @@ body.dark-mode .project-meta .stat-item i {
   align-items: center;
   max-width: 90%;
   max-height: 90vh;
-  /* No direct animation on this container, it holds the media */
   visibility: hidden;
-  /* Hidden by default, controlled by JS */
   pointer-events: none;
-  /* Allow clicks to pass through to the media itself */
 }
 
 .lightbox-content-container.active {
   visibility: visible;
   pointer-events: auto;
-  /* Enable pointer events when active */
 }
 
 .lightbox-media {
   position: fixed;
-  /* Crucial for the zoom animation */
   object-fit: cover;
   display: block;
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  /* This transition will be applied when the 'zoom-animation' class is added */
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   z-index: 10001;
-  /* Higher z-index than overlay */
-  /* Added padding to ensure caption and controls don't overlap */
-
 }
-
-/* No specific .zoom-animation class needed if transition is on .lightbox-media directly */
-/* The animation is driven by changing inline styles */
-
-/* The following styles were related to video loading and are now removed */
-/*
-.lightbox-video-loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  z-index: 1001;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 1.5rem 2rem;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.lightbox-video-loading .loader {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid var(--color-primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.lightbox-video-loading p {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 500;
-}
-*/
-
-/* สไตล์สำหรับวิดีโอใน Lightbox - Removed */
-/*
-.lightbox-video {
-  background-color: #000;
-  max-width: 90vw;
-  max-height: 90vh;
-  border-radius: 8px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-*/
-
-/* สไตล์เมื่อโหมดกลางคืนเปิดใช้งาน - Removed */
-/*
-body.dark-mode .lightbox-video-loading {
-  background: rgba(30, 30, 30, 0.9);
-}
-
-body.dark-mode .lightbox-video-loading .loader {
-  border-top-color: #4fc3f7;
-}
-*/
-
-/* ปรับปรุงการแสดงผลบนมือถือ - Removed */
-/*
-@media (max-width: 768px) {
-  .lightbox-video-loading {
-    padding: 1rem 1.5rem;
-    font-size: 0.9rem;
-  }
-
-  .lightbox-video-loading .loader {
-    width: 30px;
-    height: 30px;
-    border-width: 3px;
-  }
-}
-*/
 
 .lightbox-caption {
   position: fixed;
   bottom: 3rem;
-  /* Adjusted to be closer to the bottom */
   left: 50%;
   transform: translateX(-50%);
   color: white;
@@ -1777,9 +1538,7 @@ body.dark-mode .lightbox-video-loading .loader {
 .lightbox-close {
   position: fixed;
   top: 1rem;
-  /* Adjusted to be closer to the top */
   right: 1rem;
-  /* Adjusted to be closer to the right */
   color: white;
   font-size: 2rem;
   cursor: pointer;
@@ -1799,7 +1558,6 @@ body.dark-mode .lightbox-video-loading .loader {
 .lightbox-controls {
   position: fixed;
   top: 2.5rem;
-  /* Adjusted to be above the caption */
   left: 20%;
   transform: translateX(-50%);
   display: flex;
@@ -1850,7 +1608,6 @@ body.dark-mode .lightbox-video-loading .loader {
   pointer-events: auto;
 }
 
-/* --- ตั้งค่าหน่วงเวลาแบบไล่ลำดับ --- */
 .lightbox-controls.active .lightbox-btn:nth-child(1) {
   transition-delay: 0.1s;
 }
@@ -1863,7 +1620,7 @@ body.dark-mode .lightbox-video-loading .loader {
   transition-delay: 0.5s;
 }
 
-/* Heart burst animation on Like click */
+/* Heart burst animation */
 .heart-burst {
   position: absolute;
   top: 50%;
@@ -1902,7 +1659,6 @@ body.dark-mode .lightbox-video-loading .loader {
   left: -4px;
 }
 
-/* Burst animation */
 @keyframes burst {
   0% {
     transform: scale(1) translate(0, 0) rotate(45deg);
@@ -1915,7 +1671,6 @@ body.dark-mode .lightbox-video-loading .loader {
   }
 }
 
-/* Define burst directions for hearts */
 .burst-heart:nth-child(1) {
   --x: -30px;
   --y: -30px;
@@ -1946,7 +1701,7 @@ body.dark-mode .lightbox-video-loading .loader {
   --y: 35px;
 }
 
-/* Responsive Projects Section: Project section adjustments for various screen sizes */
+/* Responsive Projects Section */
 @media (max-width: 992px) {
   .gallery-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -1991,7 +1746,6 @@ body.dark-mode .lightbox-video-loading .loader {
 
   .lightbox-caption {
     bottom: 4rem;
-    /* Further adjusted for mobile */
     width: 90%;
     font-size: 1.3rem;
     padding: 0.6rem 0.8rem;
@@ -1999,7 +1753,6 @@ body.dark-mode .lightbox-video-loading .loader {
 
   .lightbox-controls {
     top: 3rem;
-    /* Adjusted for mobile */
     left: 22%;
     transform: translateX(-50%);
     gap: 1rem;
@@ -2016,21 +1769,17 @@ body.dark-mode .lightbox-video-loading .loader {
     grid-template-columns: 1fr;
   }
 
-  /* For smaller screens, always show content below image */
   .project-item:hover .project-overlay {
     opacity: 0;
-    /* Hide overlay on small screens */
     pointer-events: none;
   }
 
   .project-content {
     opacity: 1;
-    /* Always visible */
   }
 
   .lightbox-controls {
     top: 2.5rem;
-    /* Adjusted for mobile */
     left: 36%;
     transform: translateX(-50%);
     gap: 1rem;
@@ -2047,7 +1796,6 @@ body.dark-mode .lightbox-video-loading .loader {
     font-size: 1rem;
   }
 
-  /* Adjust lightbox-media for smaller screens */
   .lightbox-media {
     max-width: 100vw;
     max-height: 70vh;
@@ -2055,7 +1803,6 @@ body.dark-mode .lightbox-video-loading .loader {
 
   .lightbox-caption {
     bottom: 2rem;
-    /* Further adjusted for mobile */
     width: 90%;
     font-size: 1rem;
     padding: 0.6rem 0.8rem;
@@ -2066,15 +1813,14 @@ body.dark-mode .lightbox-video-loading .loader {
 /* Certificates Section - Infinity Loop Slider */
 #Certificates {
   padding: 5rem 0;
-  /* Adjust padding as needed */
   background-color: var(--color-bg);
   overflow: hidden;
-  /* Hide overflowing cards */
+  position: relative;
+  padding: 2rem 0;
 }
 
 body.dark-mode #Certificates {
   background-color: #121212;
-  /* New darker background color */
 }
 
 .cert-header {
@@ -2092,7 +1838,6 @@ body.dark-mode #Certificates {
 
 body.dark-mode .cert-header h2 {
   color: #e0e0e0;
-  /* Main text color */
 }
 
 .cert-header h2::after {
@@ -2117,39 +1862,30 @@ body.dark-mode .cert-header h2 {
 
 body.dark-mode .cert-header .intro {
   color: #b0b0b0;
-  /* Secondary text color */
 }
 
 .cert-slider-container {
   width: 100%;
   overflow: hidden;
-  /* This is crucial to hide the duplicated content outside the view */
   position: relative;
   padding: 2rem 0;
-  /* Add some vertical padding for cards */
 }
 
 .cert-slider-track {
   display: flex;
   width: max-content;
-  /* Allow content to dictate width */
   animation: scrollCertificates 30s linear infinite;
-  /* Adjust duration as needed */
 }
 
 .cert-slider-track:hover {
   animation-play-state: paused;
-  /* Pause on hover */
 }
 
 .cert-card {
   flex-shrink: 0;
-  /* Prevent cards from shrinking */
   width: 400px;
-  /* Adjust card width as needed */
   height: 100%;
   margin: 0 1rem;
-  /* Space between cards */
   background: var(--color-card-bg);
   border-radius: 0.75rem;
   box-shadow: 0 5px 15px var(--color-shadow);
@@ -2188,7 +1924,6 @@ body.dark-mode .cert-card {
   }
 }
 
-/* Keyframes for continuous scrolling */
 @keyframes scrollCertificates {
   from {
     transform: translateX(0);
@@ -2196,11 +1931,10 @@ body.dark-mode .cert-card {
 
   to {
     transform: translateX(-50%);
-    /* Scroll half the track width to loop seamlessly */
   }
 }
 
-/* Time Section: Styles for time, quote, and visitor count section */
+/* Time Section Styles */
 .time-section {
   position: relative;
   align-items: center;
@@ -2217,20 +1951,15 @@ body.dark-mode .cert-card {
   font-size: 1.5rem;
   color: var(--color-text-dark);
   font-weight: 600;
-  /* Change font-style to font-weight */
 }
 
-/* Styles for Total Stats in Footer */
+/* Total Stats in Footer */
 .total-stats {
   display: flex;
   justify-content: center;
-  /* จัดให้อยู่ตรงกลาง */
   gap: 1rem;
-  /* ระยะห่างระหว่างไอคอน */
   margin-top: 1rem;
-  /* ระยะห่างจากด้านบน */
   color: var(--color-text-light);
-  /* ใช้สีข้อความรอง */
   font-size: 0.95rem;
 }
 
@@ -2238,24 +1967,19 @@ body.dark-mode .cert-card {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  /* ระยะห่างระหว่างไอคอนกับตัวเลข */
 }
 
 .total-stats .stat-item i {
   font-size: 1.1rem;
-  /* ขนาดไอคอน */
   color: var(--color-primary);
-  /* สีของไอคอน */
 }
 
 /* Responsive adjustments for total stats */
 @media (max-width: 480px) {
   .total-stats {
     flex-direction: column;
-    /* เรียงเป็นคอลัมน์ในหน้าจอขนาดเล็ก */
     gap: 0.5rem;
     align-items: flex-start;
-    /* จัดชิดซ้ายในคอลัมน์ */
   }
 }
 
@@ -2264,10 +1988,9 @@ body.dark-mode .cert-card {
   padding-bottom: 1rem;
   color: var(--color-accent);
   font-weight: 600;
-  /* Change font-style to font-weight */
 }
 
-/* Custom Modal Styles (Implemented for showInfoModal in JS) */
+/* Custom Modal Styles */
 .custom-modal {
   position: fixed;
   top: 0;
@@ -2314,9 +2037,7 @@ body.dark-mode .cert-card {
   font-size: 1rem;
   font-weight: 600;
   transition: all 0.2s ease, box-shadow 0.2s ease;
-  /* Added box-shadow transition */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  /* Add initial shadow */
 }
 
 .custom-modal-btn.confirm {
@@ -2328,7 +2049,6 @@ body.dark-mode .cert-card {
   background-color: var(--color-accent);
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(var(--color-primary-rgb), 0.3);
-  /* Darker shadow on hover */
 }
 
 .custom-modal-btn.cancel {
@@ -2340,7 +2060,6 @@ body.dark-mode .cert-card {
   background-color: #bbb;
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  /* Darker shadow on hover */
 }
 
 @keyframes fadeInModal {
@@ -2387,12 +2106,11 @@ body.dark-mode .cert-card {
   }
 }
 
-/* Modern Contact Section: Styles for contact section */
+/* Contact Section Styles */
 .contact-section {
   padding: 5rem 1.5rem;
   background-color: var(--color-bg);
   font-family: 'NotoSansTamil', sans-serif;
-  /* Use NotoSansTamil */
   text-align: center;
 }
 
@@ -2405,7 +2123,6 @@ body.dark-mode .cert-card {
   display: inline-block;
 }
 
-/* Styles for underline of Contact title */
 .contact-section h2::after {
   content: '';
   position: absolute;
@@ -2442,15 +2159,12 @@ body.dark-mode .cert-card {
   align-items: center;
   padding: 1rem;
   background: #f8fafc;
-  /* Specific light background for contact list items */
   border-radius: 8px;
   transition: all 0.3s ease, box-shadow 0.3s ease;
-  /* Added box-shadow transition */
 }
 
 body.dark-mode .contact-list li {
   background: #303f5f;
-  /* New Contact list item background color */
 }
 
 .contact-list li:hover {
@@ -2461,11 +2175,9 @@ body.dark-mode .contact-list li {
 
 body.dark-mode .contact-list li:hover {
   background: #405070;
-  /* New Contact list item background color on hover */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
-/* Styles for leading dot in Contact list items */
 .contact-list li::before {
   content: '';
   display: inline-block;
@@ -2478,7 +2190,6 @@ body.dark-mode .contact-list li:hover {
 
 body.dark-mode .contact-list li::before {
   background: #4fc3f7;
-  /* New Primary color */
 }
 
 .contact-list a {
@@ -2507,10 +2218,9 @@ body.dark-mode .contact-list li::before {
   transform: scale(1.05);
 }
 
-/* QR Code Special Styling: Special styles for Line QR Code */
+/* QR Code Special Styling */
 .contact-list li:last-child {
   grid-column: 1 / -1;
-  /* Expand full width */
   justify-content: space-between;
   padding: 1.5rem;
   background: linear-gradient(135deg, #e0f2fe, #d1ecfd);
@@ -2518,7 +2228,6 @@ body.dark-mode .contact-list li::before {
 
 body.dark-mode .contact-list li:last-child {
   background: linear-gradient(135deg, #1e1e1e, #252525);
-  /* New QR Code background */
 }
 
 .contact-list li:last-child::before {
@@ -2532,7 +2241,6 @@ body.dark-mode .contact-list li:last-child {
 
 body.dark-mode .contact-list li:last-child a {
   color: #0288d1;
-  /* New Accent color */
 }
 
 .qr-label {
@@ -2545,10 +2253,9 @@ body.dark-mode .contact-list li:last-child a {
 
 body.dark-mode .qr-label {
   color: #0288d1;
-  /* New Accent color */
 }
 
-/* Responsive Contact Section: Contact section adjustments for various screen sizes */
+/* Responsive Contact Section */
 @media (max-width: 768px) {
   .contact-section {
     padding: 4rem 1rem;
@@ -2584,13 +2291,12 @@ body.dark-mode .qr-label {
   }
 }
 
-/* Footer Section: Styles for the website footer */
+/* Footer Section Styles */
 .footer-section {
   background-color: var(--color-text-dark);
   color: var(--color-white);
   padding: 3rem 0 0;
   font-family: 'NotoSansTamil', sans-serif;
-  /* Use NotoSansTamil */
 }
 
 .footer-container {
@@ -2626,17 +2332,14 @@ body.dark-mode .qr-label {
 
 .footer-logo span:nth-child(2) {
   background-color: #e74c3c;
-  /* --color-dot-red */
 }
 
 .footer-logo span:nth-child(3) {
   background-color: #2ecc71;
-  /* --color-dot-green */
 }
 
 .footer-logo span:nth-child(4) {
   background-color: #f39c12;
-  /* --color-dot-orange */
 }
 
 .footer-links {
@@ -2652,7 +2355,6 @@ body.dark-mode .qr-label {
   padding-bottom: 0.5rem;
 }
 
-/* Styles for underline of Footer titles */
 .footer-column h3::after {
   content: '';
   position: absolute;
@@ -2696,7 +2398,7 @@ body.dark-mode .qr-label {
   font-size: 0.9rem;
 }
 
-/* Responsive Footer: Footer adjustments for various screen sizes */
+/* Responsive Footer */
 @media (max-width: 768px) {
   .footer-container {
     padding: 0 1.5rem;
@@ -2712,7 +2414,7 @@ body.dark-mode .qr-label {
   }
 }
 
-/* Preloader Styles: Styles for Preloader */
+/* Preloader Styles */
 #preloader {
   position: fixed;
   top: 0;
@@ -2725,7 +2427,6 @@ body.dark-mode .qr-label {
   flex-direction: column;
   align-items: center;
   z-index: 9999;
-  /* Add transition for fade out */
   transition: opacity 0.5s ease, visibility 0.5s ease;
   opacity: 1;
   visibility: visible;
@@ -2739,7 +2440,6 @@ body.dark-mode .qr-label {
 
 body.dark-mode #preloader {
   background: #121212;
-  /* New darker background color */
 }
 
 #preloader.hidden {
@@ -2759,9 +2459,7 @@ body.dark-mode #preloader {
 
 body.dark-mode .loader {
   border: 6px solid #333;
-  /* New Loader border color */
   border-top: 6px solid #4fc3f7;
-  /* New Primary color */
 }
 
 @keyframes spin {
@@ -2777,7 +2475,6 @@ body.dark-mode .loader {
   align-items: center;
   justify-content: center;
   min-height: 200px;
-  /* To provide space for the spinner */
   width: 100%;
   text-align: center;
   color: var(--color-text-light);
@@ -2786,14 +2483,13 @@ body.dark-mode .loader {
 
 body.dark-mode .projects-loading-spinner {
   color: #b0b0b0;
-  /* Secondary text color */
 }
 
 .projects-loading-spinner .loader {
   margin-bottom: 1rem;
 }
 
-/* Responsive Adjustments: Adjustments for various screen sizes */
+/* Responsive Adjustments */
 @media (max-width: 1200px) {
 
   .header-section,

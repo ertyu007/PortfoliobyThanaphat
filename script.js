@@ -1,24 +1,18 @@
-// เหตุการณ์ DOMContentLoaded: ตรวจสอบให้แน่ใจว่า HTML ถูกโหลดและแยกวิเคราะห์เรียบร้อยแล้วก่อนที่จะรันสคริปต์
 document.addEventListener("DOMContentLoaded", function () {
-  // Active link highlighting based on scroll position:
-  // ไฮไลต์ลิงก์เมนูนำทางที่ตรงกับส่วนของหน้าเว็บที่กำลังมองเห็น
+  // Active link highlighting based on scroll position
   const sections = document.querySelectorAll("section");
   const navItems = document.querySelectorAll(".header-nav li a");
 
-  // เพิ่ม Event Listener สำหรับการเลื่อนหน้าจอ
   window.addEventListener("scroll", function () {
     let current = "";
 
-    // วนลูปผ่านแต่ละส่วนของหน้า
     sections.forEach((section) => {
       const sectionTop = section.offsetTop;
-      // ตรวจสอบว่าส่วนนั้นอยู่ในขอบเขตการมองเห็นหรือไม่ (ปรับค่า offset เล็กน้อย)
       if (pageYOffset >= sectionTop - 100) {
         current = section.getAttribute("id");
       }
     });
 
-    // วนลูปผ่านแต่ละลิงก์ในเมนูนำทาง
     navItems.forEach((item) => {
       item.classList.remove("active");
       if (item.getAttribute("href") === `#${current}`) {
@@ -27,9 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-
-  // Smooth scrolling for anchor links:
-  // ทำให้การเลื่อนหน้าจอไปยังส่วนที่ลิงก์เชื่อมโยงเป็นไปอย่างราบรื่น
+  // Smooth scrolling for anchor links
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       e.preventDefault();
@@ -39,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
-        // Offset for fixed header
         const headerOffset = document.querySelector('.header-section').offsetHeight;
         const elementPosition = targetElement.offsetTop;
         const offsetPosition = elementPosition - headerOffset;
@@ -50,14 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
 
-      // Close mobile menu if open after clicking a link
       const menuToggle = document.querySelector('.menu-toggle');
       const headerList = document.querySelector('.header-list');
       if (headerList.classList.contains('active')) {
         menuToggle.classList.remove('open');
         headerList.classList.remove('active');
         document.body.style.overflow = '';
-        document.documentElement.style.overflow = ''; // เพิ่มการปลดล็อกการเลื่อนบน html
+        document.documentElement.style.overflow = '';
       }
     });
   });
@@ -79,8 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 50);
   }
 
-  // ====== DATA ======
-  // ข้อมูลโปรเจกต์ทั้งหมด (สามารถเพิ่มหรือแก้ไขได้ตามต้องการ)
+  // Project Data
   const projects = [
     {
       "id": "project-1",
@@ -260,10 +249,9 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ];
 
-  // ===== DOM Elements =====
+  // DOM Elements
   const filtersEl = document.getElementById("filters");
   const galleryEl = document.getElementById("gallery");
-  // New Lightbox DOM Elements
   const lightboxOverlay = document.getElementById('lightbox-overlay');
   const lightboxContainer = document.getElementById('lightbox-content-container');
   const lightboxImage = document.getElementById('lightbox-image');
@@ -275,16 +263,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const totalViewsEl = document.getElementById("total-views");
   const darkModeToggle = document.getElementById("dark-mode-toggle");
 
-  // Global variable to store the original bounding rectangle of the clicked image
   let originalRect = {};
   let currentMediaElement = null;
 
-  // ===== Local stats registry =====
+  // Local stats registry
   const LOCAL_KEY = "project-stats";
   function loadLocalStats() { return JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}"); }
   function saveLocalStats(d) { localStorage.setItem(LOCAL_KEY, JSON.stringify(d)); }
 
-  // ฟังก์ชันสำหรับแสดง Modal ข้อความ
+  // Function to show info modal
   function showInfoModal(message) {
     const modal = document.createElement('div');
     modal.className = 'custom-modal';
@@ -309,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ===== Heart burst animation =====
+  // Heart burst animation
   function triggerHeartBurst(btn) {
     const burst = document.createElement("div");
     burst.className = "heart-burst";
@@ -322,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => burst.remove(), 800);
   }
 
-  // ===== Stat handler functions =====
+  // Stat handler functions
   async function fetchProjectStats(id) {
     try {
       const response = await fetch(`/.netlify/functions/projectStats?id=${id}`);
@@ -539,7 +526,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ===== Gallery render =====
+  // Gallery rendering
   async function renderGallery(data, allStatsMap, mostViewedProjectId) {
     showProjectsLoading(false);
     galleryEl.innerHTML = "";
@@ -637,33 +624,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ===== Lightbox functions =====
-  // ฟังก์ชันสำหรับเปิด Lightbox และแสดงภาพ
+  // Lightbox functions
   async function openLightbox(project, initialProjectStats, triggerRect) {
-    // รีเซ็ตองค์ประกอบสื่อก่อนเปิดรายการใหม่
     lightboxImage.style.display = 'none';
     lightboxImage.src = '';
     
     let mediaElement;
     const controls = lightboxContainer.querySelector('.lightbox-controls');
 
-    // กำหนดตำแหน่งเริ่มต้นของสื่อให้ตรงกับตำแหน่งของภาพขนาดย่อที่คลิก
     mediaElement = lightboxImage;
     mediaElement.src = project.src;
     mediaElement.alt = project.title;
-    mediaElement.style.display = 'block'; // แสดงภาพทันที
+    mediaElement.style.display = 'block';
 
-    // กำหนดสไตล์เริ่มต้นสำหรับแอนิเมชัน
     mediaElement.style.left = `${triggerRect.left}px`;
     mediaElement.style.top = `${triggerRect.top}px`;
     mediaElement.style.width = `${triggerRect.width}px`;
     mediaElement.style.height = `${triggerRect.height}px`;
     mediaElement.style.objectFit = 'cover'; 
-    mediaElement.style.transition = 'all 0.2s ease-in-out'; // เพิ่ม transition ที่นี่
+    mediaElement.style.transition = 'all 0.2s ease-in-out';
 
     currentMediaElement = mediaElement;
 
-    // สำหรับรูปภาพ ให้เรียก animateLightbox เมื่อรูปภาพโหลดเสร็จ
     mediaElement.onload = () => {
       animateLightbox(mediaElement, controls);
     };
@@ -708,13 +690,11 @@ document.addEventListener("DOMContentLoaded", function () {
     lightboxContainer.classList.add('active');
     lightboxClose.classList.add('active');
     document.body.classList.add("lightbox-open");
-    document.documentElement.classList.add("lightbox-open"); // เพิ่มการล็อกการเลื่อนบน html
+    document.documentElement.classList.add("lightbox-open");
     
     handleView(project.id);
   }
 
-  // ฟังก์ชันสำหรับภาพเคลื่อนไหว Lightbox
-  // การใช้ CSS transitions ช่วยให้การเคลื่อนไหวลื่นไหลและมีประสิทธิภาพ
   function animateLightbox(mediaElement, controlsElement) {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
@@ -724,9 +704,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (mediaElement.tagName === 'IMG') {
       aspectRatio = mediaElement.naturalWidth / mediaElement.naturalHeight;
-    } else { // VIDEO - This block is now effectively removed as video functionality is removed
-      // This part will not be reached if project.type is always 'image'
-      aspectRatio = 16 / 9; // Fallback or default for video if it were present
+    } else {
+      aspectRatio = 16 / 9;
     }
 
     const maxViewportWidth = windowWidth * 0.9;
@@ -743,7 +722,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const finalLeft = (windowWidth - finalWidth) / 2;
     const finalTop = (windowHeight - finalHeight) / 2;
 
-    // กำหนดสไตล์เป้าหมายเพื่อทริกเกอร์ CSS transition
     mediaElement.style.left = `${finalLeft}px`;
     mediaElement.style.top = `${finalTop}px`;
     mediaElement.style.width = `${finalWidth}px`;
@@ -756,14 +734,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 300);
   }
 
-  // ฟังก์ชันสำหรับปิด Lightbox
   function closeLightbox() {
     lightboxCaption.classList.remove('active');
     const controls = lightboxContainer.querySelector('.lightbox-controls');
     if (controls) controls.classList.remove('active');
 
     if (currentMediaElement && originalRect) {
-      // กำหนด transition ก่อนที่จะเปลี่ยนสไตล์กลับ
       currentMediaElement.style.transition = 'all 0.4s ease';
       currentMediaElement.style.left = `${originalRect.left}px`;
       currentMediaElement.style.top = `${originalRect.top}px`;
@@ -778,8 +754,7 @@ document.addEventListener("DOMContentLoaded", function () {
       lightboxClose.classList.remove('active');
       
       if (currentMediaElement) {
-        // ลบ transition และสไตล์อินไลน์หลังจากแอนิเมชันเสร็จสิ้น
-        currentMediaElement.style.transition = ''; // ลบ transition ที่นี่
+        currentMediaElement.style.transition = '';
         currentMediaElement.removeAttribute('style');
         currentMediaElement.src = '';
         currentMediaElement = null;
@@ -787,9 +762,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       lightboxImage.style.display = 'none';
       document.body.classList.remove("lightbox-open");
-      document.documentElement.classList.remove("lightbox-open"); // เพิ่มการปลดล็อกการเลื่อนบน html
+      document.documentElement.classList.remove("lightbox-open");
 
-      // ตรวจสอบและลบตัวบ่งชี้การโหลดหากยังคงอยู่ (สำหรับวิดีโอ ซึ่งตอนนี้ถูกลบออกแล้ว)
       const loadingSpinner = lightboxContainer.querySelector('.lightbox-video-loading');
       if (loadingSpinner) {
         loadingSpinner.remove();
@@ -834,10 +808,10 @@ document.addEventListener("DOMContentLoaded", function () {
     headerList.classList.toggle('active');
     if (headerList.classList.contains('active')) {
       document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden'; // เพิ่มการล็อกการเลื่อนบน html
+      document.documentElement.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
-      document.documentElement.style.overflow = ''; // เพิ่มการปลดล็อกการเลื่อนบน html
+      document.documentElement.style.overflow = '';
     }
   });
 
@@ -900,7 +874,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // New Infinity Loop Slider for Certificates
+  // Infinity Loop Slider for Certificates
   const certSliderTrack = document.querySelector('.cert-slider-track');
   if (certSliderTrack) {
     const certCards = Array.from(certSliderTrack.children);
@@ -922,11 +896,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const startTime = new Date("2025-07-03T00:14:20");
   function updateUptime() {
     const now = new Date();
-    const diff = Math.floor((now - startTime) / 1000); // Total seconds
-    const days = Math.floor(diff / 86400); // Total days
-    const hours = Math.floor((diff % 86400) / 3600); // Remaining hours after days
-    const minutes = Math.floor((diff % 3600) / 60); // Remaining minutes after hours
-    const seconds = diff % 60; // Remaining seconds after minutes
+    const diff = Math.floor((now - startTime) / 1000);
+    const days = Math.floor(diff / 86400);
+    const hours = Math.floor((diff % 86400) / 3600);
+    const minutes = Math.floor((diff % 3600) / 60);
+    const seconds = diff % 60;
     document.getElementById("uptime").textContent =
       ` ${days}d ${hours}h ${minutes}m ${seconds}s `;
   }

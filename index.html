@@ -8,35 +8,30 @@
   <link rel="shortcut icon" href="./assets/images/icon.png" type="image/x-icon">
 
   <link rel="stylesheet" href="style.css" />
-  <!-- AOS CSS: สำหรับการทำอนิเมชันเมื่อเลื่อนหน้าเว็บ -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <!-- Open Graph Meta Tags: สำหรับการแสดงผลเมื่อแชร์ลิงก์บนโซเชียลมีเดีย -->
   <meta property="og:title" content="The Future Begins – Portfolio by Thanaphat" />
   <meta property="og:description"
     content="Thanaphat Karajhac's personal portfolio showcasing skills, projects, and experiences." />
   <meta property="og:image" content="https://ertyuthanaphat.netlify.app/assets/images/profile.jpg" />
-  <!-- ใส่ URL รูปโปรไฟล์จริง -->
   <meta property="og:url" content="https://ertyuthanaphat.netlify.app/" />
   <meta property="og:type" content="website" />
 
 </head>
 
 <body>
-  <!-- Preloader: ส่วนที่แสดงขึ้นมาก่อนที่เนื้อหาหลักของหน้าจะโหลดเสร็จสมบูรณ์ -->
+  <!-- Preloader Section -->
   <div id="preloader">
     <div class="loader"></div>
     <p class="preloader-message">กำลังจัดเตรียมเนื้อหาอย่างตั้งใจ เพื่อให้คุณได้รับประสบการณ์ที่ดีที่สุด</p>
   </div>
 
-  <!-- Main Content: เนื้อหาหลักของเว็บไซต์ทั้งหมดจะอยู่ในแท็กนี้ เพื่อให้ Preloader สามารถซ่อนได้เมื่อโหลดเสร็จ -->
+  <!-- Main Content Section -->
   <main id="main-content" style="display: none;">
     <header class="header-section">
       <div class="header-logo">
         <a href="#Home">Thanaphat</a>
-        <!-- จุดตกแต่งในโลโก้ -->
         <span></span>
         <span></span>
         <span></span>
@@ -53,17 +48,14 @@
 
         <div class="header-contact">
           <a href="#Contact">Contact</a>
-          <!-- จุดตกแต่งในปุ่ม Contact -->
           <span></span>
           <span></span>
           <span></span>
         </div>
-        <!-- Dark Mode Toggle Button -->
         <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
-          <i class="fas fa-cog"></i> <!-- Font Awesome gear icon -->
+          <i class="fas fa-cog"></i>
         </button>
       </nav>
-      <!-- ปุ่มสลับเมนูสำหรับ Mobile (Hamburger icon) -->
       <div class="menu-toggle">
         <span></span>
         <span></span>
@@ -71,8 +63,7 @@
       </div>
     </header>
 
-    <!-- Hero Section: ส่วนแรกของหน้าเว็บที่แนะนำตัวและแสดงข้อมูลเบื้องต้น -->
-    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <!-- Hero Section -->
     <section id="Home" class="hero-section" data-aos="fade-up" data-aos-duration="1000">
       <div class="hero-container">
         <div class="hero-contant">
@@ -104,8 +95,7 @@
       </div>
     </section>
 
-    <!-- About Section: ส่วนที่แสดงข้อมูลส่วนตัว ความสนใจ คติประจำใจ และเป้าหมายในชีวิต -->
-    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <!-- About Section -->
     <section id="About" class="about-section" data-aos="fade-right" data-aos-duration="1000">
       <div class="about-container">
         <div class="about-profile">
@@ -159,15 +149,14 @@
       </div>
     </section>
 
-    <!-- Skills & Experience Section: ส่วนที่แสดงทักษะและประสบการณ์การทำงาน/กิจกรรมต่างๆ -->
-    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <!-- Skills & Experience Section -->
     <section id="Skills" class="skills-experience-section" data-aos="fade-up" data-aos-duration="1000">
       <div class="container">
-        <!-- Skills: ส่วนแสดงทักษะ -->
+        <!-- Skills Part -->
         <div class="skills-part" data-aos="fade-right" data-aos-duration="1000">
           <h2>Skills</h2>
 
-          <!-- Hard Skills: ทักษะด้านเทคนิค -->
+          <!-- Hard Skills -->
           <div class="hard-skills">
             <h3>🔧 Hard Skills</h3>
             <ul>
@@ -188,7 +177,7 @@
             </ul>
           </div>
 
-          <!-- Soft Skills: ทักษะด้านอารมณ์และสังคม -->
+          <!-- Soft Skills -->
           <div class="soft-skills">
             <h3>💬 Soft Skills</h3>
             <ul>
@@ -205,7 +194,7 @@
           </div>
         </div>
 
-        <!-- Experience: ส่วนแสดงประสบการณ์ -->
+        <!-- Experience Part -->
         <div class="experience-part" data-aos="fade-left" data-aos-duration="1000">
           <h2>Experience</h2>
 
@@ -247,8 +236,7 @@
       </div>
     </section>
 
-    <!-- Projects Section: ส่วนแสดงผลงานและกิจกรรมต่างๆ -->
-    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <!-- Projects Section -->
     <section id="Projects" class="projects-section" data-aos="fade-up" data-aos-duration="1000">
       <div class="projects-header">
         <h2>
@@ -261,7 +249,7 @@
           <span></span>
         </h2>
       </div>
-      <!-- Filter Buttons: ปุ่มสำหรับกรองผลงานตามหมวดหมู่ -->
+      <!-- Filter Buttons -->
       <div id="filters" class="filters" data-aos="fade-up" data-aos-delay="200">
         <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
         <button class="filter-btn" data-filter="it">งาน IT</button>
@@ -271,13 +259,12 @@
         <button class="filter-btn" data-filter="code">code</button>
       </div>
 
-      <!-- Gallery Grid: ส่วนแสดงผลงานที่เป็นรูปภาพหรือวิดีโอ -->
+      <!-- Gallery Grid -->
       <div id="gallery" class="gallery-grid" data-aos="fade-up" data-aos-delay="300">
-        <!-- ไอเท็มผลงานจะถูกแทรกด้วย JavaScript -->
       </div>
     </section>
 
-    <!-- Certificates Section: ส่วนแสดงใบรับรองและรางวัลต่างๆ -->
+    <!-- Certificates Section -->
     <section id="Certificates" class="certificates-section">
       <div class="cert-header">
         <h2>Certificates &amp; Awards</h2>
@@ -287,7 +274,6 @@
       </div>
       <div class="cert-slider-container">
         <div class="cert-slider-track">
-          <!-- การ์ดใบรับรอง 11 ใบ -->
           <div class="cert-card" data-index="0">
             <img src="./assets/Certificate/Certificate_003.jpg" alt="Certificate 1" />
           </div>
@@ -335,7 +321,7 @@
       </div>
     </section>
 
-    <!-- Time Section: ส่วนแสดงเวลาที่เว็บไซต์ออนไลน์, และจำนวนผู้เข้าชม, แสดงยอดแชร์รวม, ยอดวิวรวม -->
+    <!-- Time Section -->
     <section class="time-section">
       <p id="uptime"></p>
       <span class="stat-item" title="Total Likes"><i class="fas fa-heart"></i> <span id="total-likes">0</span></span>
@@ -344,8 +330,7 @@
       <span class="stat-item" title="Total Views"><i class="fas fa-eye"></i> <span id="total-views">0</span></span>
     </section>
 
-    <!-- Contact Section: ส่วนสำหรับติดต่อ -->
-    <!-- เพิ่ม data-aos attribute เพื่อเปิดใช้งาน AOS animation -->
+    <!-- Contact Section -->
     <section id="Contact" class="contact-section" data-aos="fade-up" data-aos-duration="1000">
       <h2>Contact</h2>
 
@@ -364,12 +349,11 @@
       </div>
     </section>
 
-    <!-- Footer Section: ส่วนท้ายของเว็บไซต์ -->
+    <!-- Footer Section -->
     <footer class="footer-section">
       <div class="footer-container">
         <div class="footer-logo">
           <a href="#">Thanaphat</a>
-          <!-- จุดตกแต่งในโลโก้ Footer -->
           <span></span>
           <span></span>
           <span></span>
@@ -417,10 +401,9 @@
     </footer>
   </main>
 
-  <!-- Lightbox Elements (New) -->
+  <!-- Lightbox Elements -->
   <div id="lightbox-overlay" class="lightbox-overlay"></div>
   <div id="lightbox-content-container" class="lightbox-content-container">
-    <!-- These elements will be dynamically updated by JavaScript -->
     <img id="lightbox-image" class="lightbox-media" src="" alt="Lightbox Image" style="display: none;">
     <div class="lightbox-controls"></div>
   </div>
@@ -429,10 +412,7 @@
     <i class="fas fa-times"></i>
   </button>
 
-  <!-- AOS JavaScript: โค้ดสำหรับเริ่มต้น AOS library -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-  <!-- เชื่อมโยงไฟล์ JavaScript หลักของเว็บไซต์ -->
   <script src="script.js" defer></script>
 </body>
 
