@@ -185,10 +185,10 @@ document.addEventListener("DOMContentLoaded", function () {
       "id": "project-10",
       "title": "ซ้อมแข่งหุ่นยนต์ระดับกลาง",
       "category": "เเข่งหุ่นยนต์",
-      "year": 2024,
+      "year": 2023,
       "type": "image",
       "thumbnail": "assets/images/093739.png",
-      "src": "aassets/images/093739.png",
+      "src": "assets/images/093739.png",
       "desc": "ซ้อมแข่งหุ่นยนต์ระดับกลาง แต่ก็ได้เหรียญทองนะค้าบบบ",
       "shortDesc": "ฝึกซ้อมแข่งขันหุ่นยนต์"
     },
@@ -659,7 +659,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mediaElement.style.width = `${triggerRect.width}px`;
     mediaElement.style.height = `${triggerRect.height}px`;
     mediaElement.style.objectFit = 'cover'; 
-    mediaElement.style.transition = 'all 0.5s ease-in-out'; // เพิ่ม transition ที่นี่
+    mediaElement.style.transition = 'all 0.2s ease-in-out'; // เพิ่ม transition ที่นี่
 
     currentMediaElement = mediaElement;
 
