@@ -79,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const lightboxOverlay = document.getElementById('lightbox-overlay');
   const lightboxContainer = document.getElementById('lightbox-content-container');
   const lightboxImage = document.getElementById('lightbox-image');
+  const lightboxInfoContainer = document.getElementById('lightbox-info-container');
   const lightboxCaption = document.getElementById('lightbox-caption');
   const lightboxClose = document.getElementById('lightbox-close');
 
@@ -133,6 +134,17 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => burst.remove(), 800);
   }
 
+  function triggerFullscreenHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'fullscreen-heart-animation';
+    heart.innerHTML = '<i class="fas fa-heart"></i>';
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 800); // Match animation duration
+  }
+ 
   // Stat handler functions
   async function fetchProjectStats(id) {
     try {
@@ -193,6 +205,10 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.classList.add("liked");
     triggerHeartBurst(btn);
 
+    if (btn.closest('.lightbox-controls')) {
+      triggerFullscreenHeart();
+    }
+ 
     local[id] = local[id] || {};
     local[id].liked = true;
     saveLocalStats(local);
@@ -376,13 +392,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       item.innerHTML = `
-        <img src="${project.thumbnail}" alt="${project.title}">
-        <div class="project-overlay">
-            <h4>${project.title}</h4>
-            <p>${project.shortDesc || project.desc}</p>
-            <button class="view-button">
-              ดูรูปภาพ
-            </button>
+        <div class="project-image-container">
+          <img src="${project.thumbnail}" alt="${project.title}">
+          <div class="view-icon"><i class="fas fa-plus"></i></div>
         </div>
         <div class="project-content">
             <h3>${project.title}</h3>
@@ -407,23 +419,14 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `;
 
-      item.addEventListener("click", function(e) {
-        if (!e.target.closest('.stat-item') && !e.target.classList.contains('view-button')) {
-          const clickedImage = this.querySelector('img');
-          originalRect = clickedImage.getBoundingClientRect();
-          openLightbox(project, projectStats, originalRect);
+      item.addEventListener("click", function (e) {
+        if (e.target.closest('.stat-item') || e.target.closest('.read-more-project-btn')) {
+          return;
         }
+        const clickedImage = this.querySelector('img');
+        originalRect = clickedImage.getBoundingClientRect();
+        openLightbox(project, projectStats, originalRect);
       });
-
-      const viewButton = item.querySelector(".view-button");
-      if (viewButton) {
-        viewButton.addEventListener("click", (e) => {
-          e.stopPropagation();
-          const clickedImage = item.querySelector('img');
-          originalRect = clickedImage.getBoundingClientRect();
-          openLightbox(project, projectStats, originalRect);
-        });
-      }
 
       const likeBtn = item.querySelector(".stat-item.likes");
       if (likeBtn) {
@@ -445,16 +448,41 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       galleryEl.appendChild(item);
+
+      const descP = item.querySelector('.project-content p');
+      if (descP.scrollHeight > descP.clientHeight) {
+        const readMoreBtn = document.createElement('button');
+        readMoreBtn.className = 'read-more-project-btn';
+        readMoreBtn.textContent = 'อ่านเพิ่มเติม';
+        descP.insertAdjacentElement('afterend', readMoreBtn);
+
+        readMoreBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          descP.classList.toggle('expanded');
+          readMoreBtn.textContent = descP.classList.contains('expanded') ? 'ย่อลง' : 'อ่านเพิ่มเติม';
+        });
+      }
     }
   }
 
   // Lightbox functions
   async function openLightbox(project, initialProjectStats, triggerRect) {
+    // Clear previous content immediately to prevent flash of old text
+    const captionContent = lightboxCaption.querySelector('.lightbox-caption-content');
+    if (captionContent) {
+      captionContent.textContent = '';
+    }
+    const existingBtn = lightboxCaption.querySelector('.read-more-btn');
+    if (existingBtn) {
+      existingBtn.remove();
+    }
+    lightboxCaption.classList.remove('expanded');
+
     lightboxImage.style.display = 'none';
     lightboxImage.src = '';
     
     let mediaElement;
-    const controls = lightboxContainer.querySelector('.lightbox-controls');
+    const controls = lightboxInfoContainer.querySelector('.lightbox-controls');
 
     mediaElement = lightboxImage;
     mediaElement.src = project.src;
@@ -466,12 +494,12 @@ document.addEventListener("DOMContentLoaded", function () {
     mediaElement.style.width = `${triggerRect.width}px`;
     mediaElement.style.height = `${triggerRect.height}px`;
     mediaElement.style.objectFit = 'cover'; 
-    mediaElement.style.transition = 'all 0.2s ease-in-out';
+    mediaElement.style.transition = 'all 0.5s ease-out';
 
     currentMediaElement = mediaElement;
 
     mediaElement.onload = () => {
-      animateLightbox(mediaElement, controls);
+      animateLightbox(mediaElement, lightboxInfoContainer, project);
     };
     
     controls.innerHTML = '';
@@ -508,8 +536,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     controls.append(likeBtn, shareBtn, viewDisplay);
 
-    lightboxCaption.textContent = `${project.title} — ${project.desc}`;
-
     lightboxOverlay.classList.add('active');
     lightboxContainer.classList.add('active');
     lightboxClose.classList.add('active');
@@ -519,7 +545,42 @@ document.addEventListener("DOMContentLoaded", function () {
     handleView(project.id);
   }
 
-  function animateLightbox(mediaElement, controlsElement) {
+  function setupLightboxCaption(project) {
+    const captionContent = lightboxCaption.querySelector('.lightbox-caption-content');
+    if (!captionContent) return;
+
+    // Reset state
+    lightboxCaption.classList.remove('expanded');
+    const existingBtn = lightboxCaption.querySelector('.read-more-btn');
+    if (existingBtn) {
+        existingBtn.remove();
+    }
+
+    captionContent.textContent = `${project.title} — ${project.desc}`;
+
+    // Use line-height calculation for a more reliable overflow check
+    const style = window.getComputedStyle(captionContent);
+    const lineHeight = parseFloat(style.lineHeight);
+    const clampLines = parseInt(style.webkitLineClamp || '2');
+    const clampedHeight = lineHeight * clampLines;
+
+    // Check if the actual scroll height exceeds the calculated clamped height (with a small buffer)
+    if (captionContent.scrollHeight > clampedHeight + 2) {
+        const readMoreBtn = document.createElement('button');
+        readMoreBtn.className = 'read-more-btn';
+        readMoreBtn.textContent = 'เพิ่มเติม';
+        
+        lightboxCaption.appendChild(readMoreBtn);
+
+        readMoreBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            lightboxCaption.classList.toggle('expanded');
+            readMoreBtn.textContent = lightboxCaption.classList.contains('expanded') ? 'ย่อลง' : 'เพิ่มเติม';
+        });
+    }
+  }
+
+  function animateLightbox(mediaElement, controlsElement, project) {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
@@ -533,7 +594,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const maxViewportWidth = windowWidth * 0.9;
-    const maxViewportHeight = windowHeight * 0.9;
+    const maxViewportHeight = windowHeight * 0.8; // Give more space for the info container
 
     if (maxViewportWidth / maxViewportHeight > aspectRatio) {
       finalHeight = maxViewportHeight;
@@ -544,7 +605,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const finalLeft = (windowWidth - finalWidth) / 2;
-    const finalTop = (windowHeight - finalHeight) / 2;
+    const finalTop = (windowHeight - finalHeight) / 2 - 30; // Move image up slightly
 
     mediaElement.style.left = `${finalLeft}px`;
     mediaElement.style.top = `${finalTop}px`;
@@ -552,19 +613,21 @@ document.addEventListener("DOMContentLoaded", function () {
     mediaElement.style.height = `${finalHeight}px`;
     mediaElement.style.objectFit = 'cover';
 
+    // Set up the caption content *before* the animation starts
+    setupLightboxCaption(project);
+
+    // Use a small timeout to ensure the browser has rendered the initial state
+    // before adding the class that triggers the transition.
     setTimeout(() => {
-      lightboxCaption.classList.add('active');
       controlsElement.classList.add('active');
-    }, 300);
+    }, 50);
   }
 
   function closeLightbox() {
-    lightboxCaption.classList.remove('active');
-    const controls = lightboxContainer.querySelector('.lightbox-controls');
-    if (controls) controls.classList.remove('active');
+    lightboxInfoContainer.classList.remove('active');
 
     if (currentMediaElement && originalRect) {
-      currentMediaElement.style.transition = 'all 0.4s ease';
+      currentMediaElement.style.transition = 'all 0.2s ease-out';
       currentMediaElement.style.left = `${originalRect.left}px`;
       currentMediaElement.style.top = `${originalRect.top}px`;
       currentMediaElement.style.width = `${originalRect.width}px`;
