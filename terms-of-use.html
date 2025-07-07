@@ -3,40 +3,93 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Terms of Use</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เงื่อนไขการใช้งาน</title>
   <link rel="shortcut icon" href="./assets/images/icon.png" type="image/x-icon">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts - Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <meta property="og:title" content="The Future Begins – Portfolio by Thanaphat" />
-  <meta property="og:description"
-    content="Thanaphat Karajhac's personal portfolio showcasing skills, projects, and experiences." />
-  <meta property="og:image" content="https://ertyuthanaphat.netlify.app/assets/images/profile.jpg" />
-  <meta property="og:url" content="https://ertyuthanaphat.netlify.app/" />
-  <meta property="og:type" content="website" />
   <style>
     body {
-      font-family: sans-serif;
-      margin: 2rem;
-      line-height: 1.6;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-
-    h1 {
-      color: #2c3e50;
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 0.5rem;
+      font-family: 'Inter', sans-serif;
     }
   </style>
 </head>
 
-<body>
-  <h1>Terms of Use (เงื่อนไขการใช้งาน)</h1>
-  <p>คุณสามารถเข้าชมเว็บไซต์นี้เพื่อการส่วนตัวและเพื่อเรียนรู้ข้อมูลใน Portfolio ได้โดยเสรี</p>
-  <p>ห้ามคัดลอกเนื้อหาหรือรูปภาพไปใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาต</p>
-  <p>ผู้ดูแลเว็บไซต์สามารถปรับเปลี่ยนข้อมูลและเนื้อหาได้โดยไม่ต้องแจ้งล่วงหน้า</p>
-  <footer>
-    <p>&copy; 2025 Thanaphat Karajhac. All rights reserved.</p>
-  </footer>
+<body class="bg-gray-50 text-gray-800 antialiased">
+  <div class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
+    <!-- Header Section -->
+    <header class="w-full max-w-4xl bg-white shadow-md rounded-lg p-4 mb-8 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <a href="./index.html" class="text-2xl font-bold text-blue-700 hover:text-blue-800 transition duration-300 ease-in-out">
+          Thanaphat
+        </a>
+      </div>
+      <nav class="hidden sm:block">
+        <ul class="flex space-x-6">
+          <li><a href="./index.html" class="text-gray-600 hover:text-blue-700 font-medium transition duration-300 ease-in-out">หน้าหลัก</a></li>
+        </ul>
+      </nav>
+      <!-- Mobile Menu Toggle -->
+      <div class="sm:hidden">
+        <button class="text-gray-600 hover:text-blue-700 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8 md:p-10 lg:p-12">
+      <h1 class="text-4xl font-extrabold text-gray-900 mb-6 pb-4 border-b-4 border-blue-600">
+        เงื่อนไขการใช้งาน
+        <span class="block text-xl text-gray-600 mt-2">(Terms of Use)</span>
+      </h1>
+
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-3">1. การอนุญาตให้ใช้งาน</h2>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          ผู้ใช้งานได้รับอนุญาตให้เข้าชมและใช้งานเว็บไซต์นี้เพื่อวัตถุประสงค์ส่วนบุคคลและเพื่อการเรียนรู้ข้อมูลใน Portfolio เท่านั้น
+          การใช้งานใดๆ ที่นอกเหนือจากที่ระบุไว้จะต้องได้รับความยินยอมเป็นลายลักษณ์อักษรจากผู้ดูแลเว็บไซต์
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-3">2. ข้อจำกัดในการใช้งาน</h2>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          ห้ามมิให้ผู้ใช้งานคัดลอก ทำซ้ำ ดัดแปลง เผยแพร่ หรือนำเนื้อหา รูปภาพ หรือส่วนใดส่วนหนึ่งของเว็บไซต์ไปใช้ในเชิงพาณิชย์
+          หรือเพื่อวัตถุประสงค์อื่นใดโดยไม่ได้รับอนุญาตอย่างเป็นทางการจากผู้ดูแลเว็บไซต์
+          การกระทำดังกล่าวอาจนำไปสู่การดำเนินคดีตามกฎหมาย
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-3">3. การเปลี่ยนแปลงเงื่อนไข</h2>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          ผู้ดูแลเว็บไซต์ขอสงวนสิทธิ์ในการปรับเปลี่ยน แก้ไข หรือยกเลิกเงื่อนไขการใช้งานเหล่านี้ได้ทุกเมื่อ โดยไม่จำเป็นต้องแจ้งให้ผู้ใช้งานทราบล่วงหน้า
+          การเปลี่ยนแปลงจะมีผลบังคับใช้ทันทีที่ประกาศบนเว็บไซต์
+          ผู้ใช้งานมีหน้าที่ตรวจสอบเงื่อนไขการใช้งานเป็นประจำเพื่อรับทราบการปรับปรุง
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-3">4. ข้อจำกัดความรับผิดชอบ</h2>
+        <p class="text-gray-700 leading-relaxed">
+          ข้อมูลที่ปรากฏบนเว็บไซต์นี้มีวัตถุประสงค์เพื่อเป็นข้อมูลทั่วไปเท่านั้น ผู้ดูแลเว็บไซต์ไม่รับประกันความถูกต้องครบถ้วน
+          หรือความเหมาะสมของข้อมูลสำหรับวัตถุประสงค์ใดๆ
+          ผู้ใช้งานตกลงที่จะรับความเสี่ยงทั้งหมดที่อาจเกิดขึ้นจากการใช้งานเว็บไซต์นี้
+        </p>
+      </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="w-full max-w-4xl mt-8 text-center text-gray-600 text-sm">
+      <p>&copy; 2025 Thanaphat Karajhac. สงวนลิขสิทธิ์ทุกประการ</p>
+    </footer>
+  </div>
 </body>
 
 </html>

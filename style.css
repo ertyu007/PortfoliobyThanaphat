@@ -312,7 +312,8 @@ body.lightbox-open {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: padding 0.7s ease-in-out;
+  /* เปลี่ยน transition ให้ครอบคลุมทุก property ที่จะเปลี่ยน */
+  transition: padding 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
 }
@@ -338,7 +339,8 @@ body.lightbox-open {
   color: var(--color-text-dark);
   text-decoration: none;
   margin-right: 1rem;
-  transition: color 0.3s ease;
+  /* เพิ่ม font-size ใน transition */
+  transition: color 0.3s ease, font-size 0.3s ease;
 }
 
 .header-logo a:hover {
@@ -604,7 +606,7 @@ body.dark-mode .menu-toggle span {
 
     transition: transform 0.6s ease, border-radius 1.2s ease, opacity 0.3s ease;
     pointer-events: none;
-    border-radius: 150px;
+    border-radius: 150px 150px 0 150px;
   }
 
   .header-list.active {
@@ -654,6 +656,7 @@ body.dark-mode .menu-toggle span {
     margin-left: 0rem;
     margin-top: 1rem;
   }
+
   .header-contact {
     margin: 0;
   }
@@ -850,7 +853,7 @@ body.dark-mode .profile {
   display: grid;
   grid-template-columns: 1fr;
   gap: 25px;
-  padding: 0 1rem;
+  padding: 0 1rem 0 0;
 }
 
 @media (min-width: 768px) {
@@ -964,7 +967,7 @@ body.dark-mode .about-motto p {
     position: relative;
     transform: none;
     margin-bottom: 2rem;
-    width: 80%;
+    width: 100%;
     height: auto;
   }
 
@@ -1265,7 +1268,7 @@ body.dark-mode .filter-btn {
 /* Project Item Styles */
 .project-item {
   background-color: var(--color-card-bg);
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 5px 15px var(--color-shadow);
   transition: all 0.3s ease;
@@ -1394,42 +1397,107 @@ body.dark-mode .read-more-project-btn {
   padding: 0.3rem 0.8rem;
   border-radius: 15px;
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
 }
 
-/* Stat Buttons */
+/* Container Flex */
 .project-meta .stats {
   display: flex;
   gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
+/* Stat Item Style */
 .project-meta .stat-item {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.3rem;
+  font-size: 1rem;
   color: var(--color-text-light);
-  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.05);
+  min-width: 60px;
+  justify-content: center;
 }
 
+/* Hover/Active Effect */
+.project-meta .stat-item:hover {
+  background-color: rgba(79, 195, 247, 0.1);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(79, 195, 247, 0.2);
+}
+
+/* Icon Styling */
 .project-meta .stat-item i {
-  color: var(--color-primary);
+  transition: transform 0.3s ease, color 0.3s ease;
+  font-size: 1.1rem;
 }
 
-body.dark-mode .project-meta .stat-item i {
-  color: #4fc3f7;
+/* Individual Color Enhancements */
+.project-meta .stat-item.likes:hover i {
+  color: #ff6b81;
+  animation: pulseHeart 0.5s;
 }
 
-.project-meta .stat-item.likes i {
-  color: var(--color-heart-liked);
+.project-meta .stat-item.shares:hover i {
+  color: #00bcd4;
+  transform: rotate(-15deg);
 }
 
-.project-meta .stat-item.shares i {
-  color: var(--color-accent);
+.project-meta .stat-item.views:hover i {
+  color: #03a9f4;
+  animation: blinkEye 0.6s;
 }
 
-.project-meta .stat-item.views i {
-  color: var(--color-text-light);
+/* Animations */
+@keyframes pulseHeart {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
 }
+
+@keyframes blinkEye {
+
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  50% {
+    transform: scaleY(0.5);
+  }
+}
+
+/* Responsive for Small Screens */
+@media screen and (max-width: 600px) {
+  .project-meta .stat-item {
+    flex: 1 1 30%;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+    min-width: 20%;
+  }
+
+  .project-meta .stat-item i {
+    font-size: 1rem;
+  }
+
+  .project-meta .stats {
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+}
+
 
 /* Most Viewed Badge */
 .project-item.most-viewed {
@@ -1442,15 +1510,33 @@ body.dark-mode .project-meta .stat-item i {
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
-  background-color: var(--color-accent);
-  color: var(--color-white);
+  background: linear-gradient(135deg, #3f87ff, #6ad1ff, #a18cd1);
+  color: #ffffff;
   padding: 0.3rem 0.8rem;
   border-radius: 8px;
   font-size: 0.8rem;
   font-weight: 700;
   z-index: 3;
-  animation: pulse 1.5s infinite alternate;
+  box-shadow: 0 0 10px rgba(106, 209, 255, 0.6);
+  animation: shimmer 2.5s infinite linear;
+  background-size: 200% 200%;
 }
+
+/* Animation แบบ shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 
 @keyframes pulse {
   from {
@@ -1523,7 +1609,7 @@ body.dark-mode .project-meta .stat-item i {
   transform: translateY(150%);
   background-color: rgba(20, 20, 20, 0.8);
   backdrop-filter: blur(12px) saturate(180%);
-  border-radius: 12px;
+  border-radius: 12px 12px 0px 0px;
   padding: 0.75rem 1.25rem;
   display: flex;
   justify-content: space-evenly;
@@ -1671,8 +1757,8 @@ body.dark-mode .project-meta .stat-item i {
 /* Heart burst animation */
 .heart-burst {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 45%;
+  left: 25%;
   pointer-events: none;
   transform: translate(-50%, -50%);
   z-index: 2;
@@ -2630,33 +2716,37 @@ body.dark-mode .projects-loading-spinner {
   .footer-section {
     padding: 1rem 0 0;
   }
-  }
-  
-  /* Fullscreen Heart Animation */
-  .fullscreen-heart-animation {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+}
+
+/* Fullscreen Heart Animation */
+.fullscreen-heart-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 15rem;
+  color: var(--color-heart-liked);
+  z-index: 10005;
+  /* Ensure it's on top of everything */
+  opacity: 0;
+  pointer-events: none;
+  animation: zoomAndFade 0.8s ease-out forwards;
+  transition: transform 0.4s ease;
+}
+
+@keyframes zoomAndFade {
+  0% {
     transform: translate(-50%, -50%) scale(0);
-    font-size: 15rem;
-    color: var(--color-heart-liked);
-    z-index: 10005; /* Ensure it's on top of everything */
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(0.7);
     opacity: 0;
-    pointer-events: none;
-    animation: zoomAndFade 0.8s ease-out forwards;
   }
-  
-  @keyframes zoomAndFade {
-    0% {
-      transform: translate(-50%, -50%) scale(0);
-      opacity: 0.8;
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1.2);
-      opacity: 1;
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(1.5);
-      opacity: 0;
-    }
-  }
+}
