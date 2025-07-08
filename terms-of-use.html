@@ -4,90 +4,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>เงื่อนไขการใช้งาน</title>
+  <title>เงื่อนไขการใช้งาน | ธนภัทร การะจักษ์</title>
   <link rel="shortcut icon" href="./assets/images/icon.png" type="image/x-icon">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts - Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Inter', sans-serif;
     }
+    .gradient-bg {
+      background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    }
+    .section-divider {
+      border-bottom: 1px solid #e5e7eb;
+    }
   </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased">
-  <div class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">
+<body class="gradient-bg text-gray-800 antialiased">
+  <div class="min-h-screen flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
     <!-- Header Section -->
-    <header class="w-full max-w-4xl bg-white shadow-md rounded-lg p-4 mb-8 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <a href="./index.html" class="text-2xl font-bold text-blue-700 hover:text-blue-800 transition duration-300 ease-in-out">
-          ธนภัทร
-        </a>
-      </div>
-      <nav class="hidden sm:block">
-        <ul class="flex space-x-6">
-          <li><a href="./index.html" class="text-gray-600 hover:text-blue-700 font-medium transition duration-300 ease-in-out">หน้าหลัก</a></li>
-        </ul>
-      </nav>
-      <!-- Mobile Menu Toggle -->
-      <div class="sm:hidden">
-        <button class="text-gray-600 hover:text-blue-700 focus:outline-none">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-          </svg>
-        </button>
+    <header class="w-full max-w-5xl bg-white rounded-xl shadow-sm p-6 mb-10 border border-gray-100">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div class="flex items-center space-x-3">
+          <a href="./index.html" class="text-3xl font-bold text-gray-800 hover:text-blue-700 transition duration-300">
+            ธนภัทร<span class="text-blue-700">.</span>
+          </a>
+          <span class="hidden sm:block text-sm font-medium text-gray-500 px-3 py-1 bg-gray-100 rounded-full">แฟ้มสะสมผลงาน</span>
+        </div>
+        <nav class="mt-4 sm:mt-0">
+          <ul class="flex space-x-1 sm:space-x-6">
+            <li><a href="./index.html" class="px-3 py-2 text-gray-600 hover:text-blue-700 font-medium transition duration-300 rounded-lg hover:bg-gray-50">หน้าหลัก</a></li>
+            <li><a href="./terms-of-use.html" class="px-3 py-2 text-blue-700 font-medium bg-blue-50 rounded-lg">เงื่อนไขการใช้งาน</a></li>
+          </ul>
+        </nav>
       </div>
     </header>
 
     <!-- Main Content Section -->
-    <main class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8 md:p-10 lg:p-12">
-      <h1 class="text-4xl font-extrabold text-gray-900 mb-6 pb-4 border-b-4 border-blue-600">
-        เงื่อนไขการใช้งาน
-        <span class="block text-xl text-gray-600 mt-2">(Terms of Use)</span>
-      </h1>
+    <main class="w-full max-w-5xl bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+      <!-- Header with gradient -->
+      <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-8 py-6">
+        <h1 class="text-3xl sm:text-4xl font-bold text-white">
+          เงื่อนไขการใช้งาน
+        </h1>
+        <p class="text-blue-100 mt-2">Terms of Use</p>
+      </div>
 
-      <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-3">1. การอนุญาตให้ใช้งาน</h2>
-        <p class="text-gray-700 leading-relaxed mb-4">
-          ผู้ใช้งานได้รับอนุญาตให้เข้าชมและใช้งานเว็บไซต์นี้เพื่อวัตถุประสงค์ส่วนบุคคลและเพื่อการเรียนรู้ข้อมูลในแฟ้มสะสมผลงานเท่านั้น
-          การใช้งานใดๆ ที่นอกเหนือจากที่ระบุไว้จะต้องได้รับความยินยอมเป็นลายลักษณ์อักษรจากผู้ดูแลเว็บไซต์
-        </p>
-      </section>
+      <div class="px-8 py-8 md:py-10 lg:py-12">
+        <section class="mb-10 pb-8 section-divider">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+            <span class="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-700 rounded-full mr-3">1</span>
+            การอนุญาตให้ใช้งาน
+          </h2>
+          <div class="pl-11">
+            <p class="text-gray-700 leading-relaxed mb-4">
+              ผู้ใช้งานได้รับอนุญาตให้เข้าชมและใช้งานเว็บไซต์นี้เพื่อวัตถุประสงค์ส่วนบุคคลและเพื่อการเรียนรู้ข้อมูลในแฟ้มสะสมผลงานเท่านั้น
+              การใช้งานใดๆ ที่นอกเหนือจากที่ระบุไว้จะต้องได้รับความยินยอมเป็นลายลักษณ์อักษรจากผู้ดูแลเว็บไซต์
+            </p>
+          </div>
+        </section>
 
-      <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-3">2. ข้อจำกัดในการใช้งาน</h2>
-        <p class="text-gray-700 leading-relaxed mb-4">
-          ห้ามมิให้ผู้ใช้งานคัดลอก ทำซ้ำ ดัดแปลง เผยแพร่ หรือนำเนื้อหา รูปภาพ หรือส่วนใดส่วนหนึ่งของเว็บไซต์ไปใช้ในเชิงพาณิชย์
-          หรือเพื่อวัตถุประสงค์อื่นใดโดยไม่ได้รับอนุญาตอย่างเป็นทางการจากผู้ดูแลเว็บไซต์
-          การกระทำดังกล่าวอาจนำไปสู่การดำเนินคดีตามกฎหมาย
-        </p>
-      </section>
+        <section class="mb-10 pb-8 section-divider">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+            <span class="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-700 rounded-full mr-3">2</span>
+            ข้อจำกัดในการใช้งาน
+          </h2>
+          <div class="pl-11">
+            <p class="text-gray-700 leading-relaxed mb-4">
+              ห้ามมิให้ผู้ใช้งานคัดลอก ทำซ้ำ ดัดแปลง เผยแพร่ หรือนำเนื้อหา รูปภาพ หรือส่วนใดส่วนหนึ่งของเว็บไซต์ไปใช้ในเชิงพาณิชย์
+              หรือเพื่อวัตถุประสงค์อื่นใดโดยไม่ได้รับอนุญาตอย่างเป็นทางการจากผู้ดูแลเว็บไซต์
+              การกระทำดังกล่าวอาจนำไปสู่การดำเนินคดีตามกฎหมาย
+            </p>
+          </div>
+        </section>
 
-      <section class="mb-8">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-3">3. การเปลี่ยนแปลงเงื่อนไข</h2>
-        <p class="text-gray-700 leading-relaxed mb-4">
-          ผู้ดูแลเว็บไซต์ขอสงวนสิทธิ์ในการปรับเปลี่ยน แก้ไข หรือยกเลิกเงื่อนไขการใช้งานเหล่านี้ได้ทุกเมื่อ โดยไม่จำเป็นต้องแจ้งให้ผู้ใช้งานทราบล่วงหน้า
-          การเปลี่ยนแปลงจะมีผลบังคับใช้ทันทีที่ประกาศบนเว็บไซต์
-          ผู้ใช้งานมีหน้าที่ตรวจสอบเงื่อนไขการใช้งานเป็นประจำเพื่อรับทราบการปรับปรุง
-        </p>
-      </section>
+        <section class="mb-10 pb-8 section-divider">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+            <span class="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-700 rounded-full mr-3">3</span>
+            การเปลี่ยนแปลงเงื่อนไข
+          </h2>
+          <div class="pl-11">
+            <p class="text-gray-700 leading-relaxed mb-4">
+              ผู้ดูแลเว็บไซต์ขอสงวนสิทธิ์ในการปรับเปลี่ยน แก้ไข หรือยกเลิกเงื่อนไขการใช้งานเหล่านี้ได้ทุกเมื่อ โดยไม่จำเป็นต้องแจ้งให้ผู้ใช้งานทราบล่วงหน้า
+              การเปลี่ยนแปลงจะมีผลบังคับใช้ทันทีที่ประกาศบนเว็บไซต์
+              ผู้ใช้งานมีหน้าที่ตรวจสอบเงื่อนไขการใช้งานเป็นประจำเพื่อรับทราบการปรับปรุง
+            </p>
+          </div>
+        </section>
 
-      <section>
-        <h2 class="text-2xl font-semibold text-gray-800 mb-3">4. ข้อจำกัดความรับผิดชอบ</h2>
-        <p class="text-gray-700 leading-relaxed">
-          ข้อมูลที่ปรากฏบนเว็บไซต์นี้มีวัตถุประสงค์เพื่อเป็นข้อมูลทั่วไปเท่านั้น ผู้ดูแลเว็บไซต์ไม่รับประกันความถูกต้องครบถ้วน
-          หรือความเหมาะสมของข้อมูลสำหรับวัตถุประสงค์ใดๆ
-          ผู้ใช้งานตกลงที่จะรับความเสี่ยงทั้งหมดที่อาจเกิดขึ้นจากการใช้งานเว็บไซต์นี้
-        </p>
-      </section>
+        <section>
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+            <span class="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-700 rounded-full mr-3">4</span>
+            ข้อจำกัดความรับผิดชอบ
+          </h2>
+          <div class="pl-11">
+            <p class="text-gray-700 leading-relaxed">
+              ข้อมูลที่ปรากฏบนเว็บไซต์นี้มีวัตถุประสงค์เพื่อเป็นข้อมูลทั่วไปเท่านั้น ผู้ดูแลเว็บไซต์ไม่รับประกันความถูกต้องครบถ้วน
+              หรือความเหมาะสมของข้อมูลสำหรับวัตถุประสงค์ใดๆ
+              ผู้ใช้งานตกลงที่จะรับความเสี่ยงทั้งหมดที่อาจเกิดขึ้นจากการใช้งานเว็บไซต์นี้
+            </p>
+            <div class="mt-6">
+              <a href="./privacy-policy.html" class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition duration-300">
+                ดูนโยบายความเป็นส่วนตัว
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
 
     <!-- Footer Section -->
-    <footer class="w-full max-w-4xl mt-8 text-center text-gray-600 text-sm">
-      <p>&copy; 2025 ธนภัทร การะจักษ์. สงวนลิขสิทธิ์ทุกประการ</p>
+    <footer class="w-full max-w-5xl mt-12 text-center">
+      <p class="text-gray-500 text-sm">&copy; 2025 ธนภัทร การะจักษ์. สงวนลิขสิทธิ์ทุกประการ</p>
+      <div class="mt-4 flex justify-center space-x-6">
+        <a href="./privacy-policy.html" class="text-gray-600 hover:text-blue-700 text-sm font-medium">นโยบายความเป็นส่วนตัว</a>
+        <a href="./terms-of-use.html" class="text-gray-600 hover:text-blue-700 text-sm font-medium">เงื่อนไขการใช้งาน</a>
+      </div>
     </footer>
   </div>
 </body>

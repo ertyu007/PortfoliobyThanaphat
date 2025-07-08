@@ -93,28 +93,13 @@ document.addEventListener("DOMContentLoaded", function () {
         headerList.classList.remove('active');
         document.body.style.overflow = '';
         document.documentElement.style.overflow = '';
+        // Remove 'show' class from all menu items when closing
+        document.querySelectorAll('.header-nav li').forEach(item => {
+          item.classList.remove('show');
+        });
       }
     });
   });
-
-  // Typewriter effect for motto - REMOVED for new About section structure
-  /*
-  const motto = document.querySelector(".about-motto p");
-  if (motto) {
-    const text = motto.textContent;
-    motto.textContent = "";
-
-    let i = 0;
-    const typeWriter = () => {
-      if (i < text.length) {
-        motto.textContent += text.charAt(i);
-        i++;
-        requestAnimationFrame(typeWriter); // Use requestAnimationFrame for smoother animation
-      }
-    };
-    requestAnimationFrame(typeWriter);
-  }
-  */
 
   // Project Data
   const filtersEl = document.getElementById("filters");
@@ -196,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
       heart.remove();
     }, 800); // Match animation duration
   }
- 
+
   // Stat handler functions
   async function fetchProjectStats(id) {
     try {
@@ -255,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
     currentLikeCount++;
     btn.querySelector(".like-count").textContent = currentLikeCount;
     btn.classList.add("liked");
-    
+
     triggerHeartBurst(btn);
     triggerFullscreenHeart();
 
@@ -539,7 +524,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     lightboxImage.style.display = 'none';
     lightboxImage.src = '';
-    
+
     let mediaElement;
     const controls = lightboxInfoContainer.querySelector('.lightbox-controls');
 
@@ -552,7 +537,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mediaElement.style.top = `${triggerRect.top}px`;
     mediaElement.style.width = `${triggerRect.width}px`;
     mediaElement.style.height = `${triggerRect.height}px`;
-    mediaElement.style.objectFit = 'cover'; 
+    mediaElement.style.objectFit = 'cover';
     mediaElement.style.transition = 'all 0.5s ease-out';
     mediaElement.style.willChange = 'left, top, width, height'; // Optimize for animation
 
@@ -561,7 +546,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mediaElement.onload = () => {
       animateLightbox(mediaElement, lightboxInfoContainer, project);
     };
-    
+
     controls.innerHTML = '';
 
     const local = loadLocalStats();
@@ -601,7 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
     lightboxClose.classList.add('active');
     document.body.classList.add("lightbox-open");
     document.documentElement.classList.add("lightbox-open");
-    
+
     handleView(project.id);
   }
 
@@ -613,7 +598,7 @@ document.addEventListener("DOMContentLoaded", function () {
     lightboxCaption.classList.remove('expanded');
     const existingBtn = lightboxCaption.querySelector('.read-more-btn');
     if (existingBtn) {
-        existingBtn.remove();
+      existingBtn.remove();
     }
 
     captionContent.textContent = `${project.title} — ${project.desc}`;
@@ -626,17 +611,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Check if the actual scroll height exceeds the calculated clamped height (with a small buffer)
     if (captionContent.scrollHeight > clampedHeight + 2) {
-        const readMoreBtn = document.createElement('button');
-        readMoreBtn.className = 'read-more-btn';
-        readMoreBtn.textContent = 'เพิ่มเติม';
-        
-        lightboxCaption.appendChild(readMoreBtn);
+      const readMoreBtn = document.createElement('button');
+      readMoreBtn.className = 'read-more-btn';
+      readMoreBtn.textContent = 'เพิ่มเติม';
 
-        readMoreBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            lightboxCaption.classList.toggle('expanded');
-            readMoreBtn.textContent = lightboxCaption.classList.contains('expanded') ? 'ย่อลง' : 'เพิ่มเติม';
-        });
+      lightboxCaption.appendChild(readMoreBtn);
+
+      readMoreBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        lightboxCaption.classList.toggle('expanded');
+        readMoreBtn.textContent = lightboxCaption.classList.contains('expanded') ? 'ย่อลง' : 'เพิ่มเติม';
+      });
     }
   }
 
@@ -701,7 +686,7 @@ document.addEventListener("DOMContentLoaded", function () {
       lightboxOverlay.classList.remove('active');
       lightboxContainer.classList.remove('active');
       lightboxClose.classList.remove('active');
-      
+
       if (currentMediaElement) {
         currentMediaElement.style.transition = '';
         currentMediaElement.removeAttribute('style');
@@ -755,28 +740,55 @@ document.addEventListener("DOMContentLoaded", function () {
   menuToggle.addEventListener('click', function () {
     this.classList.toggle('open');
     headerList.classList.toggle('active');
+    const menuItems = document.querySelectorAll('.header-nav li');
+
     if (headerList.classList.contains('active')) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
+
+      // Add 'show' class to each menu item with a delay
+      menuItems.forEach((item, index) => {
+        setTimeout(() => {
+          item.classList.add('show');
+        }, index * 100 + 100); // Delay each item by 100ms + 100ms base delay
+      });
     } else {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
+      // Remove 'show' class from all menu items when closing
+      menuItems.forEach(item => {
+        item.classList.remove('show');
+      });
     }
   });
 
   // Shrink Header on Scroll
   window.addEventListener('scroll', function () {
     const currentScrollPosition = window.pageYOffset;
+    const header = document.querySelector('.header-section');
+    const heroSection = document.querySelector('.hero-section'); // Get hero section
 
     if (currentScrollPosition > 100) {
       header.classList.add('shrink');
+      header.style.transition = 'all 0.5s ease-out';
     } else {
       header.classList.remove('shrink');
+    }
+
+    // Parallax effect for Hero Section
+    if (heroSection) {
+      // Adjust background position for the main hero section
+      heroSection.style.backgroundPositionY = currentScrollPosition * 0.5 + 'px';
+
+      // Update CSS variable for the pseudo-element parallax
+      // The value should be negative to move slower than scroll, creating the parallax illusion
+      // A multiplier like 0.3 makes it move at 30% of scroll speed.
+      heroSection.style.setProperty('--parallax-translateY', `${currentScrollPosition * 0.3}px`);
     }
   }, { passive: true }); // Use passive listener for better scroll performance
 
   // Filter functionality
-  filtersEl.addEventListener('click', async function(e) {
+  filtersEl.addEventListener('click', async function (e) {
     if (e.target.tagName === 'BUTTON') {
       filtersEl.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
       e.target.classList.add('active');
@@ -900,10 +912,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // Remove active class from all buttons and contents
       tabBtns.forEach(btn => btn.classList.remove('active'));
       tabContents.forEach(content => content.classList.remove('active'));
-      
+
       // Add active class to clicked button
       btn.classList.add('active');
-      
+
       // Show corresponding content
       const tabId = btn.getAttribute('data-tab');
       document.getElementById(tabId).classList.add('active');
@@ -924,10 +936,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // Remove active class from all section tabs and contents
       sectionTabBtns.forEach(t => t.classList.remove('active'));
       sectionTabContents.forEach(c => c.classList.remove('active'));
-      
+
       // Add active class to clicked section tab
       btn.classList.add('active');
-      
+
       // Show corresponding content
       const tabId = btn.getAttribute('data-tab');
       document.getElementById(tabId).classList.add('active');
@@ -946,4 +958,12 @@ document.querySelectorAll('.accordion-header').forEach(header => {
     const item = header.parentElement;
     item.classList.toggle('active');
   });
+});
+
+// Optional: Add interactive effects
+document.querySelector('.header-logo').addEventListener('mouseenter', function() {
+  this.classList.add('hover-active');
+  setTimeout(() => {
+    this.classList.remove('hover-active');
+  }, 1000);
 });
