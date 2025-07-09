@@ -124,30 +124,30 @@ document.addEventListener("DOMContentLoaded", function () {
   function loadLocalStats() { return JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}"); }
   function saveLocalStats(d) { localStorage.setItem(LOCAL_KEY, JSON.stringify(d)); }
 
-  // Function to show info modal
-  function showInfoModal(message) {
-    const modal = document.createElement('div');
-    modal.className = 'custom-modal';
-    modal.innerHTML = `
-      <div class="custom-modal-content">
-        <p>${message}</p>
-        <div class="custom-modal-actions">
-          <button class="custom-modal-btn confirm">ตกลง</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(modal);
+  // // Function to show info modal
+  // function showInfoModal(message) {
+  //   const modal = document.createElement('div');
+  //   modal.className = 'custom-modal';
+  //   modal.innerHTML = `
+  //     <div class="custom-modal-content">
+  //       <p>${message}</p>
+  //       <div class="custom-modal-actions">
+  //         <button class="custom-modal-btn confirm">ตกลง</button>
+  //       </div>
+  //     </div>
+  //   `;
+  //   document.body.appendChild(modal);
 
-    modal.querySelector('.custom-modal-btn.confirm').addEventListener('click', () => {
-      modal.remove();
-    });
+  //   modal.querySelector('.custom-modal-btn.confirm').addEventListener('click', () => {
+  //     modal.remove();
+  //   });
 
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.remove();
-      }
-    });
-  }
+  //   modal.addEventListener('click', (e) => {
+  //     if (e.target === modal) {
+  //       modal.remove();
+  //     }
+  //   });
+  // }
 
   // Function to trigger heart burst animation
   function triggerHeartBurst(btn) {
