@@ -313,11 +313,6 @@ body.dark-mode .project-item.most-viewed {
   box-shadow: 0 0 20px rgba(79, 195, 247, 0.4);
 }
 
-/* body.dark-mode .project-item.most-viewed::before {
-  background-color: #0288d1;
-  color: #e0e0e0;
-} */
-
 body.dark-mode .lightbox-overlay {
   background-color: rgba(0, 0, 0, 0.9);
 }
@@ -1971,11 +1966,11 @@ body.dark-mode .project-meta .stat-item {
   left: 0.5rem;
   background: linear-gradient(
     -45deg,
-    #4d91ff 0%,
-    #4d91ff 25%,
-    #5940ff 50%,
-    #4d91ff 75%,
-    #4d91ff 100%
+    #03a9f4 0%,
+    #03a9f4 25%,
+    #0373f4 50%,
+    #03a9f4 75%,
+    #03a9f4 100%
   );
   color: #fff;
   padding: 0.3rem 0.8rem;
@@ -1984,7 +1979,7 @@ body.dark-mode .project-meta .stat-item {
   font-weight: 700;
   width: fit-content;
   z-index: 10;
-  box-shadow: 0 4px 15px #5940ff;
+  box-shadow: 0 4px 15px #0373f4;
   animation: shimmer 3s infinite ease;
   background-size: 200% auto;
   text-shadow: 0 1px 2px rgba(0,0,0,0.2);
@@ -2007,7 +2002,7 @@ body.dark-mode .project-meta .stat-item {
     rgba(255,255,255,0.3) 50%,
     rgba(255,255,255,0) 100%
   );
-  animation: shine 3s infinite ease-in-out;
+  animation: shine 6.8s infinite ease-in-out;
 }
 
 @keyframes shimmer {
@@ -2031,12 +2026,6 @@ body.dark-mode .project-meta .stat-item {
   }
 }
 
-.project-item.most-viewed:hover::before {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px #408cff
-              0 0px 20px #5999f8;
-  animation: shimmer 1.5s infinite linear, shine 1.5s infinite ease-in-out;
-}
 
 /* Enhanced like button styling */
 .stat-item.likes {
@@ -2296,8 +2285,8 @@ body.dark-mode .project-meta .stat-item {
   height: 100%;
   pointer-events: none;
   z-index: 10;
-  top: 0;
-  left: 0;
+  top: 40%;
+  left: 20%;
 }
 
 .burst-heart {
@@ -2636,100 +2625,6 @@ body.dark-mode .cert-card {
   padding-bottom: 1rem;
   color: var(--color-accent);
   font-weight: 600;
-}
-
-/* Custom Modal Styles */
-.custom-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-  backdrop-filter: blur(5px);
-  animation: fadeInModal 0.3s ease-out;
-}
-
-.custom-modal-content {
-  background-color: var(--color-card-bg);
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-  animation: slideInModal 0.3s ease-out;
-}
-
-.custom-modal-content p {
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-  color: var(--color-text-dark);
-}
-
-.custom-modal-actions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.custom-modal-btn {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: all 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.custom-modal-btn.confirm {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-}
-
-.custom-modal-btn.confirm:hover {
-  background-color: var(--color-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(var(--color-primary-rgb), 0.3);
-}
-
-.custom-modal-btn.cancel {
-  background-color: #ccc;
-  color: var(--color-text-dark);
-}
-
-.custom-modal-btn.cancel:hover {
-  background-color: #bbb;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-@keyframes fadeInModal {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideInModal {
-  from {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
 
 @media (max-width: 640px) {
@@ -3163,53 +3058,6 @@ body.dark-mode .qr-label {
 /* ============================================================================
    Additional Animations & Tooltips
    ============================================================================ */
-/* Fullscreen heart animation */
-.fullscreen-heart-animation {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  font-size: 15rem;
-  color: var(--color-heart-liked);
-  z-index: 10005;
-  opacity: 0;
-  pointer-events: none;
-  animation: zoomAndFade 0.8s ease-out forwards;
-  text-shadow: 0 0 30px rgba(230, 57, 70, 0.8);
-}
-
-@keyframes zoomAndFade {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0.8;
-  }
-
-  50% {
-    transform: translate(-50%, -50%) scale(0.7);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0;
-  }
-}
-
-/* Pulse animation (general) */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.2);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
 /* Share button hover effect */
 .stat-item.shares:hover {
   transform: translateY(-3px);
@@ -3246,61 +3094,6 @@ body.dark-mode .qr-label {
 .stat-item.views:hover i {
   animation: blinkEye 0.6s ease;
   color: #03a9f4;
-}
-
-@keyframes blinkEye {
-
-  0%,
-  100% {
-    transform: scaleY(1);
-  }
-
-  50% {
-    transform: scaleY(0.1);
-  }
-}
-
-/* Tooltip for like button */
-.stat-item.likes::after {
-  content: 'กดไลค์ให้กำลังใจฉันหน่อยนะ!';
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-20%);
-  background: #e63946;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  pointer-events: none;
-  margin-bottom: 10px;
-}
-
-.stat-item.likes::before {
-  content: '';
-  width: 20px;
-  height: 20px;
-  bottom: 100%;
-  left: 0;
-  rotate: 45deg;
-  background-color: #e63946;
-  position: absolute;
-  z-index: 10001;
-  transform: translateX(-20%);
-  transition: all 0.3s ease;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.stat-item.likes:hover::after,
-.stat-item.likes:hover::before {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-20%) translateY(-5px);
 }
 
 /* Lightbox like button styling */

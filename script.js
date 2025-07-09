@@ -25,7 +25,7 @@ function createRipple(event) {
 document.addEventListener("DOMContentLoaded", function () {
   // Add Ripple effect to desired elements
   const rippleElements = document.querySelectorAll(
-    ".hero-btn-primary a, .filter-btn, .project-item, .cert-card, .tab-btn, .section-tab" // Added .tab-btn and .section-tab here
+    ".hero-btn-primary a, .filter-btn, .project-item, .cert-card, .tab-btn, .section-tab"
   );
 
   rippleElements.forEach((element) => {
@@ -124,31 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function loadLocalStats() { return JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}"); }
   function saveLocalStats(d) { localStorage.setItem(LOCAL_KEY, JSON.stringify(d)); }
 
-  // // Function to show info modal
-  // function showInfoModal(message) {
-  //   const modal = document.createElement('div');
-  //   modal.className = 'custom-modal';
-  //   modal.innerHTML = `
-  //     <div class="custom-modal-content">
-  //       <p>${message}</p>
-  //       <div class="custom-modal-actions">
-  //         <button class="custom-modal-btn confirm">ตกลง</button>
-  //       </div>
-  //     </div>
-  //   `;
-  //   document.body.appendChild(modal);
-
-  //   modal.querySelector('.custom-modal-btn.confirm').addEventListener('click', () => {
-  //     modal.remove();
-  //   });
-
-  //   modal.addEventListener('click', (e) => {
-  //     if (e.target === modal) {
-  //       modal.remove();
-  //     }
-  //   });
-  // }
-
   // Function to trigger heart burst animation
   function triggerHeartBurst(btn) {
     const burst = document.createElement("div");
@@ -169,17 +144,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     btn.appendChild(burst);
     setTimeout(() => burst.remove(), 1000);
-  }
-
-  function triggerFullscreenHeart() {
-    const heart = document.createElement('div');
-    heart.className = 'fullscreen-heart-animation';
-    heart.innerHTML = '<i class="fas fa-heart"></i>';
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-      heart.remove();
-    }, 800); // Match animation duration
   }
 
   // Stat handler functions
@@ -242,7 +206,6 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.classList.add("liked");
 
     triggerHeartBurst(btn);
-    triggerFullscreenHeart();
 
     local[id] = local[id] || {};
     local[id].liked = true;
@@ -259,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.querySelector(".like-count").textContent = actualStats.likes;
         delete local[id].liked;
         saveLocalStats(local);
-        await showInfoModal('เกิดข้อผิดพลาดในการบันทึกไลก์ กรุณาลองใหม่อีกครั้ง');
+        console.error('Failed to save like to server.');
       }
     } catch (error) {
       console.error("Error in handleLike (server call):", error);
@@ -268,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.querySelector(".like-count").textContent = actualStats.likes;
       delete local[id].liked;
       saveLocalStats(local);
-      await showInfoModal('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาตรวจสอบอินเทอร์เน็ตและลองใหม่อีกครั้ง');
+      console.error('Error connecting to server for like.');
     }
   }
 
@@ -302,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('User cancelled share');
           }
         } else {
-          await showInfoModal('เบราว์เซอร์ของคุณไม่รองรับการแชร์โดยตรง กรุณาคัดลอกลิงก์ด้วยตนเอง');
+          console.warn('Browser does not support Web Share API.');
         }
       } else {
         btn.classList.remove("shared");
@@ -310,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
         saveLocalStats(local);
         const actualStats = await fetchProjectStats(id);
         btn.querySelector(".share-count").textContent = actualStats.shares;
-        await showInfoModal('เกิดข้อผิดพลาดในการบันทึกการแชร์ กรุณาลองใหม่อีกครั้ง');
+        console.error('Failed to save share to server.');
       }
     } catch (error) {
       console.error("Error in handleShare (server call):", error);
@@ -319,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
       saveLocalStats(local);
       const actualStats = await fetchProjectStats(id);
       btn.querySelector(".share-count").textContent = actualStats.shares;
-      await showInfoModal('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาตรวจสอบอินเทอร์เน็ตและลองใหม่อีกครั้ง');
+      console.error('Error connecting to server for share.');
     }
   }
 
@@ -950,20 +913,4 @@ document.addEventListener("DOMContentLoaded", function () {
   if (sectionTabBtns.length > 0) {
     sectionTabBtns[0].click();
   }
-});
-
-// For Accordion (already in script.js but not used in this tabbed layout)
-document.querySelectorAll('.accordion-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const item = header.parentElement;
-    item.classList.toggle('active');
-  });
-});
-
-// Optional: Add interactive effects
-document.querySelector('.header-logo').addEventListener('mouseenter', function() {
-  this.classList.add('hover-active');
-  setTimeout(() => {
-    this.classList.remove('hover-active');
-  }, 1000);
 });
