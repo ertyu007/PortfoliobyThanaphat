@@ -1,16 +1,18 @@
 /* Google Fonts */
 @font-face {
   font-family: 'NotoSansTamil';
-  src: url(./fonts/NotoSansTamil-Thin.ttf);
+  src: url(./fonts/NotoSansTamil-Thin.ttf) format('truetype');
   font-style: normal;
   font-weight: 300;
+  font-display: swap; /* Font Optimization: Use font-display: swap */
 }
 
 @font-face {
   font-family: 'NotoSansTamil';
-  src: url(./fonts/NotoSansTamil-Medium.ttf);
+  src: url(./fonts/NotoSansTamil-Medium.ttf) format('truetype');
   font-style: normal;
   font-weight: 500;
+  font-display: swap; /* Font Optimization: Use font-display: swap */
 }
 
 button,
@@ -81,6 +83,9 @@ body.lightbox-open {
   overflow: hidden;
 }
 
+/* Consider minifying and compressing this CSS file as part of a build process. */
+/* Analyze CSS coverage to remove unused styles for further optimization. */
+
 /* ============================================================================
    Preloader Styles
    ============================================================================ */
@@ -96,7 +101,7 @@ body.lightbox-open {
   flex-direction: column;
   align-items: center;
   z-index: 9999;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Faster transition for less intrusiveness */
   opacity: 1;
   visibility: visible;
 }
@@ -1415,7 +1420,7 @@ body.dark-mode .skill-category h3 {
 .skill-bar {
   height: 8px;
   background: #e0e0e0;
-  border-radius: 4一層;
+  border-radius: 4px;
   overflow: hidden;
 }
 
@@ -1706,11 +1711,17 @@ body.dark-mode .project-item:hover {
   position: relative;
   overflow: hidden;
   border-radius: 10px 10px 0 0;
+  /* CLS Improvement: Maintain aspect ratio for image containers */
+  padding-top: 75%; /* 4:3 aspect ratio (height / width * 100) based on typical image sizes */
+  height: 0;
 }
 
 .project-item img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 220px;
+  height: 100%;
   object-fit: cover;
   display: block;
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -2528,6 +2539,11 @@ body.dark-mode .cert-header .intro {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
   padding: 0.6rem;
+  /* CLS Improvement: Add min-height to prevent layout shifts */
+  min-height: 250px; /* Adjust based on expected certificate image height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 body.dark-mode .cert-card {
@@ -2552,6 +2568,7 @@ body.dark-mode .cert-card {
     height: 100%;
     margin: 0 0.5rem;
     padding: 0.2rem;
+    min-height: 150px; /* Adjust for mobile */
   }
 
   .cert-header .intro {
@@ -3120,6 +3137,21 @@ body.dark-mode .qr-label {
   .stat-item.likes:hover::after,
   .stat-item.likes:hover::before {
     display: none;
+  }
+}
+
+/* Accessibility: Reduce animations for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-section::before {
+    transform: translateY(0) !important; /* Disable parallax */
   }
 }
 

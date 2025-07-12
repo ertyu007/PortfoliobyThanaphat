@@ -8,9 +8,15 @@
   <title>แฟ้มสะสมผลงาน ม.6 | IT, หุ่นยนต์, ตัดต่อวิดีโอ - ธนภัทร การะจักษ์</title>
   <link rel="shortcut icon" href="./assets/images/icon.png" type="image/x-icon">
 
+  <!-- Font Optimization: Preload NotoSansTamil fonts for faster loading -->
+  <link rel="preload" href="./fonts/NotoSansTamil-Thin.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="./fonts/NotoSansTamil-Medium.ttf" as="font" type="font/ttf" crossorigin>
+
   <link rel="stylesheet" href="style.css" />
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Defer non-critical CSS (AOS) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <!-- Load Font Awesome asynchronously -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
   <!-- SEO -->
   <!-- Updated Meta Description: Focus on high-demand fields, real results, and a strong call to action -->
@@ -31,6 +37,18 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="th_TH" />
 
+  <!-- Image Optimization Recommendation:
+       For profile.jpg, certificates, and logos, consider:
+       1. Compressing images using tools like TinyPNG or ImageOptim.
+       2. Resizing images to the maximum display size to reduce file size.
+       3. Converting images to modern formats like WebP for better compression,
+          and serving them conditionally using <picture> element if browser support is a concern.
+          Example:
+          <picture>
+            <source srcset="./assets/images/profile.webp" type="image/webp">
+            <img src="./assets/images/profile.jpg" alt="รูปโปรไฟล์ของ ธนภัทร" loading="lazy">
+          </picture>
+  -->
 </head>
 
 <body>
@@ -71,7 +89,7 @@
           <i class="fas fa-cog"></i>
         </button>
       </nav>
-      <div class="menu-toggle">
+      <div class="menu-toggle" aria-label="Toggle mobile menu">
         <span></span>
         <span></span>
         <span></span>
@@ -101,7 +119,8 @@
         </div>
 
         <div class="hero-profile">
-          <img class="profile" src="./assets/images/profile.jpg" alt="รูปโปรไฟล์ของ ธนภัทร" />
+          <!-- Lazy load profile image as it might be below the fold on larger screens -->
+          <img class="profile" src="./assets/images/profile.jpg" alt="รูปโปรไฟล์ของ ธนภัทร" loading="lazy" />
         </div>
       </div>
 
@@ -114,21 +133,24 @@
     <section id="About" class="about-section">
       <div class="about-container">
         <div class="about-profile" data-aos="fade-right" data-aos-duration="1000">
-          <img src="./assets/images/profile.jpg" alt="รูปโปรไฟล์สำหรับส่วน About" class="profile-img" />
+          <!-- Lazy load profile image -->
+          <img src="./assets/images/profile.jpg" alt="รูปโปรไฟล์สำหรับส่วน About" class="profile-img" loading="lazy" />
         </div>
 
         <div class="about-content">
           <div class="about-tabs-container">
             <div class="about-tabs">
               <button class="tab-btn" data-tab="personal-info" data-aos="fade-up"
-                data-aos-delay="100">ข้อมูลส่วนบุคคล</button>
-              <button class="tab-btn" data-tab="interests" data-aos="fade-up" data-aos-delay="200">ความสนใจ</button>
-              <button class="tab-btn" data-tab="motto" data-aos="fade-up" data-aos-delay="300">คติประจำใจ</button>
+                data-aos-delay="100" aria-controls="personal-info" role="tab" aria-selected="true">ข้อมูลส่วนบุคคล</button>
+              <button class="tab-btn" data-tab="interests" data-aos="fade-up" data-aos-delay="200"
+                aria-controls="interests" role="tab" aria-selected="false">ความสนใจ</button>
+              <button class="tab-btn" data-tab="motto" data-aos="fade-up" data-aos-delay="300"
+                aria-controls="motto" role="tab" aria-selected="false">คติประจำใจ</button>
               <button class="tab-btn" data-tab="life-goals" data-aos="fade-up"
-                data-aos-delay="400">เป้าหมายในชีวิต</button>
+                data-aos-delay="400" aria-controls="life-goals" role="tab" aria-selected="false">เป้าหมายในชีวิต</button>
             </div>
 
-            <div id="personal-info" class="tab-content">
+            <div id="personal-info" class="tab-content" role="tabpanel" aria-labelledby="personal-info-tab">
               <div class="about-card">
                 <h2>ข้อมูลส่วนบุคคล</h2>
                 <p class="intro-text">
@@ -142,8 +164,9 @@
                   <li><strong>ที่อยู่:</strong> จังหวัดอำนาจเจริญ, ประเทศไทย</li>
                   <li class="school-info-item">
                     <div class="school-logo-container">
+                      <!-- Lazy load school logo -->
                       <img src="./assets/logo/db4eeade-7ddd-4a03-b2ce-e8f57f3abc07.png" alt="โรงเรียนน้ำปลีกศึกษา โลโก้"
-                        class="school-logo-img">
+                        class="school-logo-img" loading="lazy">
                     </div>
                     <div class="school-details">
                       <strong>สถานศึกษา (มัธยมศึกษาปีที่ 1 - 6):</strong>
@@ -152,8 +175,9 @@
                   </li>
                   <li class="school-info-item">
                     <div class="school-logo-container">
+                      <!-- Lazy load school logo -->
                       <img src="./assets/logo/d1eecf5b-00f6-45f1-abd1-c5a63de43400.png"
-                        alt="โรงเรียนมารีย์นุเคราะห์ (โรงเรียนเซนต์แมรี่ยโสธร) โลโก้" class="school-logo-img">
+                        alt="โรงเรียนมารีย์นุเคราะห์ (โรงเรียนเซนต์แมรี่ยโสธร) โลโก้" class="school-logo-img" loading="lazy">
                     </div>
                     <div class="school-details">
                       <strong>สถานศึกษา (อนุบาล - ประถมศึกษาปีที่ 6):</strong>
@@ -164,7 +188,7 @@
               </div>
             </div>
 
-            <div id="interests" class="tab-content">
+            <div id="interests" class="tab-content" role="tabpanel" aria-labelledby="interests-tab">
               <div class="about-card">
                 <h2>ความสนใจ</h2>
                 <p>
@@ -175,14 +199,14 @@
               </div>
             </div>
 
-            <div id="motto" class="tab-content">
+            <div id="motto" class="tab-content" role="tabpanel" aria-labelledby="motto-tab">
               <div class="about-card">
                 <h2>คติประจำใจ</h2>
                 <p>"ไม่มีคำว่าสาย สำหรับผู้ที่มีความตั้งใจที่จะเริ่มต้นอย่างแท้จริง"</p>
               </div>
             </div>
 
-            <div id="life-goals" class="tab-content">
+            <div id="life-goals" class="tab-content" role="tabpanel" aria-labelledby="life-goals-tab">
               <div class="about-card">
                 <h2>เป้าหมายในชีวิต</h2>
                 <h3>ความฝันสู่สายอาชีพวิศวกรรมเครือข่าย</h3>
@@ -218,13 +242,13 @@
     <section id="Skills" class="skills-experience-section">
       <div class="container">
         <!-- Tab Menu -->
-        <div class="section-tabs">
-          <button class="section-tab active" data-tab="skills-tab">ทักษะ</button>
-          <button class="section-tab" data-tab="experience-tab">ประสบการณ์</button>
+        <div class="section-tabs" role="tablist">
+          <button class="section-tab active" data-tab="skills-tab" aria-controls="skills-tab" role="tab" aria-selected="true">ทักษะ</button>
+          <button class="section-tab" data-tab="experience-tab" aria-controls="experience-tab" role="tab" aria-selected="false">ประสบการณ์</button>
         </div>
 
         <!-- Skills Part -->
-        <div id="skills-tab" class="tab-content active">
+        <div id="skills-tab" class="tab-content active" role="tabpanel" aria-labelledby="skills-tab-btn">
           <div class="skills-grid">
             <!-- Technical Skills -->
             <div class="skill-category" data-aos="fade-up">
@@ -370,7 +394,7 @@
         </div>
 
         <!-- Experience Part -->
-        <div id="experience-tab" class="tab-content">
+        <div id="experience-tab" class="tab-content" role="tabpanel" aria-labelledby="experience-tab-btn">
           <div class="experience-grid">
             <!-- Electrical Experience Section -->
             <div class="experience-card" data-aos="fade-up">
@@ -439,18 +463,19 @@
         </h2>
       </div>
       <!-- Filter Buttons -->
-      <div id="filters" class="filters" data-aos="fade-up" data-aos-delay="200">
-        <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
-        <button class="filter-btn" data-filter="it">งานเทคโนโลยีสารสนเทศ</button>
-        <button class="filter-btn" data-filter="แต่งภาพ">การตกแต่งภาพ</button>
-        <button class="filter-btn" data-filter="เเข่งหุ่นยนต์">การแข่งขันหุ่นยนต์</button>
-        <button class="filter-btn" data-filter="ตัดต่อ">การตัดต่อ</button>
-        <button class="filter-btn" data-filter="code">การเขียนโปรแกรม</button>
-        <button class="filter-btn" data-filter="สภานักเรียน">สภานักเรียน</button>
+      <div id="filters" class="filters" data-aos="fade-up" data-aos-delay="200" role="group" aria-label="Project categories filter">
+        <button class="filter-btn active" data-filter="all" aria-pressed="true">ทั้งหมด</button>
+        <button class="filter-btn" data-filter="it" aria-pressed="false">งานเทคโนโลยีสารสนเทศ</button>
+        <button class="filter-btn" data-filter="แต่งภาพ" aria-pressed="false">การตกแต่งภาพ</button>
+        <button class="filter-btn" data-filter="เเข่งหุ่นยนต์" aria-pressed="false">การแข่งขันหุ่นยนต์</button>
+        <button class="filter-btn" data-filter="ตัดต่อ" aria-pressed="false">การตัดต่อ</button>
+        <button class="filter-btn" data-filter="code" aria-pressed="false">การเขียนโปรแกรม</button>
+        <button class="filter-btn" data-filter="สภานักเรียน" aria-pressed="false">สภานักเรียน</button>
       </div>
 
       <!-- Gallery Grid -->
       <div id="gallery" class="gallery-grid" data-aos="fade-up" data-aos-delay="300">
+        <!-- Project items will be dynamically loaded here by script.js -->
       </div>
     </section>
 
@@ -465,47 +490,48 @@
       <div class="cert-slider-container">
         <div class="cert-slider-track">
           <div class="cert-card" data-index="0" data-aos="fade-up" data-aos-delay="100">
-            <img src="./assets/Certificate/Certificate_003.jpg" alt="ประกาศนียบัตร 1" />
+            <!-- Lazy load certificate images -->
+            <img src="./assets/Certificate/Certificate_003.jpg" alt="ประกาศนียบัตรการแข่งขันหุ่นยนต์" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="1" data-aos="fade-up" data-aos-delay="200">
-            <img src="./assets/Certificate/Certificate_002.jpg" alt="ประกาศนียบัตร 2" />
+            <img src="./assets/Certificate/Certificate_002.jpg" alt="ประกาศนียบัตรการอบรมเชิงปฏิบัติการ" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="2" data-aos="fade-up" data-aos-delay="300">
-            <img src="./assets/Certificate/Certificate_001.jpg" alt="ประกาศนียบัตร 3" />
+            <img src="./assets/Certificate/Certificate_001.jpg" alt="ประกาศนียบัตรเข้าร่วมโครงการ" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="3" data-aos="fade-up" data-aos-delay="400">
-            <img src="./assets/Certificate/Certificate_004.jpg" alt="ประกาศนียบัตร 4" />
+            <img src="./assets/Certificate/Certificate_004.jpg" alt="ประกาศนียบัตรการเข้าร่วมกิจกรรม" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="4" data-aos="fade-up" data-aos-delay="500">
-            <img src="./assets/Certificate/Certificate_005.jpg" alt="ประกาศนียบัตร 5" />
+            <img src="./assets/Certificate/Certificate_005.jpg" alt="ประกาศนียบัตรความสำเร็จทางวิชาการ" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="5" data-aos="fade-up" data-aos-delay="600">
-            <img src="./assets/Certificate/Certificate_006.jpg" alt="ประกาศนียบัตร 6" />
+            <img src="./assets/Certificate/Certificate_006.jpg" alt="ประกาศนียบัตรการพัฒนาทักษะ" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="6" data-aos="fade-up" data-aos-delay="700">
-            <img src="./assets/Certificate/Certificate_007.jpg" alt="ประกาศนียบัตร 7" />
+            <img src="./assets/Certificate/Certificate_007.jpg" alt="ประกาศนียบัตรการเข้าร่วมการแข่งขัน" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="7" data-aos="fade-up" data-aos-delay="800">
-            <img src="./assets/Certificate/Certificate_008.jpg" alt="ประกาศนียบัตร 8" />
+            <img src="./assets/Certificate/Certificate_008.jpg" alt="ประกาศนียบัตรการฝึกอบรม" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="8" data-aos="fade-up" data-aos-delay="900">
-            <img src="./assets/Certificate/Certificate_009.jpg" alt="ประกาศนียบัตร 9" />
+            <img src="./assets/Certificate/Certificate_009.jpg" alt="ประกาศนียบัตรการผ่านหลักสูตร" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="9" data-aos="fade-up" data-aos-delay="1000">
-            <img src="./assets/Certificate/Certificate_010.jpg" alt="ประกาศนียบัตร 10" />
+            <img src="./assets/Certificate/Certificate_010.jpg" alt="ประกาศนียบัตรการเข้าร่วมสัมมนา" loading="lazy" />
           </div>
 
           <div class="cert-card" data-index="10" data-aos="fade-up" data-aos-delay="1100">
-            <img src="./assets/Certificate/Certificate_011.jpg" alt="ประกาศนียบัตร 11" />
+            <img src="./assets/Certificate/Certificate_011.jpg" alt="ประกาศนียบัตรการได้รับรางวัล" loading="lazy" />
           </div>
         </div>
       </div>
@@ -513,12 +539,12 @@
 
     <!-- Time Section -->
     <section class="time-section" data-aos="fade-up" data-aos-duration="1000">
-      <p id="uptime"></p>
-      <span class="stat-item" title="จำนวนการกดถูกใจทั้งหมด"><i class="fas fa-heart"></i> <span
+      <p id="uptime" aria-live="polite">เวลาที่ใช้งาน: 0d 0h 0m 0s</p>
+      <span class="stat-item" title="จำนวนการกดถูกใจทั้งหมด" aria-label="Total likes"><i class="fas fa-heart"></i> <span
           id="total-likes">0</span></span>
-      <span class="stat-item" title="จำนวนการแบ่งปันทั้งหมด"><i class="fas fa-share-alt"></i> <span
+      <span class="stat-item" title="จำนวนการแบ่งปันทั้งหมด" aria-label="Total shares"><i class="fas fa-share-alt"></i> <span
           id="total-shares">0</span></span>
-      <span class="stat-item" title="จำนวนการเข้าชมทั้งหมด"><i class="fas fa-eye"></i> <span
+      <span class="stat-item" title="จำนวนการเข้าชมทั้งหมด" aria-label="Total views"><i class="fas fa-eye"></i> <span
           id="total-views">0</span></span>
     </section>
 
@@ -528,14 +554,15 @@
 
       <div class="contact-contant">
         <ul class="contact-list">
-          <li><a href="mailto:ertyualexs04@gmail.com">ertyualexs04@gmail.com</a></li>
-          <li><a href="tel:0800163734">080 016 3734</a></li>
-          <li><a href="https://github.com/ertyu007/" target="_blank">GitHub</a></li>
-          <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank">Facebook</a></li>
-          <li><a href="https://www.youtube.com/@amazingwuji" target="_blank">Youtube</a></li>
+          <li><a href="mailto:ertyualexs04@gmail.com" aria-label="Send email to ertyualexs04@gmail.com">ertyualexs04@gmail.com</a></li>
+          <li><a href="tel:0800163734" aria-label="Call 080 016 3734">080 016 3734</a></li>
+          <li><a href="https://github.com/ertyu007/" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub profile">GitHub</a></li>
+          <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank" rel="noopener noreferrer" aria-label="Visit Facebook profile">Facebook</a></li>
+          <li><a href="https://www.youtube.com/@amazingwuji" target="_blank" rel="noopener noreferrer" aria-label="Visit YouTube channel">Youtube</a></li>
           <li>
             <span class="qr-label">QR Code Line</span>
-            <img src="./assets/images/qrLine.jpg" alt="QR Code สำหรับ Line" width="120">
+            <!-- Lazy load QR code image -->
+            <img src="./assets/images/qrLine.jpg" alt="QR Code สำหรับ Line" width="120" loading="lazy">
           </li>
         </ul>
       </div>
@@ -569,16 +596,16 @@
             <ul>
               <li><a href="mailto:ertyualexs04@gmail.com">อีเมล</a></li>
               <li><a href="tel:0800163734">โทรศัพท์</a></li>
-              <li><a href="https://github.com/ertyu007/" target="_blank">GitHub</a></li>
-              <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank">Facebook</a></li>
-              <li><a href="https://www.youtube.com/@amazingwuji" target="_blank">YouTube</a></li>
+              <li><a href="https://github.com/ertyu007/" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+              <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+              <li><a href="https://www.youtube.com/@amazingwuji" target="_blank" rel="noopener noreferrer">YouTube</a></li>
             </ul>
           </div>
 
           <div class="footer-column">
             <h3>แหล่งข้อมูล</h3>
             <ul>
-              <li><a href="#" target="_blank">แฟ้มสะสมผลงาน (PDF)</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer">แฟ้มสะสมผลงาน (PDF)</a></li>
               <li><a href="./privacy-policy.html">นโยบายความเป็นส่วนตัว</a></li>
               <li><a href="./terms-of-use.html">เงื่อนไขการใช้งาน</a></li>
             </ul>
@@ -594,7 +621,7 @@
   </main>
 
   <!-- Lightbox Elements -->
-  <div id="lightbox-overlay" class="lightbox-overlay"></div>
+  <div id="lightbox-overlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Project details lightbox"></div>
   <div id="lightbox-content-container" class="lightbox-content-container">
     <img id="lightbox-image" class="lightbox-media" src="" alt="รูปภาพขยาย" style="display: none;">
     <div id="lightbox-info-container">
@@ -604,12 +631,17 @@
       <div class="lightbox-controls"></div>
     </div>
   </div>
-  <button id="lightbox-close" class="lightbox-close">
+  <button id="lightbox-close" class="lightbox-close" aria-label="Close lightbox">
     <i class="fas fa-times"></i>
   </button>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script type="module" src="script.js"></script>
+  <!-- Defer non-critical JavaScript -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+  <script type="module" src="script.js" defer></script>
+  <!-- JavaScript Optimization Recommendation:
+       For larger applications, consider code splitting to load only necessary JS.
+       Also, minify and compress all JavaScript files as part of a build process.
+  -->
 </body>
 
 </html>
