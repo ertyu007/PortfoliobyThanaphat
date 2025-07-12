@@ -38,39 +38,63 @@ document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll("section");
   const navItems = document.querySelectorAll(".header-nav li a");
   const header = document.querySelector('.header-section');
-  // Initial header height, will be recalculated on scroll for dynamic header
-  let headerOffset = header.offsetHeight; 
 
-  const observerOptions = {
-    root: null,
-    // Adjust rootMargin dynamically based on current header height
-    // This ensures correct intersection calculation even if header shrinks
-    rootMargin: `-${headerOffset}px 0px 0px 0px`, 
-    threshold: 0.5, // Trigger when 50% of the section is visible
-  };
+  // Store the current observer instance
+  let currentObserver = null;
 
-  const observer = new IntersectionObserver((entries) => {
-    // Recalculate headerOffset inside the observer callback as well,
-    // in case the header height changes (e.g., due to 'shrink' class)
-    headerOffset = document.querySelector('.header-section').offsetHeight;
-    observer.rootMargin = `-${headerOffset}px 0px 0px 0px`; // Update rootMargin
+  // Function to create and observe sections
+  function setupIntersectionObserver() {
+    // Disconnect existing observer if it exists
+    if (currentObserver) {
+      currentObserver.disconnect();
+    }
 
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const current = entry.target.getAttribute("id");
-        navItems.forEach((item) => {
-          item.classList.remove("active");
-          if (item.getAttribute("href") === `#${current}`) {
-            item.classList.add("active");
-          }
-        });
-      }
+    // Recalculate headerOffset dynamically before creating the observer
+    // This ensures the rootMargin is correct for the current header state (shrunk or not)
+    const headerOffset = header.offsetHeight;
+    
+    const observerOptions = {
+      root: null,
+      // Adjust rootMargin dynamically based on current header height
+      rootMargin: `-${headerOffset}px 0px 0px 0px`, 
+      threshold: 0.5, // Trigger when 50% of the section is visible
+    };
+
+    currentObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const current = entry.target.getAttribute("id");
+          navItems.forEach((item) => {
+            item.classList.remove("active");
+            if (item.getAttribute("href") === `#${current}`) {
+              item.classList.add("active");
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((section) => {
+      currentObserver.observe(section);
     });
-  }, observerOptions);
+  }
 
-  sections.forEach((section) => {
-    observer.observe(section);
+  // Initial setup of the observer
+  setupIntersectionObserver();
+
+  // Re-setup observer when header height might change (e.g., on shrink/expand)
+  // Using a ResizeObserver on the header for more robust detection of height changes
+  const headerResizeObserver = new ResizeObserver(entries => {
+    // Only re-setup if the header's bounding box height has actually changed
+    // This prevents unnecessary re-creations if other properties change but not height
+    const newHeaderHeight = entries[0].contentRect.height;
+    if (Math.abs(newHeaderHeight - header.offsetHeight) > 1) { // Small tolerance for minor fluctuations
+      setupIntersectionObserver();
+    }
   });
+
+  headerResizeObserver.observe(header);
+
 
   // Smooth scrolling for anchor links
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -237,8 +261,10 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.classList.remove("liked");
         const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
         btn.querySelector(".like-count").textContent = actualStats.likes;
-        delete local[id].liked;
-        saveLocalStats(local);
+        if (local[id]) { // Check if local[id] exists before deleting property
+          delete local[id].liked;
+          saveLocalStats(local);
+        }
         console.error('Failed to save like to server, rolling back UI.');
       }
     } catch (error) {
@@ -247,8 +273,10 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.classList.remove("liked");
       const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
       btn.querySelector(".like-count").textContent = actualStats.likes;
-      delete local[id].liked;
-      saveLocalStats(local);
+      if (local[id]) { // Check if local[id] exists before deleting property
+        delete local[id].liked;
+        saveLocalStats(local);
+      }
       console.error('Error connecting to server for like, rolling back UI.');
     }
   }
@@ -291,17 +319,15 @@ document.addEventListener("DOMContentLoaded", function () {
           console.warn('Browser does not support Web Share API. Consider implementing a fallback like copying URL to clipboard.');
           // Fallback: Copy URL to clipboard (example, not implemented here for brevity)
           // const projectUrl = window.location.href;
-          // navigator.clipboard.writeText(projectUrl).then(() => {
-          //   alert('Project URL copied to clipboard!');
-          // }).catch(err => {
-          //   console.error('Failed to copy URL:', err);
-          // });
+          // document.execCommand('copy'); // Fallback for navigator.clipboard.writeText due to iFrame restrictions
         }
       } else {
         // Rollback UI and local storage if server update failed
         btn.classList.remove("shared");
-        delete local[id].shared;
-        saveLocalStats(local);
+        if (local[id]) { // Check if local[id] exists before deleting property
+          delete local[id].shared;
+          saveLocalStats(local);
+        }
         const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
         btn.querySelector(".share-count").textContent = actualStats.shares;
         console.error('Failed to save share to server, rolling back UI.');
@@ -310,8 +336,10 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error in handleShare (server call):", error);
       // Rollback UI and local storage on network/server error
       btn.classList.remove("shared");
-      delete local[id].shared;
-      saveLocalStats(local);
+      if (local[id]) { // Check if local[id] exists before deleting property
+        delete local[id].shared;
+        saveLocalStats(local);
+      }
       const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
       btn.querySelector(".share-count").textContent = actualStats.shares;
       console.error('Error connecting to server for share, rolling back UI.');
@@ -333,8 +361,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const updatedStats = await pushStat(id, 'view');
       if (!updatedStats) {
         // If server update failed, rollback local storage
-        delete local[id].viewed;
-        saveLocalStats(local);
+        if (local[id]) { // Check if local[id] exists before deleting property
+          delete local[id].viewed;
+          saveLocalStats(local);
+        }
         console.error('Failed to save view to server.');
       }
       // Update total views display even if local storage already marked it as viewed
@@ -342,8 +372,10 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("Error in handleView (server call):", error);
       // If network/server error, rollback local storage
-      delete local[id].viewed;
-      saveLocalStats(local);
+      if (local[id]) { // Check if local[id] exists before deleting property
+        delete local[id].viewed;
+        saveLocalStats(local);
+      }
       console.error('Error connecting to server for view.');
     }
   }
@@ -404,13 +436,14 @@ document.addEventListener("DOMContentLoaded", function () {
   async function renderGallery(data, allStatsMap, mostViewedProjectId) {
     showProjectsLoading(false); // Hide loading spinner
     galleryEl.innerHTML = ""; // Clear existing content
-    const local = loadLocalStats();
 
     if (data.length === 0) {
       galleryEl.innerHTML = '<p class="no-projects-message">ไม่พบโปรเจกต์ในหมวดหมู่นี้</p>';
       galleryEl.style.display = 'block'; // Ensure message is visible
       return;
     }
+    
+    const local = loadLocalStats(); // Load local stats once for rendering
 
     const fragment = document.createDocumentFragment(); // Use DocumentFragment for performance
 
@@ -487,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // No explicit click handler for views, it's tracked on lightbox open
-      const viewDisplay = item.querySelector(".stat-item.views");
+      // const viewDisplay = item.querySelector(".stat-item.views"); // This variable is not used
 
       fragment.appendChild(item);
 
@@ -498,6 +531,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // but for initial rendering, it's often done this way.
       // A more robust check would involve temporarily adding to a hidden div.
       // For simplicity, assuming scrollHeight > clientHeight is sufficient.
+      // Note: This check is often unreliable before the element is fully rendered and styled.
+      // A more robust solution for text truncation might involve CSS-only truncation
+      // with a "show more" button that toggles a class.
+      // For now, keeping the existing logic but acknowledging its potential limitations.
       if (descP.scrollHeight > descP.clientHeight) {
         const readMoreBtn = document.createElement('button');
         readMoreBtn.className = 'read-more-project-btn';
@@ -550,6 +587,10 @@ document.addEventListener("DOMContentLoaded", function () {
     mediaElement.onload = () => {
       animateLightbox(mediaElement, lightboxInfoContainer, project);
     };
+    // Handle cases where image might be cached and onload doesn't fire
+    if (mediaElement.complete) {
+      animateLightbox(mediaElement, lightboxInfoContainer, project);
+    }
 
     // Clear previous controls
     const controls = lightboxInfoContainer.querySelector('.lightbox-controls');
@@ -711,7 +752,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.body.classList.remove("lightbox-open");
       document.documentElement.classList.remove("lightbox-open");
 
-      const loadingSpinner = lightboxContainer.querySelector('.lightbox-video-loading');
+      const loadingSpinner = lightboxContainer.querySelector('.lightbox-video-loading'); // This class is not used
       if (loadingSpinner) {
         loadingSpinner.remove();
       }
@@ -742,7 +783,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    await renderGallery(projects, allStatsMap, mostViewedProjectId);
+    renderGallery(projects, allStatsMap, mostViewedProjectId); // Removed await as it's not necessary here
     await updateTotalStatsDisplay();
   })();
 
