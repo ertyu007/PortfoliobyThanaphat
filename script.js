@@ -34,20 +34,27 @@ document.addEventListener("DOMContentLoaded", function () {
     element.addEventListener("touchend", createRipple); // For mobile
   });
 
-  // Active link highlighting based on scroll position
+  // Active link highlighting based on scroll position using Intersection Observer
   const sections = document.querySelectorAll("section");
   const navItems = document.querySelectorAll(".header-nav li a");
   const header = document.querySelector('.header-section');
-  const headerOffset = header.offsetHeight; // Get initial header height
+  // Initial header height, will be recalculated on scroll for dynamic header
+  let headerOffset = header.offsetHeight; 
 
-  // Use Intersection Observer for more efficient scroll highlighting
   const observerOptions = {
     root: null,
-    rootMargin: `-${headerOffset}px 0px 0px 0px`, // Adjust margin based on header height
+    // Adjust rootMargin dynamically based on current header height
+    // This ensures correct intersection calculation even if header shrinks
+    rootMargin: `-${headerOffset}px 0px 0px 0px`, 
     threshold: 0.5, // Trigger when 50% of the section is visible
   };
 
   const observer = new IntersectionObserver((entries) => {
+    // Recalculate headerOffset inside the observer callback as well,
+    // in case the header height changes (e.g., due to 'shrink' class)
+    headerOffset = document.querySelector('.header-section').offsetHeight;
+    observer.rootMargin = `-${headerOffset}px 0px 0px 0px`; // Update rootMargin
+
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const current = entry.target.getAttribute("id");
@@ -86,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
 
+      // Close mobile menu if open after clicking a link
       const menuToggle = document.querySelector('.menu-toggle');
       const headerList = document.querySelector('.header-list');
       if (headerList.classList.contains('active')) {
@@ -101,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Project Data
+  // Project Data and Lightbox Elements
   const filtersEl = document.getElementById("filters");
   const galleryEl = document.getElementById("gallery");
   const lightboxOverlay = document.getElementById('lightbox-overlay');
@@ -119,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let originalRect = {};
   let currentMediaElement = null;
 
-  // Local stats registry
+  // Local stats registry for user's unique actions (like, share, view)
   const LOCAL_KEY = "project-stats";
   function loadLocalStats() { return JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}"); }
   function saveLocalStats(d) { localStorage.setItem(LOCAL_KEY, JSON.stringify(d)); }
@@ -160,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
         likes: data.likes || 0,
         shares: data.shares || 0,
         views: data.views || 0,
-        userHasLiked: data.userHasLiked || false
+        userHasLiked: data.userHasLiked || false // This might be redundant if using local storage for user's like status
       };
     } catch (error) {
       console.error('Error fetching project stats:', error);
@@ -169,11 +177,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function fetchAllProjectStats(projectIds) {
+    // Using Promise.allSettled to ensure all promises resolve regardless of individual failures
     const statPromises = projectIds.map(id => fetchProjectStats(id));
-    const results = await Promise.all(statPromises);
+    const results = await Promise.allSettled(statPromises);
     const allStatsMap = {};
     projectIds.forEach((id, index) => {
-      allStatsMap[id] = results[index];
+      if (results[index].status === 'fulfilled') {
+        allStatsMap[id] = results[index].value;
+      } else {
+        console.warn(`Failed to fetch stats for project ID ${id}:`, results[index].reason);
+        allStatsMap[id] = { likes: 0, shares: 0, views: 0, userHasLiked: false }; // Default on failure
+      }
     });
     return allStatsMap;
   }
@@ -196,7 +210,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function handleLike(id, btn) {
     const local = loadLocalStats();
+    // Prevent multiple likes from the same user/session
     if (local[id] && local[id].liked) {
+      console.log(`Project ${id} already liked by this user session.`);
       return;
     }
 
@@ -207,6 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     triggerHeartBurst(btn);
 
+    // Update local storage immediately
     local[id] = local[id] || {};
     local[id].liked = true;
     saveLocalStats(local);
@@ -216,28 +233,31 @@ document.addEventListener("DOMContentLoaded", function () {
       if (updatedStats) {
         updateTotalStatsDisplay();
       } else {
-        // Rollback if failed
+        // Rollback UI and local storage if server update failed
         btn.classList.remove("liked");
-        const actualStats = await fetchProjectStats(id);
+        const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
         btn.querySelector(".like-count").textContent = actualStats.likes;
         delete local[id].liked;
         saveLocalStats(local);
-        console.error('Failed to save like to server.');
+        console.error('Failed to save like to server, rolling back UI.');
       }
     } catch (error) {
       console.error("Error in handleLike (server call):", error);
+      // Rollback UI and local storage on network/server error
       btn.classList.remove("liked");
-      const actualStats = await fetchProjectStats(id);
+      const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
       btn.querySelector(".like-count").textContent = actualStats.likes;
       delete local[id].liked;
       saveLocalStats(local);
-      console.error('Error connecting to server for like.');
+      console.error('Error connecting to server for like, rolling back UI.');
     }
   }
 
   async function handleShare(id, btn) {
     const local = loadLocalStats();
+    // Prevent multiple shares from the same user/session
     if (local[id] && local[id].shared) {
+      console.log(`Project ${id} already shared by this user session.`);
       return;
     }
 
@@ -246,6 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.querySelector(".share-count").textContent = currentShareCount;
     btn.classList.add("shared");
 
+    // Update local storage immediately
     local[id] = local[id] || {};
     local[id].shared = true;
     saveLocalStats(local);
@@ -254,40 +275,52 @@ document.addEventListener("DOMContentLoaded", function () {
       const updatedStats = await pushStat(id, 'share');
       if (updatedStats) {
         updateTotalStatsDisplay();
+        // Attempt to use Web Share API if available
         if (navigator.share) {
           try {
             await navigator.share({
               title: projects.find(p => p.id === id)?.title || 'My Portfolio Project',
               text: projects.find(p => p.id === id)?.desc || 'Check out this amazing project!',
-              url: window.location.href,
+              url: window.location.href, // Share current page URL
             });
           } catch (shareError) {
-            console.log('User cancelled share');
+            console.log('User cancelled share or Web Share API failed:', shareError);
+            // If user cancels share, don't rollback as the server call already succeeded
           }
         } else {
-          console.warn('Browser does not support Web Share API.');
+          console.warn('Browser does not support Web Share API. Consider implementing a fallback like copying URL to clipboard.');
+          // Fallback: Copy URL to clipboard (example, not implemented here for brevity)
+          // const projectUrl = window.location.href;
+          // navigator.clipboard.writeText(projectUrl).then(() => {
+          //   alert('Project URL copied to clipboard!');
+          // }).catch(err => {
+          //   console.error('Failed to copy URL:', err);
+          // });
         }
       } else {
+        // Rollback UI and local storage if server update failed
         btn.classList.remove("shared");
         delete local[id].shared;
         saveLocalStats(local);
-        const actualStats = await fetchProjectStats(id);
+        const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
         btn.querySelector(".share-count").textContent = actualStats.shares;
-        console.error('Failed to save share to server.');
+        console.error('Failed to save share to server, rolling back UI.');
       }
     } catch (error) {
       console.error("Error in handleShare (server call):", error);
+      // Rollback UI and local storage on network/server error
       btn.classList.remove("shared");
       delete local[id].shared;
       saveLocalStats(local);
-      const actualStats = await fetchProjectStats(id);
+      const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
       btn.querySelector(".share-count").textContent = actualStats.shares;
-      console.error('Error connecting to server for share.');
+      console.error('Error connecting to server for share, rolling back UI.');
     }
   }
 
   async function handleView(id) {
     const local = loadLocalStats();
+    // Prevent multiple views from the same user/session for the same project
     if (local[id] && local[id].viewed) {
       return;
     }
@@ -298,16 +331,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       const updatedStats = await pushStat(id, 'view');
-      if (updatedStats) {
-        updateTotalStatsDisplay();
-      } else {
+      if (!updatedStats) {
+        // If server update failed, rollback local storage
         delete local[id].viewed;
         saveLocalStats(local);
+        console.error('Failed to save view to server.');
       }
+      // Update total views display even if local storage already marked it as viewed
+      updateTotalStatsDisplay();
     } catch (error) {
       console.error("Error in handleView (server call):", error);
+      // If network/server error, rollback local storage
       delete local[id].viewed;
       saveLocalStats(local);
+      console.error('Error connecting to server for view.');
     }
   }
 
@@ -330,18 +367,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function updateTotalStatsDisplay() {
-    if (totalLikesEl) {
-      const total = await fetchTotalStat('likes');
-      totalLikesEl.textContent = total;
-    }
-    if (totalSharesEl) {
-      const total = await fetchTotalStat('shares');
-      totalSharesEl.textContent = total;
-    }
-    if (totalViewsEl) {
-      const total = await fetchTotalStat('views');
-      totalViewsEl.textContent = total;
-    }
+    // Fetch all total stats concurrently for efficiency
+    const [totalLikes, totalShares, totalViews] = await Promise.all([
+      fetchTotalStat('likes'),
+      fetchTotalStat('shares'),
+      fetchTotalStat('views')
+    ]);
+
+    if (totalLikesEl) totalLikesEl.textContent = totalLikes;
+    if (totalSharesEl) totalSharesEl.textContent = totalShares;
+    if (totalViewsEl) totalViewsEl.textContent = totalViews;
   }
 
   function showProjectsLoading(show) {
@@ -358,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function () {
       galleryEl.style.minHeight = '200px';
     } else {
       galleryEl.innerHTML = '';
-      galleryEl.style.display = 'grid';
+      galleryEl.style.display = 'grid'; // Revert to grid display
       galleryEl.style.justifyContent = '';
       galleryEl.style.alignItems = '';
       galleryEl.style.minHeight = '';
@@ -367,19 +402,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Gallery rendering
   async function renderGallery(data, allStatsMap, mostViewedProjectId) {
-    showProjectsLoading(false);
-    galleryEl.innerHTML = "";
+    showProjectsLoading(false); // Hide loading spinner
+    galleryEl.innerHTML = ""; // Clear existing content
     const local = loadLocalStats();
 
     if (data.length === 0) {
       galleryEl.innerHTML = '<p class="no-projects-message">ไม่พบโปรเจกต์ในหมวดหมู่นี้</p>';
-      galleryEl.style.display = 'block';
+      galleryEl.style.display = 'block'; // Ensure message is visible
       return;
     }
 
     const fragment = document.createDocumentFragment(); // Use DocumentFragment for performance
 
-    for (const project of data) {
+    data.forEach(project => { // Use forEach as we are not awaiting inside the loop for element creation
       const item = document.createElement("div");
       item.classList.add("project-item");
       item.setAttribute('data-aos', 'fade-up');
@@ -394,7 +429,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       item.innerHTML = `
         <div class="project-image-container">
-          <img src="${project.thumbnail}" alt="${project.title}">
+          <img src="${project.thumbnail}" alt="${project.title}" loading="lazy"> <!-- Added lazy loading -->
           <div class="view-icon"><i class="fas fa-plus"></i></div>
         </div>
         <div class="project-content">
@@ -420,7 +455,9 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `;
 
+      // Event listener for opening lightbox
       item.addEventListener("click", function (e) {
+        // Prevent lightbox from opening if a stat button or read more button was clicked
         if (e.target.closest('.stat-item') || e.target.closest('.read-more-project-btn')) {
           return;
         }
@@ -429,10 +466,11 @@ document.addEventListener("DOMContentLoaded", function () {
         openLightbox(project, projectStats, originalRect);
       });
 
+      // Event listeners for stat buttons (delegation not strictly needed here as elements are created once per render)
       const likeBtn = item.querySelector(".stat-item.likes");
       if (likeBtn) {
         likeBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
+          e.stopPropagation(); // Prevent click from bubbling up to project item
           handleLike(project.id, likeBtn);
         });
       }
@@ -443,19 +481,23 @@ document.addEventListener("DOMContentLoaded", function () {
           shareBtn.classList.add("shared");
         }
         shareBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
+          e.stopPropagation(); // Prevent click from bubbling up to project item
           handleShare(project.id, shareBtn);
         });
       }
 
+      // No explicit click handler for views, it's tracked on lightbox open
       const viewDisplay = item.querySelector(".stat-item.views");
-      if (viewDisplay) {
-        // No explicit click handler for views, it's tracked on lightbox open
-      }
 
       fragment.appendChild(item);
 
+      // Handle "Read More" button for project descriptions
       const descP = item.querySelector('.project-content p');
+      // Check if content overflows (requires element to be in DOM for scrollHeight)
+      // This check might be more accurate if done after appending to DOM,
+      // but for initial rendering, it's often done this way.
+      // A more robust check would involve temporarily adding to a hidden div.
+      // For simplicity, assuming scrollHeight > clientHeight is sufficient.
       if (descP.scrollHeight > descP.clientHeight) {
         const readMoreBtn = document.createElement('button');
         readMoreBtn.className = 'read-more-project-btn';
@@ -463,12 +505,12 @@ document.addEventListener("DOMContentLoaded", function () {
         descP.insertAdjacentElement('afterend', readMoreBtn);
 
         readMoreBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
+          e.stopPropagation(); // Prevent click from bubbling up to project item
           descP.classList.toggle('expanded');
           readMoreBtn.textContent = descP.classList.contains('expanded') ? 'ย่อลง' : 'อ่านเพิ่มเติม';
         });
       }
-    }
+    });
     galleryEl.appendChild(fragment); // Append all elements at once
   }
 
@@ -488,14 +530,12 @@ document.addEventListener("DOMContentLoaded", function () {
     lightboxImage.style.display = 'none';
     lightboxImage.src = '';
 
-    let mediaElement;
-    const controls = lightboxInfoContainer.querySelector('.lightbox-controls');
-
-    mediaElement = lightboxImage;
+    let mediaElement = lightboxImage; // Always use lightboxImage for now
     mediaElement.src = project.src;
     mediaElement.alt = project.title;
     mediaElement.style.display = 'block';
 
+    // Set initial position and size for smooth transition from thumbnail
     mediaElement.style.left = `${triggerRect.left}px`;
     mediaElement.style.top = `${triggerRect.top}px`;
     mediaElement.style.width = `${triggerRect.width}px`;
@@ -506,10 +546,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     currentMediaElement = mediaElement;
 
+    // Once image is loaded, animate to final position
     mediaElement.onload = () => {
       animateLightbox(mediaElement, lightboxInfoContainer, project);
     };
 
+    // Clear previous controls
+    const controls = lightboxInfoContainer.querySelector('.lightbox-controls');
     controls.innerHTML = '';
 
     const local = loadLocalStats();
@@ -518,10 +561,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentShares = initialProjectStats.shares;
     let currentViews = initialProjectStats.views;
 
+    // Increment view count only if not already viewed in this session
     if (!(local[project.id] && local[project.id].viewed)) {
       currentViews++;
     }
 
+    // Create Like Button
     const likeBtn = document.createElement('button');
     likeBtn.className = `lightbox-btn like-btn ${local[project.id] && local[project.id].liked ? 'liked' : ''}`;
     likeBtn.innerHTML = `<i class="fas fa-heart"></i> <span class="like-count">${currentLikes}</span>`;
@@ -530,6 +575,7 @@ document.addEventListener("DOMContentLoaded", function () {
       handleLike(project.id, likeBtn);
     });
 
+    // Create Share Button
     const shareBtn = document.createElement('button');
     shareBtn.className = `lightbox-btn share-btn ${local[project.id] && local[project.id].shared ? 'shared' : ''}`;
     shareBtn.innerHTML = `<i class="fas fa-share-alt"></i> <span class="share-count">${currentShares}</span>`;
@@ -538,18 +584,21 @@ document.addEventListener("DOMContentLoaded", function () {
       handleShare(project.id, shareBtn);
     });
 
+    // Create View Display
     const viewDisplay = document.createElement('div');
     viewDisplay.className = 'lightbox-btn view-display';
     viewDisplay.innerHTML = `<i class="fas fa-eye"></i> <span class="view-count">${currentViews}</span>`;
 
     controls.append(likeBtn, shareBtn, viewDisplay);
 
+    // Activate lightbox elements
     lightboxOverlay.classList.add('active');
     lightboxContainer.classList.add('active');
     lightboxClose.classList.add('active');
     document.body.classList.add("lightbox-open");
     document.documentElement.classList.add("lightbox-open");
 
+    // Push view stat to server (only if not already viewed in this session)
     handleView(project.id);
   }
 
@@ -569,7 +618,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Use line-height calculation for a more reliable overflow check
     const style = window.getComputedStyle(captionContent);
     const lineHeight = parseFloat(style.lineHeight);
-    const clampLines = parseInt(style.webkitLineClamp || '2');
+    const clampLines = parseInt(style.webkitLineClamp || '1'); // Default to 1 line for lightbox
     const clampedHeight = lineHeight * clampLines;
 
     // Check if the actual scroll height exceeds the calculated clamped height (with a small buffer)
@@ -598,6 +647,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (mediaElement.tagName === 'IMG') {
       aspectRatio = mediaElement.naturalWidth / mediaElement.naturalHeight;
     } else {
+      // Fallback for non-image media or if natural dimensions are not available
       aspectRatio = 16 / 9;
     }
 
@@ -651,9 +701,9 @@ document.addEventListener("DOMContentLoaded", function () {
       lightboxClose.classList.remove('active');
 
       if (currentMediaElement) {
-        currentMediaElement.style.transition = '';
-        currentMediaElement.removeAttribute('style');
-        currentMediaElement.src = '';
+        currentMediaElement.style.transition = ''; // Remove transition for next use
+        currentMediaElement.removeAttribute('style'); // Clear inline styles
+        currentMediaElement.src = ''; // Clear image source
         currentMediaElement = null;
       }
 
@@ -665,17 +715,17 @@ document.addEventListener("DOMContentLoaded", function () {
       if (loadingSpinner) {
         loadingSpinner.remove();
       }
-    }, 400);
+    }, 400); // This timeout should match the transition duration of the lightbox elements
   }
 
   // Event Listeners for lightbox
   lightboxOverlay.addEventListener('click', closeLightbox);
   lightboxClose.addEventListener('click', closeLightbox);
   lightboxContainer.addEventListener('click', (e) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Prevent clicks inside lightbox content from closing it
   });
 
-  // Initial render
+  // Initial render of projects and total stats
   (async function init() {
     showProjectsLoading(true);
     const projectIds = projects.map(p => p.id);
@@ -709,7 +759,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
 
-      // Add 'show' class to each menu item with a delay
+      // Add 'show' class to each menu item with a delay for staggered animation
       menuItems.forEach((item, index) => {
         setTimeout(() => {
           item.classList.add('show');
@@ -725,28 +775,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Shrink Header on Scroll
+  // Shrink Header on Scroll and Parallax Effect
+  // Using a throttled scroll handler for better performance
+  let ticking = false;
   window.addEventListener('scroll', function () {
-    const currentScrollPosition = window.pageYOffset;
-    const header = document.querySelector('.header-section');
-    const heroSection = document.querySelector('.hero-section'); // Get hero section
+    if (!ticking) {
+      window.requestAnimationFrame(function () {
+        const currentScrollPosition = window.pageYOffset;
+        const header = document.querySelector('.header-section');
+        const heroSection = document.querySelector('.hero-section');
 
-    if (currentScrollPosition > 100) {
-      header.classList.add('shrink');
-      header.style.transition = 'all 0.5s ease-out';
-    } else {
-      header.classList.remove('shrink');
-    }
+        if (currentScrollPosition > 100) {
+          header.classList.add('shrink');
+          header.style.transition = 'all 0.5s ease-out';
+        } else {
+          header.classList.remove('shrink');
+        }
 
-    // Parallax effect for Hero Section
-    if (heroSection) {
-      // Adjust background position for the main hero section
-      heroSection.style.backgroundPositionY = currentScrollPosition * 0.5 + 'px';
-
-      // Update CSS variable for the pseudo-element parallax
-      // The value should be negative to move slower than scroll, creating the parallax illusion
-      // A multiplier like 0.3 makes it move at 30% of scroll speed.
-      heroSection.style.setProperty('--parallax-translateY', `${currentScrollPosition * 0.3}px`);
+        // Parallax effect for Hero Section
+        if (heroSection) {
+          heroSection.style.backgroundPositionY = currentScrollPosition * 0.5 + 'px';
+          heroSection.style.setProperty('--parallax-translateY', `${currentScrollPosition * 0.3}px`);
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
   }, { passive: true }); // Use passive listener for better scroll performance
 
@@ -761,7 +814,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return filter === 'all' || project.category === filter;
       });
 
-      showProjectsLoading(true);
+      showProjectsLoading(true); // Show loading spinner while filtering
       const filteredProjectIds = filteredProjects.map(p => p.id);
       const allStatsMapForFiltered = await fetchAllProjectStats(filteredProjectIds);
 
@@ -770,7 +823,7 @@ document.addEventListener("DOMContentLoaded", function () {
       for (const id in allStatsMapForFiltered) {
         if (allStatsMapForFiltered.hasOwnProperty(id)) {
           if (allStatsMapForFiltered[id].views > maxViews) {
-            maxViews = allStatsMapForFiltered[id].views; // Corrected to use allStatsMapForFiltered
+            maxViews = allStatsMapForFiltered[id].views;
             mostViewedProjectId = id;
           }
         }
@@ -799,7 +852,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const certCards = Array.from(certSliderTrack.children);
     // Clone only if there are enough cards to make a seamless loop
     if (certCards.length > 0) {
-      const numClones = Math.ceil(certSliderTrack.offsetWidth / certCards[0].offsetWidth) + 2; // Clone enough to fill the visible area + buffer
+      // Calculate how many clones are needed to fill the track and ensure seamless loop
+      // This helps prevent a visible "jump" when the animation resets
+      const cardWidth = certCards[0].offsetWidth + (parseFloat(window.getComputedStyle(certCards[0]).marginRight) * 2); // Card width + margin
+      const trackWidth = certSliderTrack.offsetWidth;
+      const numVisibleCards = Math.ceil(trackWidth / cardWidth);
+      const numClones = numVisibleCards * 2; // Clone enough for at least two full "screens" of cards
+
       for (let i = 0; i < numClones; i++) {
         const clonedCard = certCards[i % certCards.length].cloneNode(true); // Cycle through original cards
         certSliderTrack.appendChild(clonedCard);
@@ -828,7 +887,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ` ${days}d ${hours}h ${minutes}m ${seconds}s `;
   }
   setInterval(updateUptime, 1000);
-  updateUptime();
+  updateUptime(); // Call once immediately to avoid initial "0d 0h 0m 0s"
 
   // Random Quote Display
   const quotes = [
@@ -855,7 +914,7 @@ document.addEventListener("DOMContentLoaded", function () {
       mainContent.style.display = 'block';
     }
 
-    // Initialize AOS after the page has loaded
+    // Initialize AOS after the page has loaded to ensure elements are ready
     AOS.init({
       duration: 800, // Animation duration
       easing: 'ease-out-quad', // Animation easing
@@ -914,3 +973,12 @@ document.addEventListener("DOMContentLoaded", function () {
     sectionTabBtns[0].click();
   }
 });
+
+// General JavaScript Optimization Recommendations:
+// 1. Minification & Compression: Use tools like UglifyJS or Terser to minify JS files
+//    and ensure your server serves them with Gzip compression.
+// 2. Code Splitting: For larger applications, consider breaking down the JS into smaller chunks
+//    and loading them only when needed (e.g., specific section's JS only when that section is scrolled into view).
+// 3. Remove Unused Code: Regularly audit your JavaScript for dead code and remove it.
+// 4. Optimize Loops and Data Structures: Ensure loops are efficient and appropriate data structures are used.
+// 5. Caching: Leverage browser caching for your JavaScript files.

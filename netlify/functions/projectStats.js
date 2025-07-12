@@ -55,10 +55,10 @@ exports.handler = async (event) => {
     } else {
       // ตรวจสอบว่าการเชื่อมต่อยังคงใช้งานได้หรือไม่
       try {
-        await client.query('SELECT 1');
+        await client.query('SELECT 1'); // ลองส่ง query ง่ายๆ เพื่อตรวจสอบสถานะการเชื่อมต่อ
         console.log("Reusing existing DB client connection.");
       } catch (e) {
-        console.warn("Existing DB connection lost, attempting to reconnect...", e);
+        console.warn("Existing DB connection lost or unhealthy, attempting to reconnect...", e.message);
         if (client) {
             await client.end(); // ปิดการเชื่อมต่อที่มีปัญหา
             client = null;      // ตั้งค่าเป็น null เพื่อให้สร้างใหม่ในครั้งต่อไป
@@ -84,12 +84,9 @@ exports.handler = async (event) => {
     if (getTotal === "true" && method === "GET") {
       console.log(`Received GET request for total ${type}.`);
       let columnName = '';
-      if (type === 'likes') {
-        columnName = 'likes';
-      } else if (type === 'shares') {
-        columnName = 'shares';
-      } else if (type === 'views') {
-        columnName = 'views';
+      const validTypes = ['likes', 'shares', 'views'];
+      if (validTypes.includes(type)) {
+        columnName = type;
       } else {
         console.warn(`Invalid type for total count: ${type}`);
         return {
@@ -116,6 +113,8 @@ exports.handler = async (event) => {
         };
       }
       console.log(`Received GET request for project ID: ${id}`);
+      // Optimization Note: Ensure 'id' column in 'project_likes' table has an index
+      // for faster lookups (e.g., CREATE INDEX idx_project_likes_id ON project_likes (id);)
       const res = await client.query(
         "SELECT likes, shares, views FROM project_likes WHERE id = $1",
         [id]
@@ -124,7 +123,7 @@ exports.handler = async (event) => {
       console.log(`Fetched stats for project ${id}:`, stats);
       return {
         statusCode: 200,
-        body: JSON.stringify({ ...stats, userHasLiked: false }),
+        body: JSON.stringify({ ...stats, userHasLiked: false }), // userHasLiked is managed client-side
       };
     }
 
@@ -140,12 +139,9 @@ exports.handler = async (event) => {
       console.log(`Received POST request to increment ${type} for project ID: ${id}`);
 
       let updateColumn = '';
-      if (type === 'like') {
-        updateColumn = 'likes';
-      } else if (type === 'share') {
-        updateColumn = 'shares';
-      } else if (type === 'view') {
-        updateColumn = 'views';
+      const validIncrementTypes = ['like', 'share', 'view'];
+      if (validIncrementTypes.includes(type)) {
+        updateColumn = `${type}s`; // 'like' -> 'likes', 'share' -> 'shares', 'view' -> 'views'
       } else {
         console.warn(`Invalid type for increment: ${type}`);
         return {
@@ -154,6 +150,7 @@ exports.handler = async (event) => {
         };
       }
 
+      // UPSERT operation: Insert if not exists, otherwise update
       await client.query(
         `
         INSERT INTO project_likes (id, ${updateColumn})
@@ -165,6 +162,7 @@ exports.handler = async (event) => {
       );
       console.log(`Successfully incremented ${type} for project ${id}.`);
 
+      // Fetch updated stats to return to client
       const res = await client.query(
         "SELECT likes, shares, views FROM project_likes WHERE id = $1",
         [id]
@@ -173,7 +171,7 @@ exports.handler = async (event) => {
       console.log(`Updated stats for project ${id}:`, updatedStats);
       return {
         statusCode: 200,
-        body: JSON.stringify({ ...updatedStats, userHasLiked: false }),
+        body: JSON.stringify({ ...updatedStats, userHasLiked: false }), // userHasLiked is managed client-side
       };
     }
 
