@@ -1,5 +1,4 @@
 /* Google Fonts - Inter (for primary text) and system fonts (for Thai fallback) */
-/* Removed NotoSansTamil font-face rules */
 
 button,
 a {
@@ -9,34 +8,43 @@ a {
 
 /* Variables */
 :root {
-  /* Light Mode Colors - Adjusted for better contrast */
-  --color-bg: #f8f9fa; /* Light background */
-  --color-primary: #3498db; /* Blue */
-  --color-accent: #2980b9; /* Darker blue */
-  --color-text-dark: #2c3e50; /* Dark blue-grey for main text */
-  --color-text-light: #5a6a7a; /* Adjusted for better contrast from #7f8c8d */
+  /* Light Mode Colors - Adjusted for a vibrant blue-green theme */
+  --color-bg: #f0f8f7; /* Very light blue-green background */
+  --color-primary: #2196f3; /* Vibrant medium blue */
+  --color-accent: #03a9f4; /* Slightly lighter, energetic blue */
+  --color-highlight: #4caf50; /* Bright, fresh green */
+  --color-text-dark: #263238; /* Deep dark blue-grey for main text */
+  --color-text-light: #546e7a; /* Softer medium blue-grey */
   --color-white: #ffffff;
-  --color-shadow: rgba(0, 0, 0, 0.08); /* Slightly increased shadow visibility */
+  --color-shadow: rgba(0, 0, 0, 0.08); /* Subtle shadow */
   --color-card-bg: var(--color-white);
-  --color-border-light: #e0e0e0;
+  --color-border-light: #e0e7e9; /* Light grey-blue border */
 
-  /* Dark Mode Colors - Adjusted for better contrast */
-  --color-bg-dark: #1a202c; /* Darker background from #2c3e50 */
-  --color-primary-dark: #6cb6ff; /* Lighter blue for dark mode */
-  --color-accent-dark: #4a90e2; /* Medium blue for dark mode */
-  --color-text-dark-mode: #ecf0f1; /* Light text for main content */
-  --color-text-light-dark-mode: #aeb9c7; /* Adjusted for better contrast from #bdc3c7 */
-  --color-card-dark: #2d3748; /* Darker card background from #34495e */
+  /* Dark Mode Colors - Adjusted for better contrast and new theme */
+  --color-bg-dark: #1a2a3a; /* Dark muted blue background */
+  --color-primary-dark: #64b5f6; /* Bright electric blue for dark mode */
+  --color-accent-dark: #4fc3f7; /* Lighter, more vibrant blue for dark mode */
+  --color-highlight-dark: #81c784; /* Bright lime green for dark mode */
+  --color-text-dark-mode: #e0f2f1; /* Very light grey text for main content */
+  --color-text-light-dark-mode: #a7d9d5; /* Light grey-blue for secondary text */
+  --color-card-dark: #263e52; /* Dark blue-grey card background */
   --color-shadow-dark: rgba(0, 0, 0, 0.35); /* Increased shadow visibility */
-  --color-border-dark: #4a5568; /* Darker border */
-  --color-footer-dark: #121820; /* Even darker footer */
-  --color-footer-bottom-dark: #0a0e14; /* Darkest footer bottom */
+  --color-border-dark: #37474f; /* Darker border */
+  --color-footer-dark: #101a24; /* Even darker footer */
+  --color-footer-bottom-dark: #081016; /* Darkest footer bottom */
 
   /* Colors for like button burst effect */
-  --color-heart-liked: #e63946;
+  --color-heart-liked: #e63946; /* Keeping red for heart */
 
   /* RGB values for primary color for rgba() usage */
-  --color-primary-rgb: 52, 152, 219;
+  --color-primary-rgb: 33, 150, 243; /* RGB for #2196f3 */
+  --color-accent-rgb: 3, 169, 244; /* RGB for #03a9f4 */
+}
+
+body.dark-mode {
+  /* Dark mode specific RGB values */
+  --color-primary-dark-rgb: 100, 181, 246; /* RGB for #64b5f6 */
+  --color-accent-dark-rgb: 79, 195, 247; /* RGB for #4fc3f7 */
 }
 
 /* ============================================================================
@@ -47,7 +55,6 @@ a {
   padding: 0;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-  tap-highlight-color: transparent;
 }
 
 html {
@@ -57,8 +64,8 @@ html {
 
 body {
   background-color: var(--color-bg);
-  /* Use Inter as primary, then system fonts for Thai and general fallback */
-  font-family: 'Inter', 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Anuphan', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  /* Use Sarabun and Kanit as primary for Thai, then Inter, then system fonts */
+  font-family: 'Sarabun', 'Kanit', 'Inter', 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Anuphan', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-weight: 500;
   color: var(--color-text-dark);
   line-height: 1.6;
@@ -70,8 +77,10 @@ body.lightbox-open {
   overflow: hidden;
 }
 
-/* Consider minifying and compressing this CSS file as part of a build process. */
-/* Analyze CSS coverage to remove unused styles for further optimization. */
+/* Helper class for hiding elements */
+.hidden {
+  display: none !important;
+}
 
 /* ============================================================================
    Preloader Styles
@@ -114,14 +123,14 @@ body.dark-mode #preloader {
   width: 48px;
   height: 48px;
   border: 6px solid #ddd;
-  border-top: 6px solid #2da8ff;
+  border-top: 6px solid var(--color-primary); /* Updated to primary color */
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 body.dark-mode .loader {
   border: 6px solid #333;
-  border-top: 6px solid #4fc3f7;
+  border-top: 6px solid var(--color-primary-dark); /* Updated to dark mode primary color */
 }
 
 @keyframes spin {
@@ -167,8 +176,6 @@ body.dark-mode .header-section {
 body.dark-mode .header-logo a,
 body.dark-mode .header-nav li a,
 body.dark-mode .projects-header h2,
-body.dark-mode .skills-part h2,
-body.dark-mode .experience-part h2,
 body.dark-mode .cert-header h2,
 body.dark-mode .contact-section h2,
 body.dark-mode .contact-list a,
@@ -187,9 +194,6 @@ body.dark-mode .header-contact,
 body.dark-mode .hero-btn-primary a,
 body.dark-mode .filter-btn.active,
 body.dark-mode .filter-btn:hover,
-body.dark-mode .experience-block::before, /* This class doesn't exist in HTML, can be removed if not dynamically added */
-body.dark-mode .skills-part h2::after, /* This class doesn't exist in HTML, can be removed if not dynamically added */
-body.dark-mode .experience-part h2::after, /* This class doesn't exist in HTML, can be removed if not dynamically added */
 body.dark-mode .cert-header h2::after,
 body.dark-mode .contact-section h2::after,
 body.dark-mode .footer-column h3::after {
@@ -198,7 +202,7 @@ body.dark-mode .footer-column h3::after {
 
 body.dark-mode .header-contact:hover {
   background-color: var(--color-accent-dark);
-  box-shadow: 0 4px 8px rgba(79, 195, 247, 0.3);
+  box-shadow: 0 4px 8px rgba(var(--color-primary-rgb), 0.3); /* Adjusted shadow color */
 }
 
 body.dark-mode .hero-section {
@@ -209,7 +213,6 @@ body.dark-mode .hero-section {
 body.dark-mode .hero-name h3,
 body.dark-mode .hero-paragraph p,
 body.dark-mode .about-card ul li,
-body.dark-mode .experience-block p, /* This class doesn't exist in HTML, can be removed if not dynamically added */
 body.dark-mode .cert-header .intro,
 body.dark-mode .project-content p,
 body.dark-mode .project-meta .stat-item,
@@ -227,25 +230,21 @@ body.dark-mode .about-section {
 }
 
 body.dark-mode .about-card,
-body.dark-mode .hard-skills, /* This class doesn't exist in HTML, can be removed if not dynamically added */
-body.dark-mode .soft-skills, /* This class doesn't exist in HTML, can be removed if not dynamically added */
-body.dark-mode .experience-block, /* This class doesn't exist in HTML, can be removed if not dynamically added */
 body.dark-mode .project-item,
 body.dark-mode .cert-card,
 body.dark-mode .contact-contant,
-body.dark-mode .contact-list li {
+body.dark-mode .contact-list li,
+body.dark-mode .cert-card-full { /* Added for certificates.html */
   background-color: var(--color-card-dark);
   box-shadow: 0 5px 15px var(--color-shadow-dark);
   border: 1px solid var(--color-border-dark);
 }
 
 body.dark-mode .about-card:hover,
-body.dark-mode .hard-skills:hover, /* This class doesn't exist in HTML, can be removed if not dynamically added */
-body.dark-mode .soft-skills:hover, /* This class doesn't exist in HTML, can be removed if not dynamically added */
-body.dark-mode .experience-block:hover, /* This class doesn't exist in HTML, can be removed if not dynamically added */
 body.dark-mode .project-item:hover,
 body.dark-mode .cert-card:hover,
-body.dark-mode .contact-list li:hover {
+body.dark-mode .contact-list li:hover,
+body.dark-mode .cert-card-full:hover { /* Added for certificates.html */
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
   border-color: var(--color-primary-dark);
 }
@@ -270,13 +269,17 @@ body.dark-mode .skills-experience-section {
   background: linear-gradient(135deg, var(--color-bg-dark) 0%, #1a1a1a 100%);
 }
 
-body.dark-mode .skills-part li { /* This class doesn't exist in HTML, can be removed if not dynamically added */
-  border-bottom-color: #333;
-  color: var(--color-text-light-dark-mode); /* Adjusted for contrast */
+body.dark-mode .soft-skills-list li {
+  color: var(--color-text-dark-mode);
 }
 
-body.dark-mode .experience-part h3 { /* This class doesn't exist in HTML, can be removed if not dynamically added */
-  color: var(--color-primary-dark);
+body.dark-mode .experience-card {
+  background: var(--color-card-dark);
+  box-shadow: 0 5px 15px var(--color-shadow-dark);
+}
+
+body.dark-mode .exp-header h3 {
+  color: var(--color-text-dark-mode);
 }
 
 body.dark-mode .projects-section {
@@ -287,22 +290,9 @@ body.dark-mode .projects-header h2 {
   color: var(--color-primary-dark);
 }
 
-body.dark-mode .project-overlay { /* This class doesn't exist in HTML, can be removed if not dynamically added */
-  background: rgba(79, 194, 247, 0.751);
-}
-
-body.dark-mode .project-overlay .view-button { /* This class doesn't exist in HTML, can be removed if not dynamically added */
-  background-color: var(--color-accent-dark);
-}
-
-body.dark-mode .project-overlay .view-button:hover { /* This class doesn't exist in HTML, can be removed if not dynamically added */
-  background-color: #e0e0e0;
-  color: var(--color-accent-dark);
-}
-
 body.dark-mode .project-item.most-viewed {
   border-color: var(--color-primary-dark);
-  box-shadow: 0 0 20px rgba(79, 195, 247, 0.4);
+  box-shadow: 0 0 20px rgba(var(--color-primary-dark-rgb), 0.4); /* Updated to new primary dark */
 }
 
 body.dark-mode .lightbox-overlay {
@@ -424,7 +414,7 @@ body.dark-mode .header-section.shrink {
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #3498db, #e74c3c, #2ecc71, #f39c12);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-highlight)); /* Updated gradient */
   transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -448,17 +438,17 @@ body.dark-mode .header-section.shrink {
 }
 
 .dot-1 {
-  background-color: #3498db;
+  background-color: var(--color-primary); /* Updated color */
   animation: dotBounce 2s infinite ease-in-out;
 }
 
 .dot-2 {
-  background-color: #e74c3c;
+  background-color: var(--color-accent); /* Updated color */
   animation: dotBounce 2s infinite ease-in-out 0.2s;
 }
 
 .dot-3 {
-  background-color: #2ecc71;
+  background-color: var(--color-highlight); /* Updated color */
   animation: dotBounce 2s infinite ease-in-out 0.4s;
 }
 
@@ -481,17 +471,17 @@ body.dark-mode .header-section.shrink {
 
 /* Hover effect for dots */
 .header-logo:hover .dot-1 {
-  background-color: #f39c12;
+  background-color: var(--color-highlight); /* Updated color */
   transform: scale(1.2);
 }
 
 .header-logo:hover .dot-2 {
-  background-color: #9b59b6;
+  background-color: var(--color-primary); /* Updated color */
   transform: scale(1.2);
 }
 
 .header-logo:hover .dot-3 {
-  background-color: #1abc9c;
+  background-color: var(--color-accent); /* Updated color */
   transform: scale(1.2);
 }
 
@@ -807,43 +797,37 @@ body.dark-mode .menu-toggle span {
 }
 
 /* ============================================================================
-   Hero Section Styles
+   Hero Section Styles (Updated from test.html)
    ============================================================================ */
 .hero-section {
-  background-color: var(--color-bg);
-  padding: 4rem;
-  padding-top: 10rem;
-  margin-top: 3rem;
-  color: var(--color-text-dark);
-  font-family: inherit; /* Use inherited font */
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  box-shadow: 0 8px 20px var(--color-shadow);
-  position: relative;
-  overflow: hidden;
-  --parallax-translateY: 0px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, var(--color-bg) 0%, #e0f8f7 100%); /* Adjusted to use var(--color-bg) */
+    position: relative;
+    overflow: hidden;
+    margin-top: 3rem; /* Keep existing margin-top from original index.html */
+    border-bottom-left-radius: 20px; /* Keep existing border-radius */
+    border-bottom-right-radius: 20px; /* Keep existing border-radius */
+    box-shadow: 0 8px 20px var(--color-shadow); /* Keep existing shadow */
+    --parallax-translateY: 0px; /* Keep parallax variable */
+}
+
+body.dark-mode .hero-section {
+    background: linear-gradient(135deg, var(--color-bg-dark) 0%, #203040 100%); /* Dark mode gradient */
 }
 
 .hero-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 0 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    padding: 0 1rem; /* Added padding for smaller screens */
 }
 
-@media (min-width: 768px) {
-  .hero-container {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0;
-    gap: 3rem;
-  }
-}
-
-.hero-contant {
+.hero-contant { /* Added for consistency with original index.html structure */
   flex: 1;
   order: 2;
 }
@@ -856,112 +840,91 @@ body.dark-mode .menu-toggle span {
 }
 
 .hero-name h3 {
-  font-size: 1.5rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-  color: var(--color-text-light); /* Adjusted for contrast */
-}
-
-.hero-name h3 strong {
-  font-weight: 600;
-  color: var(--color-text-dark);
+    font-size: 1.25rem;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
 }
 
 .hero-name h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: var(--color-text-dark);
-  line-height: 1.2;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: var(--color-primary);
+    line-height: 1.2;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
 }
 
-@media (min-width: 768px) {
-  .hero-name h1 {
-    font-size: 3rem;
-  }
+#quote {
+    font-style: italic;
+    color: var(--color-accent); /* Used accent for quote color */
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+    border-left: 3px solid var(--color-highlight); /* Used highlight for border */
 }
 
 .hero-paragraph p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  color: var(--color-text-light); /* Adjusted for contrast */
-}
-
-.hero-profile {
-  flex: 1;
-  order: 1;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-@media (min-width: 768px) {
-  .hero-profile {
-    order: 2;
-    margin-bottom: 0;
-  }
-}
-
-.profile { /* This class is not directly on an img in index.html, but on about-profile which contains img */
-  width: 100%;
-  height: auto;
-  max-width: 300px;
-  border-radius: 50px;
-  object-fit: cover;
-  border: 5px solid var(--color-white);
-  box-shadow: 0 10px 20px var(--color-shadow);
-  transition: transform 0.3s ease;
-}
-
-body.dark-mode .profile {
-  border: 5px solid var(--color-card-dark);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-}
-
-.profile:hover {
-  transform: scale(1.05);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: var(--color-text-dark); /* Ensure good contrast */
 }
 
 .hero-btn-primary {
-  text-align: center;
-  margin-top: 2rem;
+    text-align: center; /* Center the button */
+    margin-top: 2rem; /* Keep existing margin-top from original index.html */
 }
 
 .hero-btn-primary a {
-  display: inline-block;
-  padding: 0.8rem 2rem;
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  text-decoration: none;
-  border-radius: 50px;
-  font-weight: 600;
-  transition: all 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(var(--color-primary-rgb), 0.3);
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background: var(--color-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 0.25rem; /* Keep square corners from test.html */
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .hero-btn-primary a:hover {
-  background-color: var(--color-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(var(--color-primary-rgb), 0.4);
+    background: var(--color-accent); /* Use accent for hover */
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-.hero-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(41, 128, 185, 0.05) 100%);
-  z-index: -1;
-  transform: translateY(var(--parallax-translateY));
-  transition: transform 0.1s linear;
-  will-change: transform;
+.decoration {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--color-highlight-rgb),0.15) 0%, rgba(var(--color-highlight-rgb),0) 70%); /* Adjusted to use highlight color */
+    z-index: 1;
 }
 
-body.dark-mode .hero-section::before {
-  background: linear-gradient(135deg, rgba(30, 30, 30, 0.8) 0%, rgba(20, 20, 20, 0.6) 100%);
+.decoration-1 {
+    top: -100px;
+    right: -100px;
+}
+
+.decoration-2 {
+    bottom: -50px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+}
+
+@media (max-width: 768px) {
+    .hero-name h1 {
+        font-size: 2.25rem;
+    }
+
+    .hero-container {
+        padding: 0 1rem;
+    }
+
+    .decoration {
+        display: none;
+    }
 }
 
 /* ============================================================================
@@ -1355,7 +1318,7 @@ body.dark-mode .section-tabs {
 
 body.dark-mode .section-tab.active {
   color: var(--color-primary-dark);
-  background: rgba(79, 195, 247, 0.1);
+  background: rgba(var(--color-primary-dark-rgb), 0.1); /* Updated to new primary dark */
 }
 
 body.dark-mode .section-tab.active::after {
@@ -1516,7 +1479,7 @@ body.dark-mode .exp-header h3 {
 }
 
 body.dark-mode .exp-date {
-  background: rgba(79, 195, 247, 0.1);
+  background: rgba(var(--color-primary-dark-rgb), 0.1); /* Updated to new primary dark */
   color: var(--color-primary-dark);
 }
 
@@ -1841,7 +1804,7 @@ body.dark-mode .read-more-project-btn {
 body.dark-mode .project-meta .category {
   background-color: var(--color-primary-dark);
   border-color: var(--color-accent-dark);
-  box-shadow: 0 3px 8px rgba(79, 195, 247, 0.3);
+  box-shadow: 0 3px 8px rgba(var(--color-primary-dark-rgb), 0.3); /* Updated to new primary dark */
 }
 
 .project-meta .stats {
@@ -1876,14 +1839,14 @@ body.dark-mode .project-meta .stat-item {
 }
 
 .project-meta .stat-item:hover {
-  background-color: rgba(79, 195, 247, 0.15);
+  background-color: rgba(var(--color-primary-rgb), 0.15); /* Updated to new primary */
   transform: translateY(-2px);
-  box-shadow: 0 3px 8px rgba(79, 195, 247, 0.25);
+  box-shadow: 0 3px 8px rgba(var(--color-primary-rgb), 0.25); /* Updated to new primary */
 }
 
 .project-meta .stat-item i {
   transition: transform 0.3s ease, color 0.3s ease;
-  font-size: 1rem;
+  font-size: 1.rem;
 }
 
 .project-meta .stat-item.likes i {
@@ -1980,11 +1943,11 @@ body.dark-mode .project-meta .stat-item {
   left: 0.5rem;
   background: linear-gradient(
     -45deg,
-    #03a9f4 0%,
-    #03a9f4 25%,
-    #0373f4 50%,
-    #03a9f4 75%,
-    #03a9f4 100%
+    var(--color-highlight) 0%, /* Updated to highlight color */
+    var(--color-highlight) 25%,
+    var(--color-accent) 50%, /* Updated to accent color */
+    var(--color-highlight) 75%,
+    var(--color-highlight) 100%
   );
   color: #fff;
   padding: 0.3rem 0.8rem;
@@ -1993,7 +1956,7 @@ body.dark-mode .project-meta .stat-item {
   font-weight: 700;
   width: fit-content;
   z-index: 10;
-  box-shadow: 0 4px 15px #0373f4;
+  box-shadow: 0 4px 15px var(--color-accent); /* Updated to accent color */
   animation: shimmer 3s infinite ease;
   background-size: 200% auto;
   text-shadow: 0 1px 2px rgba(0,0,0,0.2);
@@ -2210,7 +2173,7 @@ body.dark-mode .project-meta .stat-item {
 .read-more-btn {
   background: none;
   border: none;
-  color: #6cb6ff;
+  color: var(--color-primary-dark); /* Using dark mode primary for consistency */
   cursor: pointer;
   font-weight: bold;
   padding: 0;
@@ -2531,6 +2494,98 @@ body.dark-mode .cert-header .intro {
   animation-play-state: paused;
 }
 
+/* New Slider Controls */
+.slider-controls {
+  position: absolute;
+  bottom: 0.5rem; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.356);
+  backdrop-filter: blur(5px);
+  border-radius: 50px;
+  padding: 8px 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .slider-controls {
+  background-color: rgba(30, 30, 30, 0.8);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.slider-control-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .slider-control-btn {
+  color: var(--color-text-light-dark-mode);
+}
+
+.slider-control-btn:hover {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+body.dark-mode .slider-control-btn:hover {
+  color: var(--color-primary-dark);
+}
+
+.slider-control-btn.active {
+  color: var(--color-primary);
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+}
+
+body.dark-mode .slider-control-btn.active {
+  color: var(--color-primary-dark);
+  background-color: rgba(var(--color-primary-dark-rgb), 0.1);
+}
+
+/* View All Certificates Button */
+.view-all-certs-container {
+  text-align: center;
+  margin-top: 2rem;
+  padding-bottom: 2rem; /* Add some padding at the bottom */
+}
+
+.view-all-certs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 2rem;
+  background: var(--color-accent);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(var(--color-accent-rgb), 0.2); /* Assuming accent-rgb exists or define it */
+}
+
+body.dark-mode .view-all-certs-btn {
+  background: var(--color-accent-dark);
+  box-shadow: 0 4px 12px rgba(var(--color-accent-dark-rgb), 0.2);
+}
+
+.view-all-certs-btn:hover {
+  background: var(--color-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(var(--color-primary-rgb), 0.3);
+}
+
+body.dark-mode .view-all-certs-btn:hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 8px 20px rgba(var(--color-primary-dark-rgb), 0.3);
+}
+
 .cert-card {
   flex-shrink: 0;
   width: 400px;
@@ -2591,6 +2646,103 @@ body.dark-mode .cert-card {
 }
 
 /* ============================================================================
+   Full Certificates Page Styles (certificates.html)
+   ============================================================================ */
+.full-certificates-section {
+  padding: 8rem 2rem 5rem; /* Adjust top padding to account for fixed header */
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.dark-mode .full-certificates-section {
+  background-color: var(--color-bg-dark);
+}
+
+.certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-grow: 1;
+}
+
+.cert-card-full {
+  background-color: var(--color-card-bg);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--color-shadow);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.cert-card-full:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  border-color: var(--color-primary);
+}
+
+.cert-card-full img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px 10px 0 0;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.cert-card-full:hover img {
+  transform: scale(1.05);
+}
+
+.cert-info {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cert-info h3 {
+  font-size: 1.4rem;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+body.dark-mode .cert-info h3 {
+  color: var(--color-primary-dark);
+}
+
+.cert-info p {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  line-height: 1.8;
+  margin-bottom: 0;
+  flex-grow: 1;
+}
+
+body.dark-mode .cert-info p {
+  color: var(--color-text-light-dark-mode);
+}
+
+@media (max-width: 768px) {
+  .full-certificates-section {
+    padding: 6rem 1rem 3rem;
+  }
+
+  .certificates-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+
+/* ============================================================================
    Time Section Styles
    ============================================================================ */
 .time-section {
@@ -2612,40 +2764,10 @@ body.dark-mode .cert-card {
   font-weight: 600;
 }
 
-/* Total Stats in Footer */
-.total-stats { /* This class doesn't exist in HTML, can be removed if not dynamically added */
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-  color: var(--color-text-light); /* Adjusted for contrast */
-  font-size: 0.95rem;
-}
-
-.total-stats .stat-item { /* This class doesn't exist in HTML, can be removed if not dynamically added */
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.total-stats .stat-item i { /* This class doesn't exist in HTML, can be removed if not dynamically added */
-  font-size: 1.1rem;
-  color: var(--color-primary);
-}
-
-/* Responsive adjustments for total stats */
-@media (max-width: 480px) {
-  .total-stats {
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-start;
-  }
-}
-
 #quote {
   font-size: 1.5rem;
   padding-bottom: 1rem;
-  color: var(--color-accent);
+  color: var(--color-accent); /* Updated to accent color */
   font-weight: 600;
 }
 
@@ -2657,10 +2779,6 @@ body.dark-mode .cert-card {
   }
 
   #uptime {
-    font-size: 0.8rem;
-  }
-
-  #visitor-count { /* This ID doesn't exist in HTML, can be removed if not dynamically added */
     font-size: 0.8rem;
   }
 
@@ -2898,15 +3016,15 @@ body.dark-mode .qr-label {
 }
 
 .footer-logo span:nth-child(2) {
-  background-color: #e74c3c;
+  background-color: var(--color-accent); /* Updated color */
 }
 
 .footer-logo span:nth-child(3) {
-  background-color: #2ecc71;
+  background-color: var(--color-highlight); /* Updated color */
 }
 
 .footer-logo span:nth-child(4) {
-  background-color: #f39c12;
+  background-color: var(--color-primary); /* Updated color */
 }
 
 .footer-links {
@@ -2978,102 +3096,6 @@ body.dark-mode .qr-label {
 
   .footer-column {
     margin-bottom: 1rem;
-  }
-}
-
-/* ============================================================================
-   Responsive Adjustments (General)
-   ============================================================================ */
-@media (max-width: 1200px) {
-
-  .header-section,
-  .hero-section,
-  .about-section,
-  .skills-experience-section,
-  .projects-section,
-  .certificates-section,
-  .contact-section,
-  .footer-section {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-}
-
-@media (max-width: 992px) {
-  .header-section {
-    padding: 0.5rem 1rem;
-  }
-
-  .hero-section {
-    padding-top: 8rem;
-    padding-bottom: 3rem;
-  }
-
-  .about-section {
-    padding: 60px 0;
-  }
-
-  .skills-experience-section,
-  .projects-section,
-  .certificates-section,
-  .contact-section {
-    padding: 4rem 1rem;
-  }
-
-  .footer-section {
-    padding: 2rem 0 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .header-section {
-    padding: 0.5rem;
-  }
-
-  .hero-section {
-    padding-top: 6rem;
-    padding-bottom: 2rem;
-  }
-
-  .about-section {
-    padding: 40px 0;
-  }
-
-  .skills-experience-section,
-  .projects-section,
-  .certificates-section,
-  .contact-section {
-    padding: 3rem 0.5rem;
-  }
-
-  .footer-section {
-    padding: 1.5rem 0 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .header-section {
-    padding: 1rem;
-  }
-
-  .hero-section {
-    padding-top: 5rem;
-    padding-bottom: 1.5rem;
-  }
-
-  .about-section {
-    padding: 30px 0;
-  }
-
-  .skills-experience-section,
-  .projects-section,
-  .certificates-section,
-  .contact-section {
-    padding: 2rem 0.25rem;
-  }
-
-  .footer-section {
-    padding: 1rem 0 0;
   }
 }
 
@@ -3180,7 +3202,7 @@ body.dark-mode .qr-label {
 
 /* Dark Mode Support for Ripple */
 body.dark-mode .ripple-effect {
-  background: rgba(79, 195, 247, 0.4);
+  background: rgba(var(--color-primary-dark-rgb), 0.4); /* Updated to new primary dark */
 }
 
 @keyframes ripple {

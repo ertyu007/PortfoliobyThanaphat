@@ -1,4 +1,5 @@
 import { projects } from "./data/projectsData.js";
+import { certificates } from "./data/CertificateData.js";
 
 // Function: สร้าง Ripple Effect
 function createRipple(event) {
@@ -25,7 +26,7 @@ function createRipple(event) {
 document.addEventListener("DOMContentLoaded", function () {
   // Add Ripple effect to desired elements
   const rippleElements = document.querySelectorAll(
-    ".hero-btn-primary a, .filter-btn, .project-item, .cert-card, .tab-btn, .section-tab"
+    ".hero-btn-primary a, .filter-btn, .project-item, .cert-card, .tab-btn, .section-tab, .view-all-certs-btn"
   );
 
   rippleElements.forEach((element) => {
@@ -52,11 +53,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Recalculate headerOffset dynamically before creating the observer
     // This ensures the rootMargin is correct for the current header state (shrunk or not)
     const headerOffset = header.offsetHeight;
-    
+
     const observerOptions = {
       root: null,
       // Adjust rootMargin dynamically based on current header height
-      rootMargin: `-${headerOffset}px 0px 0px 0px`, 
+      rootMargin: `-${headerOffset}px 0px 0px 0px`,
       threshold: 0.5, // Trigger when 50% of the section is visible
     };
 
@@ -65,8 +66,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (entry.isIntersecting) {
           const current = entry.target.getAttribute("id");
           navItems.forEach((item) => {
+            // Check if the href matches the current section ID or is the certificates.html page
+            const href = item.getAttribute("href");
+            const isCertificatesPage = window.location.pathname.includes('certificates.html');
+
             item.classList.remove("active");
-            if (item.getAttribute("href") === `#${current}`) {
+            if (href === `#${current}` || (isCertificatesPage && href.includes('#Certificates'))) {
               item.classList.add("active");
             }
           });
@@ -99,23 +104,27 @@ document.addEventListener("DOMContentLoaded", function () {
   // Smooth scrolling for anchor links
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
-      e.preventDefault();
+      // Only prevent default if it's an internal anchor on the current page
+      if (this.hostname === window.location.hostname && this.pathname === window.location.pathname) {
+        e.preventDefault();
 
-      const targetId = this.getAttribute("href");
-      if (targetId === "#") return;
+        const targetId = this.getAttribute("href");
+        if (targetId === "#") return;
 
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        // Recalculate headerOffset in case it changed (e.g., shrink class)
-        const currentHeaderOffset = document.querySelector('.header-section').offsetHeight;
-        const elementPosition = targetElement.offsetTop;
-        const offsetPosition = elementPosition - currentHeaderOffset;
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          // Recalculate headerOffset in case it changed (e.g., shrink class)
+          const currentHeaderOffset = document.querySelector('.header-section').offsetHeight;
+          const elementPosition = targetElement.offsetTop;
+          const offsetPosition = elementPosition - currentHeaderOffset;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
       }
+
 
       // Close mobile menu if open after clicking a link
       const menuToggle = document.querySelector('.menu-toggle');
@@ -185,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         const errorMessage = errorData.error || `HTTP error! status: ${response.status}`;
+        console.error(`Error fetching project stats for project ${id}: ${errorMessage}`); // Keep for debugging in Canvas
         throw new Error(`Error fetching project stats for project ${id}: ${errorMessage}`);
       }
       const data = await response.json();
@@ -192,11 +202,10 @@ document.addEventListener("DOMContentLoaded", function () {
         likes: data.likes || 0,
         shares: data.shares || 0,
         views: data.views || 0,
-        userHasLiked: data.userHasLiked || false // This might be redundant if using local storage for user's like status
       };
     } catch (error) {
-      console.error('Error fetching project stats:', error);
-      return { likes: 0, shares: 0, views: 0, userHasLiked: false };
+      console.error('Error fetching project stats:', error); // Keep for debugging in Canvas
+      return { likes: 0, shares: 0, views: 0 };
     }
   }
 
@@ -209,8 +218,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (results[index].status === 'fulfilled') {
         allStatsMap[id] = results[index].value;
       } else {
-        console.warn(`Failed to fetch stats for project ID ${id}:`, results[index].reason);
-        allStatsMap[id] = { likes: 0, shares: 0, views: 0, userHasLiked: false }; // Default on failure
+        console.warn(`Failed to fetch stats for project ID ${id}:`, results[index].reason); // Keep for debugging in Canvas
+        allStatsMap[id] = { likes: 0, shares: 0, views: 0 }; // Default on failure
       }
     });
     return allStatsMap;
@@ -222,12 +231,13 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         const errorMessage = errorData.error || `HTTP error! status: ${response.status}`;
+        console.error(`Error fetching total ${type}: ${errorMessage}`); // Keep for debugging in Canvas
         throw new Error(`Error fetching total ${type}: ${errorMessage}`);
       }
       const data = await response.json();
       return data.totalCount || 0;
     } catch (error) {
-      console.error(`Error fetching total ${type}:`, error);
+      console.error(`Error fetching total ${type}:`, error); // Keep for debugging in Canvas
       return 0;
     }
   }
@@ -265,10 +275,10 @@ document.addEventListener("DOMContentLoaded", function () {
           delete local[id].liked;
           saveLocalStats(local);
         }
-        console.error('Failed to save like to server, rolling back UI.');
+        console.error('Failed to save like to server, rolling back UI.'); // Keep for debugging in Canvas
       }
     } catch (error) {
-      console.error("Error in handleLike (server call):", error);
+      console.error("Error in handleLike (server call):", error); // Keep for debugging in Canvas
       // Rollback UI and local storage on network/server error
       btn.classList.remove("liked");
       const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
@@ -277,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
         delete local[id].liked;
         saveLocalStats(local);
       }
-      console.error('Error connecting to server for like, rolling back UI.');
+      console.error('Error connecting to server for like, rolling back UI.'); // Keep for debugging in Canvas
     }
   }
 
@@ -312,11 +322,11 @@ document.addEventListener("DOMContentLoaded", function () {
               url: window.location.href, // Share current page URL
             });
           } catch (shareError) {
-            console.log('User cancelled share or Web Share API failed:', shareError);
+            console.log('User cancelled share or Web Share API failed:', shareError); // Keep for debugging in Canvas
             // If user cancels share, don't rollback as the server call already succeeded
           }
         } else {
-          console.warn('Browser does not support Web Share API. Consider implementing a fallback like copying URL to clipboard.');
+          console.warn('Browser does not support Web Share API. Consider implementing a fallback like copying URL to clipboard.'); // Keep for debugging in Canvas
           // Fallback: Copy URL to clipboard (example, not implemented here for brevity)
           // const projectUrl = window.location.href;
           // document.execCommand('copy'); // Fallback for navigator.clipboard.writeText due to iFrame restrictions
@@ -330,10 +340,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
         btn.querySelector(".share-count").textContent = actualStats.shares;
-        console.error('Failed to save share to server, rolling back UI.');
+        console.error('Failed to save share to server, rolling back UI.'); // Keep for debugging in Canvas
       }
     } catch (error) {
-      console.error("Error in handleShare (server call):", error);
+      console.error("Error in handleShare (server call):", error); // Keep for debugging in Canvas
       // Rollback UI and local storage on network/server error
       btn.classList.remove("shared");
       if (local[id]) { // Check if local[id] exists before deleting property
@@ -342,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       const actualStats = await fetchProjectStats(id); // Fetch actual stats to revert count
       btn.querySelector(".share-count").textContent = actualStats.shares;
-      console.error('Error connecting to server for share, rolling back UI.');
+      console.error('Error connecting to server for share, rolling back UI.'); // Keep for debugging in Canvas
     }
   }
 
@@ -365,18 +375,18 @@ document.addEventListener("DOMContentLoaded", function () {
           delete local[id].viewed;
           saveLocalStats(local);
         }
-        console.error('Failed to save view to server.');
+        console.error('Failed to save view to server.'); // Keep for debugging in Canvas
       }
       // Update total views display even if local storage already marked it as viewed
       updateTotalStatsDisplay();
     } catch (error) {
-      console.error("Error in handleView (server call):", error);
+      console.error("Error in handleView (server call):", error); // Keep for debugging in Canvas
       // If network/server error, rollback local storage
       if (local[id]) { // Check if local[id] exists before deleting property
         delete local[id].viewed;
         saveLocalStats(local);
       }
-      console.error('Error connecting to server for view.');
+      console.error('Error connecting to server for view.'); // Keep for debugging in Canvas
     }
   }
 
@@ -393,47 +403,54 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error(`Error pushing ${type}:`, error);
+      console.error(`Error pushing ${type}:`, error); // Keep for debugging in Canvas
       return null;
     }
   }
 
   async function updateTotalStatsDisplay() {
-    // Fetch all total stats concurrently for efficiency
-    const [totalLikes, totalShares, totalViews] = await Promise.all([
-      fetchTotalStat('likes'),
-      fetchTotalStat('shares'),
-      fetchTotalStat('views')
-    ]);
+    // Only update if elements exist (i.e., on index.html)
+    if (totalLikesEl && totalSharesEl && totalViewsEl) {
+      // Fetch all total stats concurrently for efficiency
+      const [totalLikes, totalShares, totalViews] = await Promise.all([
+        fetchTotalStat('likes'),
+        fetchTotalStat('shares'),
+        fetchTotalStat('views')
+      ]);
 
-    if (totalLikesEl) totalLikesEl.textContent = totalLikes;
-    if (totalSharesEl) totalSharesEl.textContent = totalShares;
-    if (totalViewsEl) totalViewsEl.textContent = totalViews;
-  }
-
-  function showProjectsLoading(show) {
-    if (show) {
-      galleryEl.innerHTML = `
-        <div class="projects-loading-spinner">
-          <div class="loader"></div>
-          <p>กำลังโหลดโปรเจกต์...</p>
-        </div>
-      `;
-      galleryEl.style.display = 'flex';
-      galleryEl.style.justifyContent = 'center';
-      galleryEl.style.alignItems = 'center';
-      galleryEl.style.minHeight = '200px';
-    } else {
-      galleryEl.innerHTML = '';
-      galleryEl.style.display = 'grid'; // Revert to grid display
-      galleryEl.style.justifyContent = '';
-      galleryEl.style.alignItems = '';
-      galleryEl.style.minHeight = '';
+      totalLikesEl.textContent = totalLikes;
+      totalSharesEl.textContent = totalShares;
+      totalViewsEl.textContent = totalViews;
     }
   }
 
-  // Gallery rendering
+  function showProjectsLoading(show) {
+    if (galleryEl) { // Check if galleryEl exists (only on index.html)
+      if (show) {
+        galleryEl.innerHTML = `
+          <div class="projects-loading-spinner">
+            <div class="loader"></div>
+            <p>กำลังโหลดโปรเจกต์...</p>
+          </div>
+        `;
+        galleryEl.style.display = 'flex';
+        galleryEl.style.justifyContent = 'center';
+        galleryEl.style.alignItems = 'center';
+        galleryEl.style.minHeight = '200px';
+      } else {
+        galleryEl.innerHTML = '';
+        galleryEl.style.display = 'grid'; // Revert to grid display
+        galleryEl.style.justifyContent = '';
+        galleryEl.style.alignItems = '';
+        galleryEl.style.minHeight = '';
+      }
+    }
+  }
+
+  // Gallery rendering (for index.html)
   async function renderGallery(data, allStatsMap, mostViewedProjectId) {
+    if (!galleryEl) return; // Only run if on index.html
+
     showProjectsLoading(false); // Hide loading spinner
     galleryEl.innerHTML = ""; // Clear existing content
 
@@ -442,7 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
       galleryEl.style.display = 'block'; // Ensure message is visible
       return;
     }
-    
+
     const local = loadLocalStats(); // Load local stats once for rendering
 
     const fragment = document.createDocumentFragment(); // Use DocumentFragment for performance
@@ -519,22 +536,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
 
-      // No explicit click handler for views, it's tracked on lightbox open
-      // const viewDisplay = item.querySelector(".stat-item.views"); // This variable is not used
-
       fragment.appendChild(item);
 
       // Handle "Read More" button for project descriptions
       const descP = item.querySelector('.project-content p');
-      // Check if content overflows (requires element to be in DOM for scrollHeight)
-      // This check might be more accurate if done after appending to DOM,
-      // but for initial rendering, it's often done this way.
-      // A more robust check would involve temporarily adding to a hidden div.
-      // For simplicity, assuming scrollHeight > clientHeight is sufficient.
-      // Note: This check is often unreliable before the element is fully rendered and styled.
-      // A more robust solution for text truncation might involve CSS-only truncation
-      // with a "show more" button that toggles a class.
-      // For now, keeping the existing logic but acknowledging its potential limitations.
       if (descP.scrollHeight > descP.clientHeight) {
         const readMoreBtn = document.createElement('button');
         readMoreBtn.className = 'read-more-project-btn';
@@ -551,8 +556,43 @@ document.addEventListener("DOMContentLoaded", function () {
     galleryEl.appendChild(fragment); // Append all elements at once
   }
 
-  // Lightbox functions
-  async function openLightbox(project, initialProjectStats, triggerRect) {
+  // Render Certificates (for certificates.html)
+  function renderCertificates(certs) {
+    const certificatesGrid = document.getElementById('certificates-grid');
+    if (!certificatesGrid) return; // Only run if on certificates.html
+
+    certificatesGrid.innerHTML = ''; // Clear existing content
+    const fragment = document.createDocumentFragment();
+
+    certs.forEach(cert => {
+      const certCard = document.createElement('div');
+      certCard.classList.add('cert-card-full'); // New class for full page certificate cards
+      certCard.setAttribute('data-aos', 'fade-up');
+      certCard.setAttribute('data-aos-duration', '800');
+      certCard.setAttribute('data-id', cert.id); // Add data-id for lightbox
+
+      certCard.innerHTML = `
+        <img src="${cert.src}" alt="${cert.title}" loading="lazy">
+        <div class="cert-info">
+          <h3>${cert.title}</h3>
+          <p>${cert.desc}</p>
+        </div>
+      `;
+
+      // Add click listener to open lightbox for certificates
+      certCard.addEventListener('click', function() {
+        const clickedImage = this.querySelector('img');
+        originalRect = clickedImage.getBoundingClientRect();
+        openLightbox(cert, { likes: 0, shares: 0, views: 0 }, originalRect, true); // Pass true for isCertificate
+      });
+
+      fragment.appendChild(certCard);
+    });
+    certificatesGrid.appendChild(fragment);
+  }
+
+  // Lightbox functions (modified to handle both projects and certificates)
+  async function openLightbox(item, initialStats, triggerRect, isCertificate = false) {
     // Clear previous content immediately to prevent flash of old text
     const captionContent = lightboxCaption.querySelector('.lightbox-caption-content');
     if (captionContent) {
@@ -564,13 +604,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     lightboxCaption.classList.remove('expanded');
 
-    lightboxImage.style.display = 'none';
+    lightboxImage.classList.add('hidden'); // Use class to hide
     lightboxImage.src = '';
 
     let mediaElement = lightboxImage; // Always use lightboxImage for now
-    mediaElement.src = project.src;
-    mediaElement.alt = project.title;
-    mediaElement.style.display = 'block';
+    mediaElement.src = item.src;
+    mediaElement.alt = item.title;
+    mediaElement.classList.remove('hidden'); // Use class to show
 
     // Set initial position and size for smooth transition from thumbnail
     mediaElement.style.left = `${triggerRect.left}px`;
@@ -585,11 +625,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Once image is loaded, animate to final position
     mediaElement.onload = () => {
-      animateLightbox(mediaElement, lightboxInfoContainer, project);
+      animateLightbox(mediaElement, lightboxInfoContainer, item);
     };
     // Handle cases where image might be cached and onload doesn't fire
     if (mediaElement.complete) {
-      animateLightbox(mediaElement, lightboxInfoContainer, project);
+      animateLightbox(mediaElement, lightboxInfoContainer, item);
     }
 
     // Clear previous controls
@@ -598,39 +638,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const local = loadLocalStats();
 
-    const currentLikes = initialProjectStats.likes;
-    const currentShares = initialProjectStats.shares;
-    let currentViews = initialProjectStats.views;
+    let currentLikes = initialStats.likes;
+    let currentShares = initialStats.shares;
+    let currentViews = initialStats.views;
 
-    // Increment view count only if not already viewed in this session
-    if (!(local[project.id] && local[project.id].viewed)) {
+    // If it's a project and not already viewed, increment view count
+    if (!isCertificate && !(local[item.id] && local[item.id].viewed)) {
       currentViews++;
     }
 
-    // Create Like Button
-    const likeBtn = document.createElement('button');
-    likeBtn.className = `lightbox-btn like-btn ${local[project.id] && local[project.id].liked ? 'liked' : ''}`;
-    likeBtn.innerHTML = `<i class="fas fa-heart"></i> <span class="like-count">${currentLikes}</span>`;
-    likeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      handleLike(project.id, likeBtn);
-    });
+    // Create Like Button (only for projects, not certificates)
+    if (!isCertificate) {
+      const likeBtn = document.createElement('button');
+      likeBtn.className = `lightbox-btn like-btn ${local[item.id] && local[item.id].liked ? 'liked' : ''}`;
+      likeBtn.innerHTML = `<i class="fas fa-heart"></i> <span class="like-count">${currentLikes}</span>`;
+      likeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleLike(item.id, likeBtn);
+      });
+      controls.append(likeBtn);
+    }
 
-    // Create Share Button
-    const shareBtn = document.createElement('button');
-    shareBtn.className = `lightbox-btn share-btn ${local[project.id] && local[project.id].shared ? 'shared' : ''}`;
-    shareBtn.innerHTML = `<i class="fas fa-share-alt"></i> <span class="share-count">${currentShares}</span>`;
-    shareBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      handleShare(project.id, shareBtn);
-    });
 
-    // Create View Display
-    const viewDisplay = document.createElement('div');
-    viewDisplay.className = 'lightbox-btn view-display';
-    viewDisplay.innerHTML = `<i class="fas fa-eye"></i> <span class="view-count">${currentViews}</span>`;
+    // Create Share Button (only for projects, not certificates)
+    if (!isCertificate) {
+      const shareBtn = document.createElement('button');
+      shareBtn.className = `lightbox-btn share-btn ${local[item.id] && local[item.id].shared ? 'shared' : ''}`;
+      shareBtn.innerHTML = `<i class="fas fa-share-alt"></i> <span class="share-count">${currentShares}</span>`;
+      shareBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleShare(item.id, shareBtn);
+      });
+      controls.append(shareBtn);
+    }
 
-    controls.append(likeBtn, shareBtn, viewDisplay);
+
+    // Create View Display (only for projects, not certificates)
+    if (!isCertificate) {
+      const viewDisplay = document.createElement('div');
+      viewDisplay.className = 'lightbox-btn view-display';
+      viewDisplay.innerHTML = `<i class="fas fa-eye"></i> <span class="view-count">${currentViews}</span>`;
+      controls.append(viewDisplay);
+    }
+
 
     // Activate lightbox elements
     lightboxOverlay.classList.add('active');
@@ -639,11 +689,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.classList.add("lightbox-open");
     document.documentElement.classList.add("lightbox-open");
 
-    // Push view stat to server (only if not already viewed in this session)
-    handleView(project.id);
+    // Push view stat to server (only for projects, only if not already viewed in this session)
+    if (!isCertificate) {
+      handleView(item.id);
+    }
   }
 
-  function setupLightboxCaption(project) {
+  function setupLightboxCaption(item) {
     const captionContent = lightboxCaption.querySelector('.lightbox-caption-content');
     if (!captionContent) return;
 
@@ -654,7 +706,7 @@ document.addEventListener("DOMContentLoaded", function () {
       existingBtn.remove();
     }
 
-    captionContent.textContent = `${project.title} — ${project.desc}`;
+    captionContent.textContent = `${item.title} — ${item.desc}`;
 
     // Use line-height calculation for a more reliable overflow check
     const style = window.getComputedStyle(captionContent);
@@ -678,7 +730,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function animateLightbox(mediaElement, controlsElement, project) {
+  function animateLightbox(mediaElement, controlsElement, item) {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
@@ -714,7 +766,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mediaElement.style.willChange = 'left, top, width, height'; // Optimize for animation
 
     // Set up the caption content *before* the animation starts
-    setupLightboxCaption(project);
+    setupLightboxCaption(item);
 
     // Use a small timeout to ensure the browser has rendered the initial state
     // before adding the class that triggers the transition.
@@ -748,7 +800,7 @@ document.addEventListener("DOMContentLoaded", function () {
         currentMediaElement = null;
       }
 
-      lightboxImage.style.display = 'none';
+      lightboxImage.classList.add('hidden'); // Use class to hide
       document.body.classList.remove("lightbox-open");
       document.documentElement.classList.remove("lightbox-open");
 
@@ -766,25 +818,30 @@ document.addEventListener("DOMContentLoaded", function () {
     e.stopPropagation(); // Prevent clicks inside lightbox content from closing it
   });
 
-  // Initial render of projects and total stats
+  // Initial render logic based on current page
   (async function init() {
-    showProjectsLoading(true);
-    const projectIds = projects.map(p => p.id);
-    const allStatsMap = await fetchAllProjectStats(projectIds);
+    if (window.location.pathname.includes('certificates.html')) {
+      // Render certificates on certificates.html
+      renderCertificates(certificates);
+    } else {
+      // Render projects on index.html
+      showProjectsLoading(true);
+      const projectIds = projects.map(p => p.id);
+      const allStatsMap = await fetchAllProjectStats(projectIds);
 
-    let mostViewedProjectId = null;
-    let maxViews = -1;
-    for (const id in allStatsMap) {
-      if (allStatsMap.hasOwnProperty(id)) {
-        if (allStatsMap[id].views > maxViews) {
-          maxViews = allStatsMap[id].views;
-          mostViewedProjectId = id;
+      let mostViewedProjectId = null;
+      let maxViews = -1;
+      for (const id in allStatsMap) {
+        if (allStatsMap.hasOwnProperty(id)) {
+          if (allStatsMap[id].views > maxViews) {
+            maxViews = allStatsMap[id].views;
+            mostViewedProjectId = id;
+          }
         }
       }
+      renderGallery(projects, allStatsMap, mostViewedProjectId);
+      await updateTotalStatsDisplay();
     }
-
-    renderGallery(projects, allStatsMap, mostViewedProjectId); // Removed await as it's not necessary here
-    await updateTotalStatsDisplay();
   })();
 
   // Mobile Menu Toggle
@@ -824,7 +881,7 @@ document.addEventListener("DOMContentLoaded", function () {
       window.requestAnimationFrame(function () {
         const currentScrollPosition = window.pageYOffset;
         const header = document.querySelector('.header-section');
-        const heroSection = document.querySelector('.hero-section');
+        const heroSection = document.querySelector('.hero-section'); // Only exists on index.html
 
         if (currentScrollPosition > 100) {
           header.classList.add('shrink');
@@ -833,9 +890,8 @@ document.addEventListener("DOMContentLoaded", function () {
           header.classList.remove('shrink');
         }
 
-        // Parallax effect for Hero Section
+        // Parallax effect for Hero Section (only on index.html)
         if (heroSection) {
-          heroSection.style.backgroundPositionY = currentScrollPosition * 0.5 + 'px';
           heroSection.style.setProperty('--parallax-translateY', `${currentScrollPosition * 0.3}px`);
         }
         ticking = false;
@@ -844,35 +900,38 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }, { passive: true }); // Use passive listener for better scroll performance
 
-  // Filter functionality
-  filtersEl.addEventListener('click', async function (e) {
-    if (e.target.tagName === 'BUTTON') {
-      filtersEl.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-      e.target.classList.add('active');
+  // Filter functionality (only on index.html)
+  if (filtersEl) {
+    filtersEl.addEventListener('click', async function (e) {
+      if (e.target.tagName === 'BUTTON') {
+        filtersEl.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
 
-      const filter = e.target.dataset.filter;
-      const filteredProjects = projects.filter(project => {
-        return filter === 'all' || project.category === filter;
-      });
+        const filter = e.target.dataset.filter;
+        const filteredProjects = projects.filter(project => {
+          return filter === 'all' || project.category === filter;
+        });
 
-      showProjectsLoading(true); // Show loading spinner while filtering
-      const filteredProjectIds = filteredProjects.map(p => p.id);
-      const allStatsMapForFiltered = await fetchAllProjectStats(filteredProjectIds);
+        showProjectsLoading(true); // Show loading spinner while filtering
+        const filteredProjectIds = filteredProjects.map(p => p.id);
+        const allStatsMapForFiltered = await fetchAllProjectStats(filteredProjectIds);
 
-      let mostViewedProjectId = null;
-      let maxViews = -1;
-      for (const id in allStatsMapForFiltered) {
-        if (allStatsMapForFiltered.hasOwnProperty(id)) {
-          if (allStatsMapForFiltered[id].views > maxViews) {
-            maxViews = allStatsMapForFiltered[id].views;
-            mostViewedProjectId = id;
+        let mostViewedProjectId = null;
+        let maxViews = -1;
+        for (const id in allStatsMapForFiltered) {
+          if (allStatsMapForFiltered.hasOwnProperty(id)) {
+            if (allStatsMapForFiltered[id].views > maxViews) {
+              maxViews = allStatsMapForFiltered[id].views;
+              mostViewedProjectId = id;
+            }
           }
         }
-      }
 
-      renderGallery(filteredProjects, allStatsMapForFiltered, mostViewedProjectId);
-    }
-  });
+        renderGallery(filteredProjects, allStatsMapForFiltered, mostViewedProjectId);
+      }
+    });
+  }
+
 
   // Dark Mode Toggle Logic
   const isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -887,58 +946,95 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Infinity Loop Slider for Certificates
-  const certSliderTrack = document.querySelector('.cert-slider-track');
-  if (certSliderTrack) {
+  // Infinity Loop Slider for Certificates (only on index.html)
+  const certSliderTrack = document.getElementById('cert-slider-track');
+  const pauseSliderBtn = document.getElementById('pause-slider-btn');
+  const playSliderBtn = document.getElementById('play-slider-btn');
+
+  if (certSliderTrack && pauseSliderBtn && playSliderBtn) {
     const certCards = Array.from(certSliderTrack.children);
     // Clone only if there are enough cards to make a seamless loop
     if (certCards.length > 0) {
       // Calculate how many clones are needed to fill the track and ensure seamless loop
-      // This helps prevent a visible "jump" when the animation resets
-      const cardWidth = certCards[0].offsetWidth + (parseFloat(window.getComputedStyle(certCards[0]).marginRight) * 2); // Card width + margin
+      const cardWidth = certCards[0].offsetWidth + (parseFloat(window.getComputedStyle(certCards[0]).marginRight) * 2);
       const trackWidth = certSliderTrack.offsetWidth;
       const numVisibleCards = Math.ceil(trackWidth / cardWidth);
-      const numClones = numVisibleCards * 2; // Clone enough for at least two full "screens" of cards
+      const numClones = numVisibleCards * 2;
 
       for (let i = 0; i < numClones; i++) {
-        const clonedCard = certCards[i % certCards.length].cloneNode(true); // Cycle through original cards
+        const clonedCard = certCards[i % certCards.length].cloneNode(true);
         certSliderTrack.appendChild(clonedCard);
       }
     }
 
+    // Event listeners for pausing/playing animation
+    pauseSliderBtn.addEventListener('click', () => {
+      certSliderTrack.style.animationPlayState = 'paused';
+      pauseSliderBtn.classList.add('active');
+      playSliderBtn.classList.remove('active');
+    });
+
+    playSliderBtn.addEventListener('click', () => {
+      certSliderTrack.style.animationPlayState = 'running';
+      playSliderBtn.classList.add('active');
+      pauseSliderBtn.classList.remove('active');
+    });
+
+    // Pause on hover (existing functionality)
     certSliderTrack.addEventListener('mouseenter', () => {
       certSliderTrack.style.animationPlayState = 'paused';
+      pauseSliderBtn.classList.add('active');
+      playSliderBtn.classList.remove('active');
     });
 
     certSliderTrack.addEventListener('mouseleave', () => {
-      certSliderTrack.style.animationPlayState = 'running';
+      // Only resume if the play button is currently active (i.e., user didn't manually pause)
+      if (playSliderBtn.classList.contains('active')) {
+        certSliderTrack.style.animationPlayState = 'running';
+      }
     });
+
+    // Initial state: Play button active by default, or pause if prefers-reduced-motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      certSliderTrack.style.animationPlayState = 'paused';
+      pauseSliderBtn.classList.add('active');
+      playSliderBtn.classList.remove('active');
+    } else {
+      playSliderBtn.classList.add('active');
+      pauseSliderBtn.classList.remove('active');
+    }
   }
 
-  // Uptime Counter
-  const startTime = new Date("2025-07-03T00:14:20");
-  function updateUptime() {
-    const now = new Date();
-    const diff = Math.floor((now - startTime) / 1000);
-    const days = Math.floor(diff / 86400);
-    const hours = Math.floor((diff % 86400) / 3600);
-    const minutes = Math.floor((diff % 3600) / 60);
-    const seconds = diff % 60;
-    document.getElementById("uptime").textContent =
-      ` ${days}d ${hours}h ${minutes}m ${seconds}s `;
+  // Uptime Counter (only on index.html)
+  if (document.getElementById("uptime")) {
+    const startTime = new Date("2025-07-03T00:14:20");
+    function updateUptime() {
+      const now = new Date();
+      const diff = Math.floor((now - startTime) / 1000);
+      const days = Math.floor(diff / 86400);
+      const hours = Math.floor((diff % 86400) / 3600);
+      const minutes = Math.floor((diff % 3600) / 60);
+      const seconds = diff % 60;
+      document.getElementById("uptime").textContent =
+        ` ${days}d ${hours}m ${minutes}m ${seconds}s `;
+    }
+    setInterval(updateUptime, 1000);
+    updateUptime(); // Call once immediately to avoid initial "0d 0h 0m 0s"
   }
-  setInterval(updateUptime, 1000);
-  updateUptime(); // Call once immediately to avoid initial "0d 0h 0m 0s"
 
-  // Random Quote Display
-  const quotes = [
-    "ความพยายามไม่เคยทรยศใคร",
-    "เรียนรู้ในสิ่งที่ใช่ จะได้ทำในสิ่งที่รัก",
-    "ทุกวันคือโอกาสใหม่",
-    "อย่ารอความมั่นใจ จงเริ่มจากความตั้งใจ"
-  ];
-  document.getElementById("quote").textContent =
-    quotes[Math.floor(Math.random() * quotes.length)];
+
+  // Random Quote Display (only on index.html)
+  if (document.getElementById("quote")) {
+    const quotes = [
+      "ความพยายามไม่เคยทรยศใคร",
+      "เรียนรู้ในสิ่งที่ใช่ จะได้ทำในสิ่งที่รัก",
+      "ทุกวันคือโอกาสใหม่",
+      "อย่ารอความมั่นใจ จงเริ่มจากความตั้งใจ"
+    ];
+    document.getElementById("quote").textContent =
+      quotes[Math.floor(Math.random() * quotes.length)];
+  }
+
 
   // Preloader Hide Logic
   window.addEventListener('load', () => {
@@ -952,7 +1048,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }, { once: true });
     }
     if (mainContent) {
-      mainContent.style.display = 'block';
+      mainContent.classList.remove('hidden'); // Use class to show
     }
 
     // Initialize AOS after the page has loaded to ensure elements are ready
@@ -966,60 +1062,47 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Tab Functionality for the new About section
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
+  // Tab Functionality for the new About section (only on index.html)
+  const aboutSection = document.querySelector('.about-section');
+  if (aboutSection) {
+    const tabBtns = aboutSection.querySelectorAll('.tab-btn');
+    const tabContents = aboutSection.querySelectorAll('.tab-content');
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Remove active class from all buttons and contents
-      tabBtns.forEach(btn => btn.classList.remove('active'));
-      tabContents.forEach(content => content.classList.remove('active'));
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
 
-      // Add active class to clicked button
-      btn.classList.add('active');
+        btn.classList.add('active');
 
-      // Show corresponding content
-      const tabId = btn.getAttribute('data-tab');
-      document.getElementById(tabId).classList.add('active');
+        const tabId = btn.getAttribute('data-tab');
+        aboutSection.querySelector(`#${tabId}`).classList.add('active');
+      });
     });
-  });
 
-  // Make first tab active by default
-  if (tabBtns.length > 0) {
-    tabBtns[0].click();
+    if (tabBtns.length > 0) {
+      tabBtns[0].click();
+    }
   }
 
-  // Tab Functionality for Skills & Experience section
-  const sectionTabBtns = document.querySelectorAll('.section-tab');
-  const sectionTabContents = document.querySelectorAll('.skills-experience-section .tab-content');
 
-  sectionTabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Remove active class from all section tabs and contents
-      sectionTabBtns.forEach(t => t.classList.remove('active'));
-      sectionTabContents.forEach(c => c.classList.remove('active'));
+  // Tab Functionality for Skills & Experience section (only on index.html)
+  const skillsExperienceSection = document.querySelector('.skills-experience-section');
+  if (skillsExperienceSection) {
+    const sectionTabBtns = skillsExperienceSection.querySelectorAll('.section-tab');
+    const sectionTabContents = skillsExperienceSection.querySelectorAll('.tab-content');
 
-      // Add active class to clicked section tab
-      btn.classList.add('active');
+    sectionTabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        sectionTabBtns.forEach(t => t.classList.remove('active'));
+        sectionTabContents.forEach(c => c.classList.remove('active'));
 
-      // Show corresponding content
-      const tabId = btn.getAttribute('data-tab');
-      document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+
+        const tabId = btn.getAttribute('data-tab');
+        skillsExperienceSection.querySelector(`#${tabId}`).classList.add('active');
+      });
     });
-  });
-
-  // Make first section tab active by default
-  if (sectionTabBtns.length > 0) {
-    sectionTabBtns[0].click();
   }
 });
 
-// General JavaScript Optimization Recommendations:
-// 1. Minification & Compression: Use tools like UglifyJS or Terser to minify JS files
-//    and ensure your server serves them with Gzip compression.
-// 2. Code Splitting: For larger applications, consider breaking down the JS into smaller chunks
-//    and loading them only when needed (e.g., specific section's JS only when that section is scrolled into view).
-// 3. Remove Unused Code: Regularly audit your JavaScript for dead code and remove it.
-// 4. Optimize Loops and Data Structures: Ensure loops are efficient and appropriate data structures are used.
-// 5. Caching: Leverage browser caching for your JavaScript files.
