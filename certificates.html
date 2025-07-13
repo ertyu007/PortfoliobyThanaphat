@@ -14,15 +14,18 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&family=Sarabun:wght@400;500;600&display=swap" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@400;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
 
+  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css" />
+  <!-- Defer non-critical CSS (AOS) - Load asynchronously after page render -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <!-- Load Font Awesome asynchronously -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
-  <!-- SEO -->
+  <!-- SEO Meta Tags -->
   <meta name="description" content="รวมประกาศนียบัตรและรางวัลทั้งหมดของธนภัทร การะจักษ์ เพื่อแสดงถึงความสามารถและความสำเร็จในด้าน IT, หุ่นยนต์, และการตัดต่อวิดีโอ" />
   <meta name="keywords" content="ประกาศนียบัตร, รางวัล, เกียรติบัตร, Portfolio, ธนภัทร การะจักษ์, IT, หุ่นยนต์, ตัดต่อวิดีโอ, ความสำเร็จ" />
 
-  <!-- Open Graph -->
+  <!-- Open Graph Meta Tags (for social media sharing) -->
   <meta property="og:title" content="ประกาศนียบัตรและรางวัล - ธนภัทร การะจักษ์" />
   <meta property="og:description" content="รวมประกาศนียบัตรและรางวัลทั้งหมดของธนภัทร การะจักษ์ เพื่อแสดงถึงความสามารถและความสำเร็จในด้าน IT, หุ่นยนต์, และการตัดต่อวิดีโอ" />
   <meta property="og:image" content="https://ertyuthanaphat.netlify.app/assets/images/og-image.jpg" />
@@ -32,17 +35,18 @@
 </head>
 
 <body>
-  <!-- Preloader Section -->
-  <div id="preloader">
-    <div class="loader"></div>
+  <!-- Preloader Section: Displays a loading animation before the main content -->
+  <div id="preloader" aria-live="polite" aria-atomic="true">
+    <div class="loader" role="status"></div>
     <p class="preloader-message">กำลังจัดเตรียมเนื้อหาเพื่อมอบประสบการณ์ที่ดีที่สุดแก่ท่าน</p>
   </div>
 
-  <!-- Main Content Section -->
+  <!-- Main Content Section: Hidden initially and shown after preloader -->
   <main id="main-content" class="hidden">
+    <!-- Header Section -->
     <header class="header-section" data-aos="fade-down" data-aos-duration="800">
       <div class="header-logo">
-        <a href="./index.html#Home" class="logo-text">ธนภัทร</a>
+        <a href="./index.html#Home" class="logo-text" aria-label="กลับสู่หน้าหลัก">ธนภัทร</a>
         <div class="logo-dots">
           <span class="dot dot-1"></span>
           <span class="dot dot-2"></span>
@@ -50,21 +54,23 @@
         </div>
       </div>
 
-      <nav class="header-list">
+      <nav class="header-list" aria-label="เมนูนำทางหลัก">
         <ul class="header-nav">
-          <li><a href="./index.html#Home">หน้าหลัก</a></li>
+          <!-- Added aria-current="page" for accessibility on the active page -->
+          <li><a href="./index.html#Home" aria-current="page">หน้าหลัก</a></li>
         </ul>
-        <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="สลับโหมดมืด/สว่าง">
           <i class="fas fa-cog"></i>
         </button>
       </nav>
-      <div class="menu-toggle" aria-label="Toggle mobile menu">
+      <button class="menu-toggle" aria-label="สลับเมนูมือถือ" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
     </header>
 
+    <!-- Full Certificates Section: Displays all certificates in a grid -->
     <section class="full-certificates-section">
       <div class="cert-header" data-aos="fade-down" data-aos-duration="800">
         <h2>ประกาศนียบัตร &amp; รางวัลทั้งหมด</h2>
@@ -74,7 +80,8 @@
       </div>
 
       <div class="certificates-grid" id="certificates-grid">
-        <!-- Certificate cards will be loaded here by JavaScript -->
+        <!-- Certificate cards will be loaded here dynamically by JavaScript -->
+        <!-- A loading spinner or message could be added here initially if desired for very slow loads -->
       </div>
     </section>
 
@@ -82,7 +89,7 @@
     <footer class="footer-section" data-aos="fade-up" data-aos-duration="1000">
       <div class="footer-container">
         <div class="footer-logo">
-          <a href="#">ธนภัทร</a>
+          <a href="#" aria-label="กลับสู่ด้านบนสุดของหน้า">ธนภัทร</a>
           <span></span>
           <span></span>
           <span></span>
@@ -104,20 +111,20 @@
           <div class="footer-column">
             <h3>เชื่อมต่อ</h3>
             <ul>
-              <li><a href="mailto:ertyualexs04@gmail.com">อีเมล</a></li>
-              <li><a href="tel:0800163734">โทรศัพท์</a></li>
-              <li><a href="https://github.com/ertyu007/" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-              <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank" rel="noopener noreferrer">Facebook</a></li>
-              <li><a href="https://www.youtube.com/@amazingwuji" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+              <li><a href="mailto:ertyualexs04@gmail.com" aria-label="ส่งอีเมลถึง ertyualexs04@gmail.com">อีเมล</a></li>
+              <li><a href="tel:0800163734" aria-label="โทรศัพท์ 080 016 3734">โทรศัพท์</a></li>
+              <li><a href="https://github.com/ertyu007/" target="_blank" rel="noopener noreferrer" aria-label="เยี่ยมชมโปรไฟล์ GitHub">GitHub</a></li>
+              <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank" rel="noopener noreferrer" aria-label="เยี่ยมชมโปรไฟล์ Facebook">Facebook</a></li>
+              <li><a href="https://www.youtube.com/@amazingwuji" target="_blank" rel="noopener noreferrer" aria-label="เยี่ยมชมช่อง YouTube">YouTube</a></li>
             </ul>
           </div>
 
           <div class="footer-column">
             <h3>แหล่งข้อมูล</h3>
             <ul>
-              <li><a href="#" target="_blank" rel="noopener noreferrer">แฟ้มสะสมผลงาน (PDF)</a></li>
-              <li><a href="./privacy-policy.html">นโยบายความเป็นส่วนตัว</a></li>
-              <li><a href="./terms-of-use.html">เงื่อนไขการใช้งาน</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer" aria-label="ดาวน์โหลดแฟ้มสะสมผลงานในรูปแบบ PDF">แฟ้มสะสมผลงาน (PDF)</a></li>
+              <li><a href="./privacy-policy.html" aria-label="อ่านนโยบายความเป็นส่วนตัว">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="./terms-of-use.html" aria-label="อ่านเงื่อนไขการใช้งาน">เงื่อนไขการใช้งาน</a></li>
             </ul>
           </div>
         </div>
@@ -130,8 +137,8 @@
     </footer>
   </main>
 
-  <!-- Lightbox Elements (Same as index.html for consistency) -->
-  <div id="lightbox-overlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Certificate details lightbox"></div>
+  <!-- Lightbox Elements: Used for displaying enlarged images/videos -->
+  <div id="lightbox-overlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="รายละเอียดรูปภาพ"></div>
   <div id="lightbox-content-container" class="lightbox-content-container">
     <img id="lightbox-image" class="lightbox-media hidden" src="" alt="รูปภาพขยาย">
     <div id="lightbox-info-container">
@@ -141,7 +148,7 @@
       <div class="lightbox-controls"></div>
     </div>
   </div>
-  <button id="lightbox-close" class="lightbox-close" aria-label="Close lightbox">
+  <button id="lightbox-close" class="lightbox-close" aria-label="ปิดกล่อง Lightbox">
     <i class="fas fa-times"></i>
   </button>
 
@@ -150,16 +157,17 @@
   <script type="module" src="script.js" defer></script>
   <!-- Fallback to show main content if preloader fails or takes too long -->
   <script>
+    // This script ensures the main content is displayed even if the preloader script fails
+    // or takes too long to load, improving perceived performance.
     setTimeout(() => {
       const preloader = document.getElementById('preloader');
       const mainContent = document.getElementById('main-content');
       if (preloader && mainContent && preloader.classList.contains('hidden')) {
-        // If preloader is already hidden, do nothing.
-        // If not hidden, force display main content.
+        // If preloader is already hidden by script.js, do nothing.
       } else if (mainContent) {
-        mainContent.classList.remove('hidden');
+        mainContent.classList.remove('hidden'); // Force display main content.
         if (preloader) {
-          preloader.style.display = 'none'; // Ensure preloader is fully gone
+          preloader.style.display = 'none'; // Ensure preloader is fully gone.
         }
       }
     }, 3000); // Adjust delay as needed, e.g., 3000ms (3 seconds)

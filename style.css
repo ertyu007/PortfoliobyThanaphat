@@ -2681,10 +2681,19 @@ body.dark-mode .full-certificates-section {
   border: 1px solid transparent;
 }
 
+body.dark-mode .cert-card-full {
+  background-color: var(--color-card-dark);
+  box-shadow: 0 5px 15px var(--color-shadow-dark);
+}
+
 .cert-card-full:hover {
   transform: translateY(-8px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
   border-color: var(--color-primary);
+}
+
+body.dark-mode .cert-card-full:hover {
+  border-color: var(--color-primary-dark);
 }
 
 .cert-card-full img {

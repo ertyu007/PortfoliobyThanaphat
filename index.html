@@ -14,19 +14,20 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&family=Sarabun:wght@400;500;600&display=swap" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@400;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
 
+  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css" />
-  <!-- Defer non-critical CSS (AOS) -->
+  <!-- Defer non-critical CSS (AOS) - Load asynchronously after page render -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
   <!-- Load Font Awesome asynchronously -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
 
-  <!-- SEO -->
+  <!-- SEO Meta Tags -->
   <meta name="description"
     content="เปิดประตูสู่มหาวิทยาลัย! แฟ้มสะสมผลงาน ม.6 ฉบับสมบูรณ์สำหรับสาขา IT, หุ่นยนต์, และการตัดต่อวิดีโอ รวบรวมผลงานจริง, ประกาศนียบัตร, รางวัล และเคล็ดลับการสร้าง Portfolio ให้โดดเด่น คลิกดูเลย!" />
   <meta name="keywords"
     content="แฟ้มสะสมผลงาน ม.6, Portfolio สมัครมหาวิทยาลัย, แฟ้มสะสมผลงาน IT, แฟ้มสะสมผลงานหุ่นยนต์, แฟ้มสะสมผลงานการตัดต่อวิดีโอ, ตัวอย่าง Portfolio, ประกาศนียบัตร, รางวัล, นักเรียนมัธยมปลาย, Portfolio เข้ามหาลัย, เทคนิค Portfolio, ผลงานนักเรียน, ม.ปลาย, การศึกษาต่อ, แฟ้มผลงานดิจิทัล, ธนภัทร การะจักษ์" />
 
-  <!-- Open Graph (Facebook / LINE / etc.) -->
+  <!-- Open Graph Meta Tags (for social media sharing) -->
   <meta property="og:title" content="แฟ้มสะสมผลงาน ม.6 (ติดมหาลัย) | IT, หุ่นยนต์, ตัดต่อวิดีโอ - ธนภัทร การะจักษ์" />
   <meta property="og:description"
     content="เปิดประตูสู่มหาวิทยาลัย! แฟ้มสะสมผลงาน ม.6 ฉบับสมบูรณ์สำหรับสาขา IT, หุ่นยนต์, และการตัดต่อวิดีโอ รวบรวมผลงานจริง, ประกาศนียบัตร, รางวัล และเคล็ดลับการสร้าง Portfolio ให้โดดเด่น คลิกดูเลย!" />
@@ -37,17 +38,18 @@
 </head>
 
 <body>
-  <!-- Preloader Section -->
-  <div id="preloader">
-    <div class="loader"></div>
+  <!-- Preloader Section: Displays a loading animation before the main content -->
+  <div id="preloader" aria-live="polite" aria-atomic="true">
+    <div class="loader" role="status"></div>
     <p class="preloader-message">กำลังจัดเตรียมเนื้อหาเพื่อมอบประสบการณ์ที่ดีที่สุดแก่ท่าน</p>
   </div>
 
-  <!-- Main Content Section -->
+  <!-- Main Content Section: Hidden initially and shown after preloader -->
   <main id="main-content" class="hidden">
+    <!-- Header Section -->
     <header class="header-section" data-aos="fade-down" data-aos-duration="800">
       <div class="header-logo">
-        <a href="#Home" class="logo-text">ธนภัทร</a>
+        <a href="#Home" class="logo-text" aria-label="กลับสู่หน้าหลัก">ธนภัทร</a>
         <div class="logo-dots">
           <span class="dot dot-1"></span>
           <span class="dot dot-2"></span>
@@ -55,9 +57,10 @@
         </div>
       </div>
 
-      <nav class="header-list">
+      <nav class="header-list" aria-label="เมนูนำทางหลัก">
         <ul class="header-nav">
-          <li><a href="#Home">หน้าหลัก</a></li>
+          <!-- Added aria-current for active navigation links -->
+          <li><a href="#Home" aria-current="page">หน้าหลัก</a></li>
           <li><a href="#About">เกี่ยวกับ</a></li>
           <li><a href="#Skills">ทักษะ</a></li>
           <li><a href="#Projects">ผลงาน</a></li>
@@ -70,28 +73,28 @@
           <span></span>
           <span></span>
         </div>
-        <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="สลับโหมดมืด/สว่าง">
           <i class="fas fa-cog"></i>
         </button>
       </nav>
-      <div class="menu-toggle" aria-label="Toggle mobile menu">
+      <button class="menu-toggle" aria-label="สลับเมนูมือถือ" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
     </header>
 
-    <!-- Hero Section (Updated from test.html) -->
+    <!-- Hero Section -->
     <section id="Home" class="hero-section" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
         <div class="decoration decoration-1"></div>
         <div class="decoration decoration-2"></div>
         
         <div class="hero-container">
-            <div class="hero-contant"> <!-- Added hero-contant div for consistency with original structure -->
+            <div class="hero-contant">
                 <div class="hero-name">
                     <h3>สวัสดีครับ, <strong>ผมชื่อ</strong></h3>
                     <h1>ธนภัทร การะจักษ์</h1>
-                    <p id="quote"></p> <!-- Quote will be populated by script.js -->
+                    <p id="quote" aria-live="polite"></p> <!-- Quote will be populated by script.js -->
                 </div>
                 
                 <div class="hero-paragraph">
@@ -120,24 +123,24 @@
           <!-- Lazy load profile image -->
           <picture>
             <source srcset="./assets/images/profile.webp" type="image/webp">
-            <img src="./assets/images/profile.jpg" alt="รูปโปรไฟล์สำหรับส่วน About" class="profile-img" loading="lazy" />
+            <img src="./assets/images/profile.jpg" alt="รูปโปรไฟล์ ธนภัทร การะจักษ์" class="profile-img" loading="lazy" />
           </picture>
         </div>
 
         <div class="about-content">
           <div class="about-tabs-container">
-            <div class="about-tabs">
+            <div class="about-tabs" role="tablist" aria-label="ข้อมูลเกี่ยวกับฉัน">
               <button class="tab-btn" data-tab="personal-info" data-aos="fade-up"
-                data-aos-delay="100" aria-controls="personal-info" role="tab" aria-selected="true">ข้อมูลส่วนบุคคล</button>
+                data-aos-delay="100" aria-controls="personal-info" role="tab" aria-selected="true" id="personal-info-tab-btn" tabindex="0">ข้อมูลส่วนบุคคล</button>
               <button class="tab-btn" data-tab="interests" data-aos="fade-up" data-aos-delay="200"
-                aria-controls="interests" role="tab" aria-selected="false">ความสนใจ</button>
+                aria-controls="interests" role="tab" aria-selected="false" id="interests-tab-btn" tabindex="-1">ความสนใจ</button>
               <button class="tab-btn" data-tab="motto" data-aos="fade-up" data-aos-delay="300"
-                aria-controls="motto" role="tab" aria-selected="false">คติประจำใจ</button>
+                aria-controls="motto" role="tab" aria-selected="false" id="motto-tab-btn" tabindex="-1">คติประจำใจ</button>
               <button class="tab-btn" data-tab="life-goals" data-aos="fade-up"
-                data-aos-delay="400" aria-controls="life-goals" role="tab" aria-selected="false">เป้าหมายในชีวิต</button>
+                data-aos-delay="400" aria-controls="life-goals" role="tab" aria-selected="false" id="life-goals-tab-btn" tabindex="-1">เป้าหมายในชีวิต</button>
             </div>
 
-            <div id="personal-info" class="tab-content" role="tabpanel" aria-labelledby="personal-info-tab">
+            <div id="personal-info" class="tab-content" role="tabpanel" aria-labelledby="personal-info-tab-btn">
               <div class="about-card">
                 <h2>ข้อมูลส่วนบุคคล</h2>
                 <p class="intro-text">
@@ -153,7 +156,7 @@
                     <div class="school-logo-container">
                       <!-- Lazy load school logo -->
                       <img src="./assets/logo/db4eeade-7ddd-4a03-b2ce-e8f57f3abc07.png" alt="โรงเรียนน้ำปลีกศึกษา โลโก้"
-                        class="school-logo-img" loading="lazy">
+                        class="school-logo-img" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/60x60/cccccc/333333?text=School+Logo';">
                     </div>
                     <div class="school-details">
                       <strong>สถานศึกษา (มัธยมศึกษาปีที่ 1 - 6):</strong>
@@ -164,7 +167,7 @@
                     <div class="school-logo-container">
                       <!-- Lazy load school logo -->
                       <img src="./assets/logo/d1eecf5b-00f6-45f1-abd1-c5a63de43400.png"
-                        alt="โรงเรียนมารีย์นุเคราะห์ (โรงเรียนเซนต์แมรี่ยโสธร) โลโก้" class="school-logo-img" loading="lazy">
+                        alt="โรงเรียนมารีย์นุเคราะห์ (โรงเรียนเซนต์แมรี่ยโสธร) โลโก้" class="school-logo-img" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/60x60/cccccc/333333?text=School+Logo';">
                     </div>
                     <div class="school-details">
                       <strong>สถานศึกษา (อนุบาล - ประถมศึกษาปีที่ 6):</strong>
@@ -175,7 +178,7 @@
               </div>
             </div>
 
-            <div id="interests" class="tab-content" role="tabpanel" aria-labelledby="interests-tab">
+            <div id="interests" class="tab-content" role="tabpanel" aria-labelledby="interests-tab-btn" hidden>
               <div class="about-card">
                 <h2>ความสนใจ</h2>
                 <p>
@@ -186,14 +189,14 @@
               </div>
             </div>
 
-            <div id="motto" class="tab-content" role="tabpanel" aria-labelledby="motto-tab">
+            <div id="motto" class="tab-content" role="tabpanel" aria-labelledby="motto-tab-btn" hidden>
               <div class="about-card">
                 <h2>คติประจำใจ</h2>
                 <p>"ไม่มีคำว่าสาย สำหรับผู้ที่มีความตั้งใจที่จะเริ่มต้นอย่างแท้จริง"</p>
               </div>
             </div>
 
-            <div id="life-goals" class="tab-content" role="tabpanel" aria-labelledby="life-goals-tab">
+            <div id="life-goals" class="tab-content" role="tabpanel" aria-labelledby="life-goals-tab-btn" hidden>
               <div class="about-card">
                 <h2>เป้าหมายในชีวิต</h2>
                 <h3>ความฝันสู่สายอาชีพวิศวกรรมเครือข่าย</h3>
@@ -202,18 +205,21 @@
                     ผมมีความมุ่งมั่นที่จะพัฒนาทักษะของตนเองให้ถึงขีดสุด โดยมีเป้าหมายเพื่อยกระดับคุณภาพชีวิตของครอบครัว
                     เนื่องจากผมเติบโตมาท่ามกลางความยากลำบาก ผมจึงเข้าใจอย่างลึกซึ้งถึงความสำคัญของความมั่นคงในชีวิต
                     และเล็งเห็นว่า “การศึกษา” คือเครื่องมือสำคัญที่จะเปลี่ยนแปลงอนาคตของผมและครอบครัวได้
-
+                  </p>
+                  <p>
                     แม้ว่าผมจะเริ่มต้นวางแผนอนาคตอย่างจริงจังในช่วงชั้นมัธยมศึกษาปีที่ 5 ซึ่งอาจช้ากว่าใครหลายคน
                     แต่ผมเชื่อว่าความตั้งใจและความพยายามไม่มีคำว่าสายเกินไป เป้าหมายสูงสุดของผมในขณะนี้คือ
                     การสอบเข้าศึกษาต่อในคณะวิศวกรรมศาสตร์ สาขาที่เกี่ยวข้องกับเครือข่าย ณ มหาวิทยาลัยขอนแก่นให้ได้
                     เนื่องจากผมมีความสนใจในเทคโนโลยีระบบเครือข่าย การเชื่อมต่อข้อมูล
                     และโครงสร้างพื้นฐานทางอินเทอร์เน็ตเป็นพิเศษ ผมเชื่อว่าอาชีพในสายนี้มีบทบาทสำคัญในโลกยุคใหม่
                     และมีศักยภาพในการสร้างความมั่นคงทางอาชีพได้ในระยะยาว
-
+                  </p>
+                  <p>
                     ผมทราบดีว่าการแข่งขันในสายวิศวกรรมเข้มข้นและท้าทาย
                     แต่ผมต้องการลองเดินตามเส้นทางนี้อย่างเต็มที่สักครั้งในชีวิต หากไม่ประสบความสำเร็จตามเป้าหมาย
                     ผมก็พร้อมจะปรับตัวไปสู่อาชีพที่สามารถดูแลครอบครัวได้อย่างมั่นคงเช่นกัน
-
+                  </p>
+                  <p>
                     ผมขอขอบพระคุณทุกโอกาสที่เข้ามาในชีวิต
                     และขอใช้โอกาสนี้แสดงให้เห็นถึงความตั้งใจจริงที่จะเปลี่ยนความฝันให้กลายเป็นความจริง
                   </p>
@@ -228,10 +234,10 @@
     <!-- Skills & Experience Section -->
     <section id="Skills" class="skills-experience-section">
       <div class="container">
-        <!-- Tab Menu -->
-        <div class="section-tabs" role="tablist">
-          <button class="section-tab active" data-tab="skills-tab" aria-controls="skills-tab" role="tab" aria-selected="true">ทักษะ</button>
-          <button class="section-tab" data-tab="experience-tab" aria-controls="experience-tab" role="tab" aria-selected="false">ประสบการณ์</button>
+        <!-- Tab Menu for Skills and Experience -->
+        <div class="section-tabs" role="tablist" aria-label="ทักษะและประสบการณ์">
+          <button class="section-tab active" data-tab="skills-tab" aria-controls="skills-tab" role="tab" aria-selected="true" id="skills-tab-btn" tabindex="0">ทักษะ</button>
+          <button class="section-tab" data-tab="experience-tab" aria-controls="experience-tab" role="tab" aria-selected="false" id="experience-tab-btn" tabindex="-1">ประสบการณ์</button>
         </div>
 
         <!-- Skills Part -->
@@ -245,7 +251,7 @@
                   <span>HTML/CSS</span>
                   <span>80%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 80%"></div>
                 </div>
               </div>
@@ -254,7 +260,7 @@
                   <span>JavaScript (พื้นฐาน)</span>
                   <span>65%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 65%"></div>
                 </div>
               </div>
@@ -263,7 +269,7 @@
                   <span>PHP (พื้นฐาน)</span>
                   <span>60%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 60%"></div>
                 </div>
               </div>
@@ -272,7 +278,7 @@
                   <span>Git</span>
                   <span>70%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 70%"></div>
                 </div>
               </div>
@@ -281,7 +287,7 @@
                   <span>การจัดการความเร็วอินเทอร์เน็ตด้วยสาย LAN CAT5e และ CAT6</span>
                   <span>90%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 90%"></div>
                 </div>
               </div>
@@ -290,7 +296,7 @@
                   <span>การเข้าหัวสายแลน CAT5e และ CAT6</span>
                   <span>95%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 95%"></div>
                 </div>
               </div>
@@ -304,7 +310,7 @@
                   <span>Microsoft Word</span>
                   <span>85%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 85%"></div>
                 </div>
               </div>
@@ -313,7 +319,7 @@
                   <span>Canva</span>
                   <span>80%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 80%"></div>
                 </div>
               </div>
@@ -322,7 +328,7 @@
                   <span>Adobe Photoshop</span>
                   <span>75%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 75%"></div>
                 </div>
               </div>
@@ -331,7 +337,7 @@
                   <span>Adobe Premiere Pro</span>
                   <span>70%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 70%"></div>
                 </div>
               </div>
@@ -340,7 +346,7 @@
                   <span>Adobe After Effects</span>
                   <span>60%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 60%"></div>
                 </div>
               </div>
@@ -349,7 +355,7 @@
                   <span>Adobe Lightroom Classic</span>
                   <span>70%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 70%"></div>
                 </div>
               </div>
@@ -358,7 +364,7 @@
                   <span>Netsetman, Jperf, XAMPP</span>
                   <span>75%</span>
                 </div>
-                <div class="skill-bar">
+                <div class="skill-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
                   <div class="skill-progress" style="width: 75%"></div>
                 </div>
               </div>
@@ -381,7 +387,7 @@
         </div>
 
         <!-- Experience Part -->
-        <div id="experience-tab" class="tab-content" role="tabpanel" aria-labelledby="experience-tab-btn">
+        <div id="experience-tab" class="tab-content" role="tabpanel" aria-labelledby="experience-tab-btn" hidden>
           <div class="experience-grid">
             <!-- Electrical Experience Section -->
             <div class="experience-card" data-aos="fade-up">
@@ -450,7 +456,7 @@
         </h2>
       </div>
       <!-- Filter Buttons -->
-      <div id="filters" class="filters" data-aos="fade-up" data-aos-delay="200" role="group" aria-label="Project categories filter">
+      <div id="filters" class="filters" data-aos="fade-up" data-aos-delay="200" role="group" aria-label="ตัวกรองหมวดหมู่ผลงาน">
         <button class="filter-btn active" data-filter="all" aria-pressed="true">ทั้งหมด</button>
         <button class="filter-btn" data-filter="it" aria-pressed="false">งานเทคโนโลยีสารสนเทศ</button>
         <button class="filter-btn" data-filter="แต่งภาพ" aria-pressed="false">การตกแต่งภาพ</button>
@@ -460,9 +466,10 @@
         <button class="filter-btn" data-filter="สภานักเรียน" aria-pressed="false">สภานักเรียน</button>
       </div>
 
-      <!-- Gallery Grid -->
+      <!-- Gallery Grid - Initial loading state -->
       <div id="gallery" class="gallery-grid" data-aos="fade-up" data-aos-delay="300">
         <!-- Project items will be dynamically loaded here by script.js -->
+        <!-- Initial loading spinner will be displayed here by script.js -->
       </div>
     </section>
 
@@ -476,73 +483,75 @@
       </div>
       <div class="cert-slider-container">
         <div class="cert-slider-track" id="cert-slider-track">
+          <!-- Initial static certificate cards for display before JS loads.
+               These will be replaced or supplemented by JavaScript for the infinite loop. -->
+          <!-- Using placeholder images for initial load to prevent broken images if JS fails -->
           <div class="cert-card" data-index="0" data-aos="fade-up" data-aos-delay="100">
-            <!-- Lazy load certificate images -->
-            <img src="./assets/Certificate/Certificate_003.jpg" alt="ประกาศนียบัตรการแข่งขันหุ่นยนต์" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_003.jpg" alt="ประกาศนียบัตรการแข่งขันหุ่นยนต์" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="1" data-aos="fade-up" data-aos-delay="200">
-            <img src="./assets/Certificate/Certificate_002.jpg" alt="ประกาศนียบัตรการอบรมเชิงปฏิบัติการ" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_002.jpg" alt="ประกาศนียบัตรการอบรมเชิงปฏิบัติการ" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="2" data-aos="fade-up" data-aos-delay="300">
-            <img src="./assets/Certificate/Certificate_001.jpg" alt="ประกาศนียบัตรเข้าร่วมโครงการ" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_001.jpg" alt="ประกาศนียบัตรเข้าร่วมโครงการ" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="3" data-aos="fade-up" data-aos-delay="400">
-            <img src="./assets/Certificate/Certificate_004.jpg" alt="ประกาศนียบัตรการเข้าร่วมกิจกรรม" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_004.jpg" alt="ประกาศนียบัตรการเข้าร่วมกิจกรรม" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="4" data-aos="fade-up" data-aos-delay="500">
-            <img src="./assets/Certificate/Certificate_005.jpg" alt="ประกาศนียบัตรความสำเร็จทางวิชาการ" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_005.jpg" alt="ประกาศนียบัตรความสำเร็จทางวิชาการ" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="5" data-aos="fade-up" data-aos-delay="600">
-            <img src="./assets/Certificate/Certificate_006.jpg" alt="ประกาศนียบัตรการพัฒนาทักษะ" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_006.jpg" alt="ประกาศนียบัตรการพัฒนาทักษะ" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="6" data-aos="fade-up" data-aos-delay="700">
-            <img src="./assets/Certificate/Certificate_007.jpg" alt="ประกาศนียบัตรการเข้าร่วมการแข่งขัน" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_007.jpg" alt="ประกาศนียบัตรการเข้าร่วมการแข่งขัน" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="7" data-aos="fade-up" data-aos-delay="800">
-            <img src="./assets/Certificate/Certificate_008.jpg" alt="ประกาศนียบัตรการฝึกอบรม" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_008.jpg" alt="ประกาศนียบัตรการฝึกอบรม" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="8" data-aos="fade-up" data-aos-delay="900">
-            <img src="./assets/Certificate/Certificate_009.jpg" alt="ประกาศนียบัตรการผ่านหลักสูตร" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_009.jpg" alt="ประกาศนียบัตรการผ่านหลักสูตร" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="9" data-aos="fade-up" data-aos-delay="1000">
-            <img src="./assets/Certificate/Certificate_010.jpg" alt="ประกาศนียบัตรการเข้าร่วมสัมมนา" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_010.jpg" alt="ประกาศนียบัตรการเข้าร่วมสัมมนา" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
 
           <div class="cert-card" data-index="10" data-aos="fade-up" data-aos-delay="1100">
-            <img src="./assets/Certificate/Certificate_011.jpg" alt="ประกาศนียบัตรการได้รับรางวัล" loading="lazy" />
+            <img src="./assets/Certificate/Certificate_011.jpg" alt="ประกาศนียบัตรการได้รับรางวัล" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Image+Not+Found';">
           </div>
         </div>
         <div class="slider-controls">
-          <button id="pause-slider-btn" class="slider-control-btn active" aria-label="Pause certificate slider">
+          <button id="pause-slider-btn" class="slider-control-btn active" aria-label="หยุดการเลื่อนประกาศนียบัตร" aria-pressed="true">
             <i class="fas fa-pause"></i>
           </button>
-          <button id="play-slider-btn" class="slider-control-btn" aria-label="Play certificate slider">
+          <button id="play-slider-btn" class="slider-control-btn" aria-label="เล่นการเลื่อนประกาศนียบัตร" aria-pressed="false">
             <i class="fas fa-play"></i>
           </button>
         </div>
       </div>
       <div class="view-all-certs-container" data-aos="fade-up" data-aos-delay="100">
-        <a href="./certificates.html" class="view-all-certs-btn">ดูประกาศนียบัตรทั้งหมด <i class="fas fa-external-link-alt"></i></a>
+        <a href="./certificates.html" class="view-all-certs-btn" aria-label="ดูประกาศนียบัตรทั้งหมด">ดูประกาศนียบัตรทั้งหมด <i class="fas fa-external-link-alt"></i></a>
       </div>
     </section>
 
-    <!-- Time Section -->
+    <!-- Time Section: Displays uptime and mocked statistics -->
     <section class="time-section" data-aos="fade-up" data-aos-duration="1000">
       <p id="uptime" aria-live="polite">เวลาที่ใช้งาน: 0d 0h 0m 0s</p>
-      <span class="stat-item" title="จำนวนการกดถูกใจทั้งหมด" aria-label="Total likes"><i class="fas fa-heart"></i> <span
+      <span class="stat-item" title="จำนวนการกดถูกใจทั้งหมด" aria-label="จำนวนการกดถูกใจทั้งหมด"><i class="fas fa-heart"></i> <span
           id="total-likes">0</span></span>
-      <span class="stat-item" title="จำนวนการแบ่งปันทั้งหมด" aria-label="Total shares"><i class="fas fa-share-alt"></i> <span
+      <span class="stat-item" title="จำนวนการแบ่งปันทั้งหมด" aria-label="จำนวนการแบ่งปันทั้งหมด"><i class="fas fa-share-alt"></i> <span
           id="total-shares">0</span></span>
-      <span class="stat-item" title="จำนวนการเข้าชมทั้งหมด" aria-label="Total views"><i class="fas fa-eye"></i> <span
+      <span class="stat-item" title="จำนวนการเข้าชมทั้งหมด" aria-label="จำนวนการเข้าชมทั้งหมด"><i class="fas fa-eye"></i> <span
           id="total-views">0</span></span>
     </section>
 
@@ -552,15 +561,15 @@
 
       <div class="contact-contant">
         <ul class="contact-list">
-          <li><a href="mailto:ertyualexs04@gmail.com" aria-label="Send email to ertyualexs04@gmail.com">ertyualexs04@gmail.com</a></li>
-          <li><a href="tel:0800163734" aria-label="Call 080 016 3734">080 016 3734</a></li>
-          <li><a href="https://github.com/ertyu007/" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub profile">GitHub</a></li>
-          <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank" rel="noopener noreferrer" aria-label="Visit Facebook profile">Facebook</a></li>
-          <li><a href="https://www.youtube.com/@amazingwuji" target="_blank" rel="noopener noreferrer" aria-label="Visit YouTube channel">Youtube</a></li>
+          <li><a href="mailto:ertyualexs04@gmail.com" aria-label="ส่งอีเมลถึง ertyualexs04@gmail.com">ertyualexs04@gmail.com</a></li>
+          <li><a href="tel:0800163734" aria-label="โทรศัพท์ 080 016 3734">080 016 3734</a></li>
+          <li><a href="https://github.com/ertyu007/" target="_blank" rel="noopener noreferrer" aria-label="เยี่ยมชมโปรไฟล์ GitHub">GitHub</a></li>
+          <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank" rel="noopener noreferrer" aria-label="เยี่ยมชมโปรไฟล์ Facebook">Facebook</a></li>
+          <li><a href="https://www.youtube.com/@amazingwuji" target="_blank" rel="noopener noreferrer" aria-label="เยี่ยมชมช่อง YouTube">Youtube</a></li>
           <li>
             <span class="qr-label">QR Code Line</span>
             <!-- Lazy load QR code image -->
-            <img src="./assets/images/qrLine.jpg" alt="QR Code สำหรับ Line" width="120" loading="lazy">
+            <img src="./assets/images/qrLine.jpg" alt="QR Code สำหรับ Line" width="120" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/120x120/cccccc/333333?text=QR+Code';">
           </li>
         </ul>
       </div>
@@ -570,7 +579,7 @@
     <footer class="footer-section" data-aos="fade-up" data-aos-duration="1000">
       <div class="footer-container">
         <div class="footer-logo">
-          <a href="#">ธนภัทร</a>
+          <a href="#" aria-label="กลับสู่ด้านบนสุดของหน้า">ธนภัทร</a>
           <span></span>
           <span></span>
           <span></span>
@@ -592,20 +601,20 @@
           <div class="footer-column">
             <h3>เชื่อมต่อ</h3>
             <ul>
-              <li><a href="mailto:ertyualexs04@gmail.com">อีเมล</a></li>
-              <li><a href="tel:0800163734">โทรศัพท์</a></li>
-              <li><a href="https://github.com/ertyu007/" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-              <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank" rel="noopener noreferrer">Facebook</a></li>
-              <li><a href="https://www.youtube.com/@amazingwuji" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+              <li><a href="mailto:ertyualexs04@gmail.com" aria-label="ส่งอีเมลถึง ertyualexs04@gmail.com">อีเมล</a></li>
+              <li><a href="tel:0800163734" aria-label="โทรศัพท์ 080 016 3734">โทรศัพท์</a></li>
+              <li><a href="https://github.com/ertyu007/" target="_blank" rel="noopener noreferrer" aria-label="เยี่ยมชมโปรไฟล์ GitHub">GitHub</a></li>
+              <li><a href="https://www.facebook.com/ertyu.kukre" target="_blank" rel="noopener noreferrer" aria-label="เยี่ยมชมโปรไฟล์ Facebook">Facebook</a></li>
+              <li><a href="https://www.youtube.com/@amazingwuji" target="_blank" rel="noopener noreferrer" aria-label="เยี่ยมชมช่อง YouTube">YouTube</a></li>
             </ul>
           </div>
 
           <div class="footer-column">
             <h3>แหล่งข้อมูล</h3>
             <ul>
-              <li><a href="#" target="_blank" rel="noopener noreferrer">แฟ้มสะสมผลงาน (PDF)</a></li>
-              <li><a href="./privacy-policy.html">นโยบายความเป็นส่วนตัว</a></li>
-              <li><a href="./terms-of-use.html">เงื่อนไขการใช้งาน</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer" aria-label="ดาวน์โหลดแฟ้มสะสมผลงานในรูปแบบ PDF">แฟ้มสะสมผลงาน (PDF)</a></li>
+              <li><a href="./privacy-policy.html" aria-label="อ่านนโยบายความเป็นส่วนตัว">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="./terms-of-use.html" aria-label="อ่านเงื่อนไขการใช้งาน">เงื่อนไขการใช้งาน</a></li>
             </ul>
           </div>
         </div>
@@ -618,8 +627,8 @@
     </footer>
   </main>
 
-  <!-- Lightbox Elements -->
-  <div id="lightbox-overlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Project details lightbox"></div>
+  <!-- Lightbox Elements: Used for displaying enlarged images/videos -->
+  <div id="lightbox-overlay" class="lightbox-overlay" role="dialog" aria-modal="true" aria-label="รายละเอียดผลงาน"></div>
   <div id="lightbox-content-container" class="lightbox-content-container">
     <img id="lightbox-image" class="lightbox-media hidden" src="" alt="รูปภาพขยาย">
     <div id="lightbox-info-container">
@@ -629,13 +638,30 @@
       <div class="lightbox-controls"></div>
     </div>
   </div>
-  <button id="lightbox-close" class="lightbox-close" aria-label="Close lightbox">
+  <button id="lightbox-close" class="lightbox-close" aria-label="ปิดกล่อง Lightbox">
     <i class="fas fa-times"></i>
   </button>
 
   <!-- Defer non-critical JavaScript -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
   <script type="module" src="script.js" defer></script>
+  <!-- Fallback to show main content if preloader fails or takes too long -->
+  <script>
+    // This script ensures the main content is displayed even if the preloader script fails
+    // or takes too long to load, improving perceived performance.
+    setTimeout(() => {
+      const preloader = document.getElementById('preloader');
+      const mainContent = document.getElementById('main-content');
+      if (preloader && mainContent && preloader.classList.contains('hidden')) {
+        // If preloader is already hidden by script.js, do nothing.
+      } else if (mainContent) {
+        mainContent.classList.remove('hidden'); // Force display main content.
+        if (preloader) {
+          preloader.style.display = 'none'; // Ensure preloader is fully gone.
+        }
+      }
+    }, 3000); // Adjust delay as needed, e.g., 3000ms (3 seconds)
+  </script>
 </body>
 
 </html>
