@@ -159,6 +159,26 @@ body.dark-mode .projects-loading-spinner {
   margin-bottom: 1rem;
 }
 
+/* Error Message Style */
+.error-message {
+  text-align: center;
+  color: #e63946; /* A distinct red for errors */
+  font-size: 1.2em;
+  padding: 20px;
+  background-color: #ffebee; /* Light red background */
+  border: 1px solid #ef9a9a; /* Red border */
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 600px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+body.dark-mode .error-message {
+  color: #ff8a80; /* Lighter red for dark mode */
+  background-color: #420000; /* Darker red background */
+  border-color: #b71c1c; /* Darker red border */
+}
+
 /* ============================================================================
    Dark Mode Overrides
    ============================================================================ */
@@ -2360,11 +2380,11 @@ body.dark-mode .project-meta .stat-item {
     flex-direction: column;
     gap: 0.75rem;
     padding: 0.75rem 0 3rem 0;
-    bottom: 0rem;
-    left: 0rem;
-    right: 0.5rem;
-
-    width: 100%;
+    bottom: 0; /* Changed from 1rem to 0 */
+    left: 0; /* Changed from 1rem to 0 */
+    right: 0; /* Changed from 1rem to 0.5rem */
+    width: 100%; /* Ensure full width */
+    border-radius: 12px 12px 0 0; /* Keep top rounded corners */
   }
 
   .lightbox-caption {
@@ -2378,35 +2398,14 @@ body.dark-mode .project-meta .stat-item {
   }
 
   .lightbox-btn {
-    padding: 0.5rem 1rem;
-    font-size: 1.3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .project-content {
-    opacity: 1;
-  }
-
-  .lightbox-controls {
-    top: 2.5rem;
-    left: 36%;
-    gap: 1rem;
+    padding: 0.5rem 1rem; /* Adjusted padding */
+    font-size: 1rem; /* Adjusted font size for better fit */
   }
 
   .lightbox-close {
     top: 1.5rem;
     right: 1.5rem;
     font-size: 2rem;
-  }
-
-  .lightbox-btn {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
   }
 
   .lightbox-media {
