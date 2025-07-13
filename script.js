@@ -25,7 +25,7 @@ function createRipple(event) {
 document.addEventListener("DOMContentLoaded", function () {
   // Add Ripple effect to desired elements
   const rippleElements = document.querySelectorAll(
-    ".hero-btn-primary a, .filter-btn, .project-item, .cert-card, .tab-btn, .section-tab" // Added .tab-btn and .section-tab here
+    ".hero-btn-primary a, .filter-btn, .project-item, .tab-btn, .section-tab, .cert-card" // Keep .cert-card for index.html slider
   );
 
   rippleElements.forEach((element) => {
@@ -115,23 +115,231 @@ document.addEventListener("DOMContentLoaded", function () {
   const totalSharesEl = document.getElementById("total-shares");
   const totalViewsEl = document.getElementById("total-views");
   const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const clearLocalDataBtn = document.getElementById("clear-local-data"); // เพิ่มปุ่มลบข้อมูล
 
   let originalRect = {};
   let currentMediaElement = null;
 
-  // Local stats registry
-  const LOCAL_KEY = "project-stats";
-  function loadLocalStats() { return JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}"); }
-  function saveLocalStats(d) { localStorage.setItem(LOCAL_KEY, JSON.stringify(d)); }
+  // --- Cookie Consent & Local Storage Management ---
+  const CONSENT_KEY = 'cookieConsent'; // 'granted', 'denied', or null
+  const PREFERENCES_KEY = 'cookiePreferences'; // { essential: true, analytics: true, preferences: true }
+  const LOCAL_STATS_KEY = "project-stats"; // เปลี่ยนชื่อจาก LOCAL_KEY เป็น LOCAL_STATS_KEY เพื่อความชัดเจน
 
-  // Function to show info modal
-  function showInfoModal(message) {
+  const cookieConsentBanner = document.getElementById('cookie-consent-banner');
+  const acceptAllCookiesBtn = document.getElementById('accept-all-cookies');
+  const managePreferencesBtn = document.getElementById('manage-preferences');
+
+  const cookiePreferencesModal = document.getElementById('cookie-preferences-modal');
+  const essentialStorageCheckbox = document.getElementById('essential-storage');
+  const analyticsStorageCheckbox = document.getElementById('analytics-storage');
+  const savePreferencesBtn = document.getElementById('save-preferences');
+  const cancelPreferencesBtn = document.getElementById('cancel-preferences');
+
+  // Function to get current consent preferences
+  function getConsentPreferences() {
+    const preferences = localStorage.getItem(PREFERENCES_KEY);
+    return preferences ? JSON.parse(preferences) : { essential: false, analytics: false, preferences: false };
+  }
+
+  // Function to check if a specific consent category is granted
+  function hasConsentFor(category) {
+    const preferences = getConsentPreferences();
+    return preferences[category];
+  }
+
+  // Function to show the cookie consent banner
+  function showConsentBanner() {
+    if (cookieConsentBanner) {
+      cookieConsentBanner.classList.add('show');
+    }
+  }
+
+  // Function to hide the cookie consent banner
+  function hideConsentBanner() {
+    if (cookieConsentBanner) {
+      cookieConsentBanner.classList.remove('show');
+    }
+  }
+
+  // Function to show the preferences modal
+  function showPreferencesModal() {
+    if (cookiePreferencesModal) {
+      cookiePreferencesModal.classList.add('show');
+      document.body.classList.add('cookie-modal-open'); // Prevent scrolling
+      // Set initial checkbox states based on current preferences
+      const preferences = getConsentPreferences();
+      analyticsStorageCheckbox.checked = preferences.analytics;
+    }
+  }
+
+  // Function to hide the preferences modal
+  function hidePreferencesModal() {
+    if (cookiePreferencesModal) {
+      cookiePreferencesModal.classList.remove('show');
+      document.body.classList.remove('cookie-modal-open'); // Allow scrolling
+    }
+  }
+
+  // Handle "Accept All"
+  if (acceptAllCookiesBtn) {
+    acceptAllCookiesBtn.addEventListener('click', () => {
+      localStorage.setItem(CONSENT_KEY, 'granted');
+      localStorage.setItem(PREFERENCES_KEY, JSON.stringify({ essential: true, analytics: true, preferences: true }));
+      hideConsentBanner();
+      // Re-initialize features that depend on consent
+      initFeaturesBasedOnConsent();
+    });
+  }
+
+  // Handle "Manage Preferences"
+  if (managePreferencesBtn) {
+    managePreferencesBtn.addEventListener('click', () => {
+      hideConsentBanner();
+      showPreferencesModal();
+    });
+  }
+
+  // Handle "Save Preferences"
+  if (savePreferencesBtn) {
+    savePreferencesBtn.addEventListener('click', () => {
+      const newPreferences = {
+        essential: true, // Essential is always true
+        analytics: analyticsStorageCheckbox.checked,
+        preferences: analyticsStorageCheckbox.checked // For simplicity, dark mode is tied to analytics consent here
+      };
+      localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPreferences));
+
+      // Determine overall consent status
+      if (newPreferences.analytics || newPreferences.preferences) {
+        localStorage.setItem(CONSENT_KEY, 'granted');
+      } else {
+        localStorage.setItem(CONSENT_KEY, 'denied_non_essential'); // Denied for non-essential
+      }
+
+      hidePreferencesModal();
+      // Re-initialize features that depend on consent
+      initFeaturesBasedOnConsent();
+    });
+  }
+
+  // Handle "Cancel Preferences"
+  if (cancelPreferencesBtn) {
+    cancelPreferencesBtn.addEventListener('click', () => {
+      hidePreferencesModal();
+      // If no consent was given yet, show the banner again
+      if (!localStorage.getItem(CONSENT_KEY)) {
+        showConsentBanner();
+      }
+    });
+  }
+
+  // Function to initialize/re-initialize features based on consent
+  function initFeaturesBasedOnConsent() {
+    const consentStatus = localStorage.getItem(CONSENT_KEY);
+    const preferences = getConsentPreferences();
+
+    // Dark Mode
+    if (darkModeToggle) {
+      if (preferences.preferences) {
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (isDarkMode) {
+          document.body.classList.add('dark-mode');
+        }
+      } else {
+        // If preferences consent is revoked, remove dark mode and clear setting
+        document.body.classList.remove('dark-mode');
+        localStorage.removeItem('darkMode');
+      }
+    }
+
+    // Project Stats (Likes, Shares, Views)
+    if (galleryEl) {
+      if (preferences.analytics) {
+        // Re-render gallery with stats if consent is granted
+        (async function () {
+          showProjectsLoading(true);
+          const projectIds = projects.map(p => p.id);
+          const allStatsMap = await fetchAllProjectStats(projectIds);
+
+          let mostViewedProjectId = null;
+          let maxViews = -1;
+          for (const id in allStatsMap) {
+            if (allStatsMap.hasOwnProperty(id)) {
+              if (allStatsMap[id].views > maxViews) {
+                maxViews = allStatsMap[id].views;
+                mostViewedProjectId = id;
+              }
+            }
+          }
+          renderGallery(projects, allStatsMap, mostViewedProjectId);
+        })();
+        updateTotalStatsDisplay();
+      } else {
+        // Clear project stats from local storage if consent is revoked
+        localStorage.removeItem(LOCAL_STATS_KEY);
+        // Render gallery without stats functionality
+        renderGallery(projects, {}, null); // Pass empty stats, no most viewed
+        if (totalLikesEl) totalLikesEl.textContent = '0';
+        if (totalSharesEl) totalSharesEl.textContent = '0';
+        if (totalViewsEl) totalViewsEl.textContent = '0';
+      }
+    }
+  }
+
+  // Check consent on initial load
+  const initialConsent = localStorage.getItem(CONSENT_KEY);
+  if (!initialConsent) {
+    showConsentBanner();
+  } else {
+    initFeaturesBasedOnConsent(); // Initialize features based on existing consent
+  }
+
+  // Function to clear all non-essential local storage data
+  function clearUserData() {
+    showInfoModal('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลการใช้งานทั้งหมด (เช่น สถิติโปรเจกต์, การตั้งค่าโหมดมืด) ซึ่งอาจส่งผลต่อประสบการณ์การใช้งานเว็บไซต์?', true, () => {
+      localStorage.removeItem(LOCAL_STATS_KEY); // Clear project stats
+      localStorage.removeItem('darkMode'); // Clear dark mode setting
+      localStorage.removeItem(CONSENT_KEY); // Reset consent
+      localStorage.removeItem(PREFERENCES_KEY); // Reset preferences
+
+      // Re-initialize the page to reflect changes
+      document.body.classList.remove('dark-mode'); // Ensure dark mode is off
+      showConsentBanner(); // Show consent banner again
+      initFeaturesBasedOnConsent(); // Re-initialize features
+      showInfoModal('ข้อมูลการใช้งานถูกลบเรียบร้อยแล้ว');
+    });
+  }
+
+  // Attach event listener to the "Clear Data" button
+  if (clearLocalDataBtn) {
+    clearLocalDataBtn.addEventListener('click', clearUserData);
+  }
+
+  // --- End Cookie Consent & Local Storage Management ---
+
+  // Local stats registry - now conditional
+  function loadLocalStats() {
+    if (hasConsentFor('analytics')) {
+      return JSON.parse(localStorage.getItem(LOCAL_STATS_KEY) || "{}");
+    }
+    return {}; // Return empty if no consent
+  }
+
+  function saveLocalStats(d) {
+    if (hasConsentFor('analytics')) {
+      localStorage.setItem(LOCAL_STATS_KEY, JSON.stringify(d));
+    }
+  }
+
+  // Function to show info modal (modified to support confirmation)
+  function showInfoModal(message, isConfirm = false, onConfirm = null) {
     const modal = document.createElement('div');
     modal.className = 'custom-modal';
     modal.innerHTML = `
       <div class="custom-modal-content">
         <p>${message}</p>
         <div class="custom-modal-actions">
+          ${isConfirm ? '<button class="custom-modal-btn cancel">ยกเลิก</button>' : ''}
           <button class="custom-modal-btn confirm">ตกลง</button>
         </div>
       </div>
@@ -140,7 +348,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     modal.querySelector('.custom-modal-btn.confirm').addEventListener('click', () => {
       modal.remove();
+      if (isConfirm && onConfirm) {
+        onConfirm();
+      }
     });
+
+    if (isConfirm) {
+      modal.querySelector('.custom-modal-btn.cancel').addEventListener('click', () => {
+        modal.remove();
+      });
+    }
 
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
@@ -182,8 +399,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 800); // Match animation duration
   }
 
-  // Stat handler functions
+  // Stat handler functions - now conditional
   async function fetchProjectStats(id) {
+    if (!hasConsentFor('analytics')) return { likes: 0, shares: 0, views: 0, userHasLiked: false };
     try {
       const response = await fetch(`/.netlify/functions/projectStats?id=${id}`);
       if (!response.ok) {
@@ -205,6 +423,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function fetchAllProjectStats(projectIds) {
+    if (!hasConsentFor('analytics')) return {};
     const statPromises = projectIds.map(id => fetchProjectStats(id));
     const results = await Promise.all(statPromises);
     const allStatsMap = {};
@@ -215,6 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function fetchTotalStat(type) {
+    if (!hasConsentFor('analytics')) return 0;
     try {
       const response = await fetch(`/.netlify/functions/projectStats?total=true&type=${type}`);
       if (!response.ok) {
@@ -231,6 +451,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function handleLike(id, btn) {
+    if (!hasConsentFor('analytics')) {
+      showInfoModal('โปรดกดยอมรับ "สถิติและการตั้งค่า" ในการจัดการความเป็นส่วนตัวเพื่อใช้งานฟังก์ชันนี้');
+      return;
+    }
     const local = loadLocalStats();
     if (local[id] && local[id].liked) {
       return;
@@ -259,7 +483,7 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.querySelector(".like-count").textContent = actualStats.likes;
         delete local[id].liked;
         saveLocalStats(local);
-        await showInfoModal('เกิดข้อผิดพลาดในการบันทึกไลก์ กรุณาลองใหม่อีกครั้ง');
+        showInfoModal('เกิดข้อผิดพลาดในการบันทึกไลก์ กรุณาลองใหม่อีกครั้ง');
       }
     } catch (error) {
       console.error("Error in handleLike (server call):", error);
@@ -268,11 +492,15 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.querySelector(".like-count").textContent = actualStats.likes;
       delete local[id].liked;
       saveLocalStats(local);
-      await showInfoModal('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาตรวจสอบอินเทอร์เน็ตและลองใหม่อีกครั้ง');
+      showInfoModal('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาตรวจสอบอินเทอร์เน็ตและลองใหม่อีกครั้ง');
     }
   }
 
   async function handleShare(id, btn) {
+    if (!hasConsentFor('analytics')) {
+      showInfoModal('โปรดกดยอมรับ "สถิติและการตั้งค่า" ในการจัดการความเป็นส่วนตัวเพื่อใช้งานฟังก์ชันนี้');
+      return;
+    }
     const local = loadLocalStats();
     if (local[id] && local[id].shared) {
       return;
@@ -302,7 +530,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('User cancelled share');
           }
         } else {
-          await showInfoModal('เบราว์เซอร์ของคุณไม่รองรับการแชร์โดยตรง กรุณาคัดลอกลิงก์ด้วยตนเอง');
+          showInfoModal('เบราว์เซอร์ของคุณไม่รองรับการแชร์โดยตรง กรุณาคัดลอกลิงก์ด้วยตนเอง');
         }
       } else {
         btn.classList.remove("shared");
@@ -310,7 +538,7 @@ document.addEventListener("DOMContentLoaded", function () {
         saveLocalStats(local);
         const actualStats = await fetchProjectStats(id);
         btn.querySelector(".share-count").textContent = actualStats.shares;
-        await showInfoModal('เกิดข้อผิดพลาดในการบันทึกการแชร์ กรุณาลองใหม่อีกครั้ง');
+        showInfoModal('เกิดข้อผิดพลาดในการบันทึกการแชร์ กรุณาลองใหม่อีกครั้ง');
       }
     } catch (error) {
       console.error("Error in handleShare (server call):", error);
@@ -319,11 +547,12 @@ document.addEventListener("DOMContentLoaded", function () {
       saveLocalStats(local);
       const actualStats = await fetchProjectStats(id);
       btn.querySelector(".share-count").textContent = actualStats.shares;
-      await showInfoModal('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาตรวจสอบอินเทอร์เน็ตและลองใหม่อีกครั้ง');
+      showInfoModal('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาตรวจสอบอินเทอร์เน็ตและลองใหม่อีกครั้ง');
     }
   }
 
   async function handleView(id) {
+    if (!hasConsentFor('analytics')) return;
     const local = loadLocalStats();
     if (local[id] && local[id].viewed) {
       return;
@@ -349,6 +578,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function pushStat(id, type) {
+    if (!hasConsentFor('analytics')) return null;
     try {
       const response = await fetch(`/.netlify/functions/projectStats?id=${id}&type=${type}`, {
         method: "POST"
@@ -367,6 +597,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function updateTotalStatsDisplay() {
+    if (!hasConsentFor('analytics')) {
+      if (totalLikesEl) totalLikesEl.textContent = '0';
+      if (totalSharesEl) totalSharesEl.textContent = '0';
+      if (totalViewsEl) totalViewsEl.textContent = '0';
+      return;
+    }
     if (totalLikesEl) {
       const total = await fetchTotalStat('likes');
       totalLikesEl.textContent = total;
@@ -402,11 +638,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Gallery rendering
+  // Gallery rendering - now conditional for stats display
   async function renderGallery(data, allStatsMap, mostViewedProjectId) {
     showProjectsLoading(false);
     galleryEl.innerHTML = "";
-    const local = loadLocalStats();
+    const local = loadLocalStats(); // This will be empty if no analytics consent
 
     if (data.length === 0) {
       galleryEl.innerHTML = '<p class="no-projects-message">ไม่พบโปรเจกต์ในหมวดหมู่นี้</p>';
@@ -423,9 +659,9 @@ document.addEventListener("DOMContentLoaded", function () {
       item.setAttribute('data-aos-duration', '800');
       item.setAttribute('data-id', project.id);
 
-      const projectStats = allStatsMap[project.id] || { likes: 0, shares: 0, views: 0 };
+      const projectStats = hasConsentFor('analytics') ? (allStatsMap[project.id] || { likes: 0, shares: 0, views: 0 }) : { likes: 0, shares: 0, views: 0 };
 
-      if (project.id === mostViewedProjectId && mostViewedProjectId !== null) {
+      if (project.id === mostViewedProjectId && mostViewedProjectId !== null && hasConsentFor('analytics')) {
         item.classList.add('most-viewed');
       }
 
@@ -440,7 +676,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="project-meta">
                 <span class="category">${project.category}</span>
                 <div class="stats">
-                    <span class="stat-item likes ${local[project.id] && local[project.id].liked ? 'liked' : ''}">
+                    <span class="stat-item likes ${hasConsentFor('analytics') && local[project.id] && local[project.id].liked ? 'liked' : ''}">
                       <i class="fas fa-heart"></i>
                       <span class="like-count">${projectStats.likes}</span>
                     </span>
@@ -476,7 +712,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const shareBtn = item.querySelector(".stat-item.shares");
       if (shareBtn) {
-        if (local[project.id] && local[project.id].shared) {
+        if (hasConsentFor('analytics') && local[project.id] && local[project.id].shared) {
           shareBtn.classList.add("shared");
         }
         shareBtn.addEventListener("click", (e) => {
@@ -509,7 +745,7 @@ document.addEventListener("DOMContentLoaded", function () {
     galleryEl.appendChild(fragment); // Append all elements at once
   }
 
-  // Lightbox functions
+  // Lightbox functions - now conditional for stats display
   async function openLightbox(project, initialProjectStats, triggerRect) {
     // Clear previous content immediately to prevent flash of old text
     const captionContent = lightboxCaption.querySelector('.lightbox-caption-content');
@@ -549,45 +785,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
     controls.innerHTML = '';
 
-    const local = loadLocalStats();
+    if (hasConsentFor('analytics')) {
+      const local = loadLocalStats();
+      const currentLikes = initialProjectStats.likes;
+      const currentShares = initialProjectStats.shares;
+      let currentViews = initialProjectStats.views;
 
-    const currentLikes = initialProjectStats.likes;
-    const currentShares = initialProjectStats.shares;
-    let currentViews = initialProjectStats.views;
+      if (!(local[project.id] && local[project.id].viewed)) {
+        currentViews++;
+      }
 
-    if (!(local[project.id] && local[project.id].viewed)) {
-      currentViews++;
+      const likeBtn = document.createElement('button');
+      likeBtn.className = `lightbox-btn like-btn ${local[project.id] && local[project.id].liked ? 'liked' : ''}`;
+      likeBtn.innerHTML = `<i class="fas fa-heart"></i> <span class="like-count">${currentLikes}</span>`;
+      likeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleLike(project.id, likeBtn);
+      });
+
+      const shareBtn = document.createElement('button');
+      shareBtn.className = `lightbox-btn share-btn ${local[project.id] && local[project.id].shared ? 'shared' : ''}`;
+      shareBtn.innerHTML = `<i class="fas fa-share-alt"></i> <span class="share-count">${currentShares}</span>`;
+      shareBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleShare(project.id, shareBtn);
+      });
+
+      const viewDisplay = document.createElement('div');
+      viewDisplay.className = 'lightbox-btn view-display';
+      viewDisplay.innerHTML = `<i class="fas fa-eye"></i> <span class="view-count">${currentViews}</span>`;
+
+      controls.append(likeBtn, shareBtn, viewDisplay);
+
+      handleView(project.id); // Track view only if analytics consent is given
+    } else {
+      // If no analytics consent, display basic info without interactive stats
+      const noStatsMessage = document.createElement('p');
+      noStatsMessage.textContent = 'โปรดกดยอมรับ "สถิติและการตั้งค่า" เพื่อดูยอดไลก์, แชร์ และวิว';
+      noStatsMessage.style.fontSize = '0.9rem';
+      noStatsMessage.style.textAlign = 'center';
+      noStatsMessage.style.color = 'var(--color-text-light)';
+      controls.appendChild(noStatsMessage);
     }
 
-    const likeBtn = document.createElement('button');
-    likeBtn.className = `lightbox-btn like-btn ${local[project.id] && local[project.id].liked ? 'liked' : ''}`;
-    likeBtn.innerHTML = `<i class="fas fa-heart"></i> <span class="like-count">${currentLikes}</span>`;
-    likeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      handleLike(project.id, likeBtn);
-    });
-
-    const shareBtn = document.createElement('button');
-    shareBtn.className = `lightbox-btn share-btn ${local[project.id] && local[project.id].shared ? 'shared' : ''}`;
-    shareBtn.innerHTML = `<i class="fas fa-share-alt"></i> <span class="share-count">${currentShares}</span>`;
-    shareBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      handleShare(project.id, shareBtn);
-    });
-
-    const viewDisplay = document.createElement('div');
-    viewDisplay.className = 'lightbox-btn view-display';
-    viewDisplay.innerHTML = `<i class="fas fa-eye"></i> <span class="view-count">${currentViews}</span>`;
-
-    controls.append(likeBtn, shareBtn, viewDisplay);
 
     lightboxOverlay.classList.add('active');
     lightboxContainer.classList.add('active');
     lightboxClose.classList.add('active');
     document.body.classList.add("lightbox-open");
     document.documentElement.classList.add("lightbox-open");
-
-    handleView(project.id);
   }
 
   function setupLightboxCaption(project) {
@@ -712,26 +958,29 @@ document.addEventListener("DOMContentLoaded", function () {
     e.stopPropagation();
   });
 
-  // Initial render
-  (async function init() {
-    showProjectsLoading(true);
-    const projectIds = projects.map(p => p.id);
-    const allStatsMap = await fetchAllProjectStats(projectIds);
+  // Initial render - now called by initFeaturesBasedOnConsent
+  // (async function init() {
+  //   // Only render gallery if the element exists (i.e., on index.html)
+  //   if (galleryEl) {
+  //     showProjectsLoading(true);
+  //     const projectIds = projects.map(p => p.id);
+  //     const allStatsMap = await fetchAllProjectStats(projectIds);
 
-    let mostViewedProjectId = null;
-    let maxViews = -1;
-    for (const id in allStatsMap) {
-      if (allStatsMap.hasOwnProperty(id)) {
-        if (allStatsMap[id].views > maxViews) {
-          maxViews = allStatsMap[id].views;
-          mostViewedProjectId = id;
-        }
-      }
-    }
+  //     let mostViewedProjectId = null;
+  //     let maxViews = -1;
+  //     for (const id in allStatsMap) {
+  //       if (allStatsMap.hasOwnProperty(id)) {
+  //         if (allStatsMap[id].views > maxViews) {
+  //           maxViews = allStatsMap[id].views;
+  //           mostViewedProjectId = id;
+  //         }
+  //       }
+  //     }
+  //     renderGallery(projects, allStatsMap, mostViewedProjectId);
+  //   }
+  //   updateTotalStatsDisplay();
+  // })();
 
-    await renderGallery(projects, allStatsMap, mostViewedProjectId);
-    await updateTotalStatsDisplay();
-  })();
 
   // Mobile Menu Toggle
   const menuToggle = document.querySelector('.menu-toggle');
@@ -788,49 +1037,55 @@ document.addEventListener("DOMContentLoaded", function () {
   }, { passive: true }); // Use passive listener for better scroll performance
 
   // Filter functionality
-  filtersEl.addEventListener('click', async function (e) {
-    if (e.target.tagName === 'BUTTON') {
-      filtersEl.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-      e.target.classList.add('active');
+  // Only add event listener if filtersEl exists (i.e., on index.html)
+  if (filtersEl) {
+    filtersEl.addEventListener('click', async function (e) {
+      if (e.target.tagName === 'BUTTON') {
+        filtersEl.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
 
-      const filter = e.target.dataset.filter;
-      const filteredProjects = projects.filter(project => {
-        return filter === 'all' || project.category === filter;
-      });
+        const filter = e.target.dataset.filter;
+        const filteredProjects = projects.filter(project => {
+          return filter === 'all' || project.category === filter;
+        });
 
-      showProjectsLoading(true);
-      const filteredProjectIds = filteredProjects.map(p => p.id);
-      const allStatsMapForFiltered = await fetchAllProjectStats(filteredProjectIds);
+        // Only fetch/render with stats if analytics consent is given
+        if (hasConsentFor('analytics')) {
+          showProjectsLoading(true);
+          const filteredProjectIds = filteredProjects.map(p => p.id);
+          const allStatsMapForFiltered = await fetchAllProjectStats(filteredProjectIds);
 
-      let mostViewedProjectId = null;
-      let maxViews = -1;
-      for (const id in allStatsMapForFiltered) {
-        if (allStatsMapForFiltered.hasOwnProperty(id)) {
-          if (allStatsMapForFiltered[id].views > maxViews) {
-            maxViews = allStatsMapForFiltered[id].views; // Corrected to use allStatsMapForFiltered
-            mostViewedProjectId = id;
+          let mostViewedProjectId = null;
+          let maxViews = -1;
+          for (const id in allStatsMapForFiltered) {
+            if (allStatsMapForFiltered.hasOwnProperty(id)) {
+              if (allStatsMapForFiltered[id].views > maxViews) {
+                maxViews = allStatsMapForFiltered[id].views; // Corrected to use allStatsMapForFiltered
+                mostViewedProjectId = id;
+              }
+            }
           }
+          renderGallery(filteredProjects, allStatsMapForFiltered, mostViewedProjectId);
+        } else {
+          renderGallery(filteredProjects, {}, null); // Render without stats
         }
       }
-
-      renderGallery(filteredProjects, allStatsMapForFiltered, mostViewedProjectId);
-    }
-  });
-
-  // Dark Mode Toggle Logic
-  const isDarkMode = localStorage.getItem('darkMode') === 'true';
-  if (isDarkMode) {
-    document.body.classList.add('dark-mode');
+    });
   }
 
+  // Dark Mode Toggle Logic - now conditional
   if (darkModeToggle) {
     darkModeToggle.addEventListener('click', () => {
+      if (!hasConsentFor('preferences')) {
+        showInfoModal('โปรดกดยอมรับ "สถิติและการตั้งค่า" ในการจัดการความเป็นส่วนตัวเพื่อใช้งานโหมดมืด');
+        return;
+      }
       document.body.classList.toggle('dark-mode');
       localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
     });
   }
 
-  // Infinity Loop Slider for Certificates
+  // Infinity Loop Slider for Certificates (only for index.html)
   const certSliderTrack = document.querySelector('.cert-slider-track');
   if (certSliderTrack) {
     const certCards = Array.from(certSliderTrack.children);
@@ -853,29 +1108,37 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Uptime Counter
-  const startTime = new Date("2025-07-03T00:14:20");
-  function updateUptime() {
-    const now = new Date();
-    const diff = Math.floor((now - startTime) / 1000);
-    const days = Math.floor(diff / 86400);
-    const hours = Math.floor((diff % 86400) / 3600);
-    const minutes = Math.floor((diff % 3600) / 60);
-    const seconds = diff % 60;
-    document.getElementById("uptime").textContent =
-      ` ${days}d ${hours}h ${minutes}m ${seconds}s `;
+  const uptimeElement = document.getElementById("uptime");
+  if (uptimeElement) { // Only run if uptime element exists
+    const startTime = new Date("2025-07-03T00:14:20");
+    function updateUptime() {
+      const now = new Date();
+      const diff = Math.floor((now - startTime) / 1000);
+      const days = Math.floor(diff / 86400);
+      const hours = Math.floor((diff % 86400) / 3600);
+      const minutes = Math.floor((diff % 3600) / 60);
+      const seconds = diff % 60;
+      uptimeElement.textContent =
+        ` ${days}d ${hours}h ${minutes}m ${seconds}s `;
+    }
+    setInterval(updateUptime, 1000);
+    updateUptime();
   }
-  setInterval(updateUptime, 1000);
-  updateUptime();
+
 
   // Random Quote Display
-  const quotes = [
-    "ความพยายามไม่เคยทรยศใคร",
-    "เรียนรู้ในสิ่งที่ใช่ จะได้ทำในสิ่งที่รัก",
-    "ทุกวันคือโอกาสใหม่",
-    "อย่ารอความมั่นใจ จงเริ่มจากความตั้งใจ"
-  ];
-  document.getElementById("quote").textContent =
-    quotes[Math.floor(Math.random() * quotes.length)];
+  const quoteElement = document.getElementById("quote");
+  if (quoteElement) { // Only run if quote element exists
+    const quotes = [
+      "ความพยายามไม่เคยทรยศใคร",
+      "เรียนรู้ในสิ่งที่ใช่ จะได้ทำในสิ่งที่รัก",
+      "ทุกวันคือโอกาสใหม่",
+      "อย่ารอความมั่นใจ จงเริ่มจากความตั้งใจ"
+    ];
+    quoteElement.textContent =
+      quotes[Math.floor(Math.random() * quotes.length)];
+  }
+
 
   // Preloader Hide Logic
   window.addEventListener('load', () => {
@@ -907,23 +1170,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Remove active class from all buttons and contents
-      tabBtns.forEach(btn => btn.classList.remove('active'));
-      tabContents.forEach(content => content.classList.remove('active'));
-
-      // Add active class to clicked button
-      btn.classList.add('active');
-
-      // Show corresponding content
-      const tabId = btn.getAttribute('data-tab');
-      document.getElementById(tabId).classList.add('active');
-    });
-  });
-
-  // Make first tab active by default
+  // Only proceed if tab buttons exist on the page
   if (tabBtns.length > 0) {
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all buttons and contents
+        tabBtns.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        // Add active class to clicked button
+        btn.classList.add('active');
+
+        // Show corresponding content
+        const tabId = btn.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // Make first tab active by default
     tabBtns[0].click();
   }
 
@@ -931,23 +1195,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const sectionTabBtns = document.querySelectorAll('.section-tab');
   const sectionTabContents = document.querySelectorAll('.skills-experience-section .tab-content');
 
-  sectionTabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Remove active class from all section tabs and contents
-      sectionTabBtns.forEach(t => t.classList.remove('active'));
-      sectionTabContents.forEach(c => c.classList.remove('active'));
-
-      // Add active class to clicked section tab
-      btn.classList.add('active');
-
-      // Show corresponding content
-      const tabId = btn.getAttribute('data-tab');
-      document.getElementById(tabId).classList.add('active');
-    });
-  });
-
-  // Make first section tab active by default
+  // Only proceed if section tab buttons exist on the page
   if (sectionTabBtns.length > 0) {
+    sectionTabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all section tabs and contents
+        sectionTabBtns.forEach(t => t.classList.remove('active'));
+        sectionTabContents.forEach(c => c.classList.remove('active'));
+
+        // Add active class to clicked section tab
+        btn.classList.add('active');
+
+        // Show corresponding content
+        const tabId = btn.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // Make first section tab active by default
     sectionTabBtns[0].click();
   }
 });
@@ -961,9 +1226,12 @@ document.querySelectorAll('.accordion-header').forEach(header => {
 });
 
 // Optional: Add interactive effects
-document.querySelector('.header-logo').addEventListener('mouseenter', function() {
-  this.classList.add('hover-active');
-  setTimeout(() => {
-    this.classList.remove('hover-active');
-  }, 1000);
-});
+const headerLogo = document.querySelector('.header-logo');
+if (headerLogo) { // Only add event listener if headerLogo exists
+  headerLogo.addEventListener('mouseenter', function() {
+    this.classList.add('hover-active');
+    setTimeout(() => {
+      this.classList.remove('hover-active');
+    }, 1000);
+  });
+}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ประกาศนียบัตรทั้งหมด | แฟ้มสะสมผลงาน ธนภัทร การะจักษ์</title>
+  <link rel="shortcut icon" href="./assets/images/icon.png" type="image/x-icon">
+
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <meta name="description"
+    content="ดูประกาศนียบัตรและรางวัลทั้งหมดของ ธนภัทร การะจักษ์ ในรูปแบบเต็มและรายละเอียดเพิ่มเติม">
+</head>
+
+<body>
+  <!-- Preloader Section -->
+  <div id="preloader">
+    <div class="loader"></div>
+    <p class="preloader-message">กำลังจัดเตรียมประกาศนียบัตรทั้งหมด</p>
+  </div>
+
+  <!-- Main Content Section -->
+  <main id="main-content" style="display: none;">
+    <header class="header-section" data-aos="fade-down" data-aos-duration="800">
+      <div class="header-logo">
+        <a href="index.html" class="logo-text">ธนภัทร</a>
+        <div class="logo-dots">
+          <span class="dot dot-1"></span>
+          <span class="dot dot-2"></span>
+          <span class="dot dot-3"></span>
+        </div>
+      </div>
+
+      <nav class="header-list">
+        <ul class="header-nav">
+          <li><a href="index.html">กลับหน้าหลัก</a></li>
+          <li><a href="index.html#Certificates">ดูประกาศนียบัตรแบบสไลด์</a></li>
+        </ul>
+      </nav>
+      <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </header>
+
+    <!-- Certificates Grid Section -->
+    <section class="certificates-grid-section">
+      <div class="cert-header" data-aos="fade-down" data-aos-duration="800">
+        <h2>ประกาศนียบัตร &amp; รางวัลทั้งหมด</h2>
+        <p class="intro">
+          เอกสารเหล่านี้เป็นเครื่องยืนยันความสามารถและผลงานของผม
+        </p>
+      </div>
+
+      <div class="cert-grid-container" id="certificates-grid">
+        <!-- Certificate items will be dynamically loaded here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+      <a href="#" class="back-to-top-btn">
+        <i class="fas fa-arrow-up"></i>
+      </a>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer-section" data-aos="fade-up" data-aos-duration="1000">
+      <div class="footer-container">
+        <div class="footer-logo">
+          <a href="index.html">ธนภัทร</a>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-column">
+            <h3>การนำทาง</h3>
+            <ul>
+              <li><a href="index.html">หน้าหลัก</a></li>
+              <li><a href="index.html#About">เกี่ยวกับ</a></li>
+              <li><a href="index.html#Skills">ทักษะ</a></li>
+              <li><a href="index.html#Projects">ผลงาน</a></li>
+              <li><a href="index.html#Certificates">ประกาศนียบัตร</a></li>
+              <li><a href="index.html#Contact">ติดต่อ</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>ประกาศนียบัตร</h3>
+            <ul>
+              <li><a href="certificates.html">ดูทั้งหมด</a></li>
+              <li><a href="index.html#Certificates">ดูแบบสไลด์</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>แหล่งข้อมูล</h3>
+            <ul>
+              <li><a href="#" target="_blank">แฟ้มสะสมผลงาน (PDF)</a></li>
+              <li><a href="./privacy-policy.html">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="./terms-of-use.html">เงื่อนไขการใช้งาน</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 ธนภัทร การะจักษ์. สงวนลิขสิทธิ์ทุกประการ.</p>
+        <p>ผลิตในประเทศไทย</p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Lightbox Elements (for viewing full-size certificates) -->
+  <div id="lightbox-overlay" class="lightbox-overlay"></div>
+  <div id="lightbox-content-container" class="lightbox-content-container">
+    <img id="lightbox-image" class="lightbox-media" src="" alt="รูปภาพขยาย" style="display: none;">
+    <div id="lightbox-info-container">
+      <div id="lightbox-caption" class="lightbox-caption">
+        <div class="lightbox-caption-content"></div>
+      </div>
+      <div class="lightbox-controls"></div>
+    </div>
+  </div>
+  <button id="lightbox-close" class="lightbox-close">
+    <i class="fas fa-times"></i>
+  </button>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script type="module" src="certificates-script.js"></script>
+</body>
+
+</html>

@@ -240,7 +240,9 @@ body.dark-mode .experience-block,
 body.dark-mode .project-item,
 body.dark-mode .cert-card,
 body.dark-mode .contact-contant,
-body.dark-mode .contact-list li {
+body.dark-mode .contact-list li,
+body.dark-mode .cert-grid-item {
+  /* Added cert-grid-item for dark mode */
   background-color: #1e1e1e;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   border: 1px solid #333;
@@ -252,7 +254,9 @@ body.dark-mode .soft-skills:hover,
 body.dark-mode .experience-block:hover,
 body.dark-mode .project-item:hover,
 body.dark-mode .cert-card:hover,
-body.dark-mode .contact-list li:hover {
+body.dark-mode .contact-list li:hover,
+body.dark-mode .cert-grid-item:hover {
+  /* Added cert-grid-item for dark mode */
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
   border-color: #4fc3f7;
 }
@@ -477,16 +481,20 @@ body.dark-mode .header-section.shrink {
 
 /* Dot animation */
 @keyframes dotBounce {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   25% {
     transform: translateY(-5px);
   }
+
   50% {
     transform: translateY(0);
   }
+
   75% {
     transform: translateY(3px);
   }
@@ -3315,5 +3323,534 @@ body.dark-mode .ripple-effect {
   to {
     transform: scale(4);
     opacity: 0;
+  }
+}
+
+/* ============================================================================
+   Certificates Grid Page Styles
+   ============================================================================ */
+.certificates-grid-section {
+  padding: 5rem 1.5rem;
+  background-color: var(--color-bg);
+}
+
+body.dark-mode .certificates-grid-section {
+  background-color: #121212;
+}
+
+.cert-grid-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.cert-grid-item {
+  background: var(--color-card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--color-shadow);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+body.dark-mode .cert-grid-item {
+  background: var(--color-card-dark);
+  box-shadow: 0 5px 15px var(--color-shadow-dark);
+}
+
+.cert-grid-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.cert-grid-image {
+  height: 200px;
+  overflow: hidden;
+  cursor: pointer;
+  /* Added cursor for clickable image */
+}
+
+.cert-grid-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.cert-grid-item:hover .cert-grid-image img {
+  transform: scale(1.05);
+}
+
+.cert-grid-details {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cert-grid-details h3 {
+  font-size: 1.3rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+body.dark-mode .cert-grid-details h3 {
+  color: var(--color-primary-dark);
+}
+
+.cert-date {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  margin-bottom: 1rem;
+}
+
+body.dark-mode .cert-date {
+  color: var(--color-text-light-dark-mode);
+}
+
+.cert-desc {
+  font-size: 0.95rem;
+  color: var(--color-text-dark);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+body.dark-mode .cert-desc {
+  color: var(--color-text-dark-mode);
+}
+
+.cert-view-btn {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.cert-view-btn:hover {
+  background-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(var(--color-primary-rgb), 0.3);
+}
+
+body.dark-mode .cert-view-btn {
+  background-color: var(--color-primary-dark);
+}
+
+body.dark-mode .cert-view-btn:hover {
+  background-color: var(--color-accent-dark);
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 99;
+}
+
+.back-to-top-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.back-to-top-btn:hover {
+  background-color: var(--color-accent);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.back-to-top-btn i {
+  transition: transform 0.3s ease;
+}
+
+.back-to-top-btn:hover i {
+  transform: translateY(-3px);
+}
+
+body.dark-mode .back-to-top-btn {
+  background-color: var(--color-primary-dark);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .back-to-top-btn:hover {
+  background-color: var(--color-accent-dark);
+}
+
+/* Responsive Certificates Grid */
+@media (max-width: 768px) {
+  .cert-grid-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .certificates-grid-section {
+    padding: 3rem 1rem;
+  }
+
+  .back-to-top {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .back-to-top-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cert-grid-item {
+    flex-direction: column;
+  }
+
+  .cert-grid-image {
+    height: 180px;
+  }
+
+  .cert-view-btn {
+    align-self: stretch;
+    text-align: center;
+  }
+}
+
+.view-all-certs {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 1.2rem;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.view-all-certs:hover {
+  background-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(var(--color-primary-rgb), 0.3);
+}
+
+body.dark-mode .view-all-certs {
+  background-color: var(--color-primary-dark);
+}
+
+body.dark-mode .view-all-certs:hover {
+  background-color: var(--color-accent-dark);
+}
+
+/* Cookie Consent Banner */
+.cookie-consent-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 600px;
+  background-color: var(--color-card-bg);
+  color: var(--color-text-dark);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: none;
+  /* Hidden by default */
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transform: translateX(-50%) translateY(100px);
+  /* Start off-screen */
+}
+
+.cookie-consent-banner.show {
+  display: flex;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.cookie-consent-banner p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.cookie-consent-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cookie-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cookie-btn.accept-all {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.cookie-btn.accept-all:hover {
+  background-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cookie-btn.manage {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.cookie-btn.manage:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark Mode styles for banner */
+body.dark-mode .cookie-consent-banner {
+  background-color: var(--color-card-bg-dark);
+  color: var(--color-text-dark-mode);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .cookie-btn.accept-all {
+  background-color: var(--color-primary-dark);
+}
+
+body.dark-mode .cookie-btn.accept-all:hover {
+  background-color: var(--color-accent-dark);
+}
+
+body.dark-mode .cookie-btn.manage {
+  background-color: var(--color-bg-dark);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-primary-dark);
+}
+
+body.dark-mode .cookie-btn.manage:hover {
+  background-color: var(--color-primary-dark-light);
+  color: var(--color-primary-dark);
+}
+
+/* Cookie Preferences Modal */
+.cookie-preferences-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.cookie-preferences-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cookie-preferences-content {
+  background-color: var(--color-card-bg);
+  color: var(--color-text-dark);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  width: calc(100% - 40px);
+  max-width: 500px;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.cookie-preferences-modal.show .cookie-preferences-content {
+  transform: translateY(0);
+}
+
+.cookie-preferences-content h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cookie-preferences-content p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.preference-option {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.preference-option input[type="checkbox"] {
+  min-width: 20px;
+  min-height: 20px;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+  /* For checked state */
+}
+
+.preference-option label {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+.preference-option .description {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  margin-top: 5px;
+  margin-left: 30px;
+  /* Align with label text */
+  text-align: left;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+/* Dark mode for modal */
+body.dark-mode .cookie-preferences-content {
+  background-color: var(--color-card-bg-dark);
+  color: var(--color-text-dark-mode);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .preference-option label {
+  color: var(--color-text-dark-mode);
+}
+
+body.dark-mode .preference-option .description {
+  color: var(--color-text-light-dark);
+}
+
+/* Clear Data Button in Footer */
+.footer-bottom .clear-data-btn {
+  background-color: transparent;
+  /* Red color for delete */
+  color: var(--color-white);
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 0;
+  margin-left: auto;
+  /* Push to right if in flex container */
+  margin-right: auto;
+  /* Center if not in flex container */
+  display: block;
+  /* Ensure it takes full width if needed for centering */
+}
+
+.footer-bottom .clear-data-btn:hover {
+  background-color: transparent;
+  /* A slightly darker red */
+  transform: translateY(-2px);
+}
+
+body.dark-mode .footer-bottom .clear-data-btn {
+  background-color: #c0392b;
+  /* Darker red for dark mode */
+}
+
+body.dark-mode .footer-bottom .clear-data-btn:hover {
+  background-color: #e74c3c;
+}
+
+/* Ensure body overflow is reset when modal is hidden */
+body.cookie-modal-open {
+  overflow: hidden;
+}
+
+/* Responsive adjustments for cookie banner */
+@media (max-width: 768px) {
+  .cookie-consent-banner {
+    width: calc(100% - 20px);
+    /* Smaller padding on mobile */
+    bottom: 10px;
+  }
+
+  .cookie-consent-content {
+    padding: 15px;
+  }
+
+  .cookie-preferences-content {
+    padding: 20px;
+  }
+
+  .cookie-btn {
+    padding: 8px 15px;
+    font-size: 0.85rem;
+  }
+
+  .cookie-consent-buttons {
+    flex-direction: column;
+    /* Stack buttons on small screens */
+    width: 100%;
+  }
+
+  .cookie-btn {
+    width: 100%;
+    /* Make buttons full width when stacked */
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    width: 100%;
   }
 }

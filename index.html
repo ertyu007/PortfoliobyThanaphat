@@ -459,6 +459,7 @@
         <h2>ประกาศนียบัตร &amp; รางวัล</h2>
         <p class="intro">
           เอกสารเหล่านี้เป็นเครื่องยืนยันความสามารถของผม โปรดเลื่อนเพื่อดูรายละเอียดเพิ่มเติม
+          <a href="certificates.html" class="view-all-certs">ดูประกาศนียบัตรทั้งหมด</a>
         </p>
       </div>
       <div class="cert-slider-container">
@@ -588,6 +589,8 @@
       <div class="footer-bottom">
         <p>&copy; 2025 ธนภัทร การะจักษ์. สงวนลิขสิทธิ์ทุกประการ.</p>
         <p>ผลิตในประเทศไทย</p>
+        <!-- เพิ่มปุ่มนี้ -->
+        <button id="clear-local-data" class="clear-data-btn">ลบข้อมูลการใช้งาน</button>
       </div>
     </footer>
   </main>
@@ -606,6 +609,42 @@
   <button id="lightbox-close" class="lightbox-close">
     <i class="fas fa-times"></i>
   </button>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookie-consent-banner" class="cookie-consent-banner">
+    <div class="cookie-consent-content">
+      <p>เว็บไซต์นี้ใช้เทคโนโลยีการจัดเก็บข้อมูล เพื่อปรับปรุงประสบการณ์การใช้งานของคุณ <a href="./privacy-policy.html">นโยบายความเป็นส่วนตัว</a>
+        และรวบรวมสถิติการเข้าชมที่ไม่ระบุตัวตน <a href="./terms-of-use.html">เงื่อนไขการใช้งาน</a></p>
+      <div class="cookie-consent-buttons">
+        <button id="accept-all-cookies" class="cookie-btn accept-all">ยอมรับทั้งหมด</button>
+        <button id="manage-preferences" class="cookie-btn manage">จัดการการตั้งค่า</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookie Preferences Modal -->
+  <div id="cookie-preferences-modal" class="cookie-preferences-modal">
+    <div class="cookie-preferences-content">
+      <h2>การตั้งค่าความเป็นส่วนตัว</h2>
+      <p>คุณสามารถเลือกประเภทของข้อมูลที่เราจัดเก็บได้</p>
+      <div class="preference-option">
+        <input type="checkbox" id="essential-storage" checked disabled>
+        <label for="essential-storage">ข้อมูลที่จำเป็น (Essential)</label>
+        <p class="description">จำเป็นสำหรับการทำงานพื้นฐานของเว็บไซต์</p>
+      </div>
+      <div class="preference-option">
+        <input type="checkbox" id="analytics-storage">
+        <label for="analytics-storage">สถิติและการตั้งค่า (Analytics & Preferences)</label>
+        <p class="description">ใช้เพื่อรวบรวมสถิติการเข้าชมที่ไม่ระบุตัวตน
+          และบันทึกการตั้งค่าส่วนตัวของคุณ</p>
+      </div>
+      <div class="modal-buttons">
+        <button id="save-preferences" class="cookie-btn accept-all">บันทึกการตั้งค่า</button>
+        <button id="cancel-preferences" class="cookie-btn manage">ยกเลิก</button>
+      </div>
+    </div>
+  </div>
+
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script type="module" src="script.js"></script>
