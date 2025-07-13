@@ -1,4 +1,5 @@
-import { projects, certificates } from "./data/projectsData.js"; // Import certificates array
+import { projects } from "./data/projectsData.js";
+import { certificates } from "./data/CertificateData.js";
 
 // Function: สร้าง Ripple Effect
 function createRipple(event) {
@@ -26,13 +27,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- START: Data Loading Check and Error Display ---
   // ตรวจสอบว่าข้อมูลประกาศนียบัตรโหลดสำเร็จหรือไม่
   if (!certificates || certificates.length === 0) {
-    console.error("projectsData.js: ไม่สามารถโหลดข้อมูลประกาศนียบัตรได้ หรือข้อมูลว่างเปล่า กรุณาตรวจสอบ Path ของไฟล์ './data/projectsData.js' และเนื้อหาของไฟล์บนเซิร์ฟเวอร์จริง (ตรวจสอบตัวพิมพ์เล็ก-ใหญ่).");
+    console.error("CertificateData.js: ไม่สามารถโหลดข้อมูลประกาศนียบัตรได้ หรือข้อมูลว่างเปล่า กรุณาตรวจสอบ Path ของไฟล์ './data/CertificateData.js' และเนื้อหาของไฟล์บนเซิร์ฟเวอร์จริง (ตรวจสอบตัวพิมพ์เล็ก-ใหญ่).");
     const certificatesGrid = document.getElementById('certificates-grid');
     if (certificatesGrid) {
-      certificatesGrid.innerHTML = '<p class="error-message">ไม่สามารถโหลดข้อมูลประกาศนียบัตรได้ โปรดตรวจสอบ Console สำหรับรายละเอียดเพิ่มเติม.</p>';
+      certificatesGrid.innerHTML = '<p class="error-message" style="text-align: center; color: red; font-size: 1.2em; padding: 20px;">ไม่สามารถโหลดข้อมูลประกาศนียบัตรได้ โปรดตรวจสอบ Console สำหรับรายละเอียดเพิ่มเติม.</p>';
     }
   } else {
-    console.log("projectsData.js: โหลดข้อมูลประกาศนียบัตรสำเร็จ.");
+    console.log("CertificateData.js: โหลดข้อมูลประกาศนียบัตรสำเร็จ.");
   }
 
   // ตรวจสอบว่าข้อมูลโปรเจกต์โหลดสำเร็จหรือไม่
@@ -40,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.error("projectsData.js: ไม่สามารถโหลดข้อมูลโปรเจกต์ได้ หรือข้อมูลว่างเปล่า กรุณาตรวจสอบ Path ของไฟล์ './data/projectsData.js' และเนื้อหาของไฟล์บนเซิร์ฟเวอร์จริง (ตรวจสอบตัวพิมพ์เล็ก-ใหญ่).");
     const galleryEl = document.getElementById("gallery");
     if (galleryEl) {
-      galleryEl.innerHTML = '<p class="error-message">ไม่สามารถโหลดข้อมูลโปรเจกต์ได้ โปรดตรวจสอบ Console สำหรับรายละเอียดเพิ่มเติม.</p>';
+      galleryEl.innerHTML = '<p class="error-message" style="text-align: center; color: red; font-size: 1.2em; padding: 20px;">ไม่สามารถโหลดข้อมูลโปรเจกต์ได้ โปรดตรวจสอบ Console สำหรับรายละเอียดเพิ่มเติม.</p>';
     }
   } else {
     console.log("projectsData.js: โหลดข้อมูลโปรเจกต์สำเร็จ.");
@@ -588,7 +589,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!certs || certs.length === 0) {
-      certificatesGrid.innerHTML = '<p class="no-certs-message">ไม่พบประกาศนียบัตรที่จะแสดง.</p>';
+      certificatesGrid.innerHTML = '<p class="no-certs-message" style="text-align: center; color: var(--color-text-light); padding: 20px;">ไม่พบประกาศนียบัตรที่จะแสดง.</p>';
       console.warn("renderCertificates: ไม่มีข้อมูลประกาศนียบัตรที่จะแสดง.");
       return;
     }
@@ -836,6 +837,11 @@ document.addEventListener("DOMContentLoaded", function () {
       lightboxImage.classList.add('hidden'); // Use class to hide
       document.body.classList.remove("lightbox-open");
       document.documentElement.classList.remove("lightbox-open");
+
+      const loadingSpinner = lightboxContainer.querySelector('.lightbox-video-loading'); // This class is not used
+      if (loadingSpinner) {
+        loadingSpinner.remove();
+      }
     }, 400); // This timeout should match the transition duration of the lightbox elements
   }
 
@@ -1046,9 +1052,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const hours = Math.floor((diff % 86400) / 3600);
       const minutes = Math.floor((diff % 3600) / 60);
       const seconds = diff % 60;
-      // Corrected minutes display from 'm' to 'h' for hours and 'm' for minutes
       document.getElementById("uptime").textContent =
-        ` ${days}d ${hours}h ${minutes}m ${seconds}s `;
+        ` ${days}d ${hours}m ${minutes}m ${seconds}s `;
     }
     setInterval(updateUptime, 1000);
     updateUptime(); // Call once immediately to avoid initial "0d 0h 0m 0s"
