@@ -24,6 +24,28 @@ function createRipple(event) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  // --- START: Data Loading Check and Error Display ---
+  if (!certificates || certificates.length === 0) {
+    console.error("CertificateData.js: ไม่สามารถโหลดข้อมูลประกาศนียบัตรได้ หรือข้อมูลว่างเปล่า กรุณาตรวจสอบ Path ของไฟล์ './data/CertificateData.js' และเนื้อหาของไฟล์บนเซิร์ฟเวอร์จริง (ตรวจสอบตัวพิมพ์เล็ก-ใหญ่).");
+    const certificatesGrid = document.getElementById('certificates-grid');
+    if (certificatesGrid) {
+      certificatesGrid.innerHTML = '<p class="error-message" style="text-align: center; color: red; font-size: 1.2em; padding: 20px;">ไม่สามารถโหลดข้อมูลประกาศนียบัตรได้ โปรดตรวจสอบ Console สำหรับรายละเอียดเพิ่มเติม.</p>';
+    }
+  } else {
+    console.log("CertificateData.js: โหลดข้อมูลประกาศนียบัตรสำเร็จ.");
+  }
+
+  if (!projects || projects.length === 0) {
+    console.error("projectsData.js: ไม่สามารถโหลดข้อมูลโปรเจกต์ได้ หรือข้อมูลว่างเปล่า กรุณาตรวจสอบ Path ของไฟล์ './data/projectsData.js' และเนื้อหาของไฟล์บนเซิร์ฟเวอร์จริง (ตรวจสอบตัวพิมพ์เล็ก-ใหญ่).");
+    const galleryEl = document.getElementById("gallery");
+    if (galleryEl) {
+      galleryEl.innerHTML = '<p class="error-message" style="text-align: center; color: red; font-size: 1.2em; padding: 20px;">ไม่สามารถโหลดข้อมูลโปรเจกต์ได้ โปรดตรวจสอบ Console สำหรับรายละเอียดเพิ่มเติม.</p>';
+    }
+  } else {
+    console.log("projectsData.js: โหลดข้อมูลโปรเจกต์สำเร็จ.");
+  }
+  // --- END: Data Loading Check and Error Display ---
+
   // Add Ripple effect to desired elements
   const rippleElements = document.querySelectorAll(
     ".hero-btn-primary a, .filter-btn, .project-item, .cert-card, .tab-btn, .section-tab, .view-all-certs-btn"
@@ -479,7 +501,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       item.innerHTML = `
         <div class="project-image-container">
-          <img src="${project.thumbnail}" alt="${project.title}" loading="lazy"> <!-- Added lazy loading -->
+          <img src="${project.thumbnail}" alt="${project.title}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x225/cccccc/333333?text=Image+Not+Found';"> <!-- Added lazy loading and error fallback -->
           <div class="view-icon"><i class="fas fa-plus"></i></div>
         </div>
         <div class="project-content">
@@ -559,7 +581,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Render Certificates (for certificates.html)
   function renderCertificates(certs) {
     const certificatesGrid = document.getElementById('certificates-grid');
-    if (!certificatesGrid) return; // Only run if on certificates.html
+    if (!certificatesGrid) {
+      console.warn("renderCertificates: ไม่พบ Element 'certificates-grid'.");
+      return; // Only run if on certificates.html
+    }
+
+    if (!certs || certs.length === 0) {
+      certificatesGrid.innerHTML = '<p class="no-certs-message" style="text-align: center; color: var(--color-text-light); padding: 20px;">ไม่พบประกาศนียบัตรที่จะแสดง.</p>';
+      console.warn("renderCertificates: ไม่มีข้อมูลประกาศนียบัตรที่จะแสดง.");
+      return;
+    }
 
     certificatesGrid.innerHTML = ''; // Clear existing content
     const fragment = document.createDocumentFragment();
@@ -572,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function () {
       certCard.setAttribute('data-id', cert.id); // Add data-id for lightbox
 
       certCard.innerHTML = `
-        <img src="${cert.src}" alt="${cert.title}" loading="lazy">
+        <img src="${cert.src}" alt="${cert.title}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Certificate+Image+Not+Found';"> <!-- Added lazy loading and error fallback -->
         <div class="cert-info">
           <h3>${cert.title}</h3>
           <p>${cert.desc}</p>
@@ -589,6 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
       fragment.appendChild(certCard);
     });
     certificatesGrid.appendChild(fragment);
+    console.log(`renderCertificates: แสดงประกาศนียบัตรจำนวน ${certs.length} รายการ.`);
   }
 
   // Lightbox functions (modified to handle both projects and certificates)
@@ -963,6 +995,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       for (let i = 0; i < numClones; i++) {
         const clonedCard = certCards[i % certCards.length].cloneNode(true);
+        clonedCard.querySelector('img').onerror = function() {
+          this.onerror=null;this.src='https://placehold.co/300x400/cccccc/333333?text=Certificate+Image+Not+Found';
+        }; // Add error fallback for cloned images
         certSliderTrack.appendChild(clonedCard);
       }
     }
@@ -1105,4 +1140,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-

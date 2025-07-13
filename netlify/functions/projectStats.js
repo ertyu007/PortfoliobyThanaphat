@@ -7,9 +7,41 @@ const url = require('url'); // เพิ่มโมดูล url เพื่�
 
 // ประกาศ client ไว้นอก handler เพื่อให้สามารถนำกลับมาใช้ใหม่ได้ (Connection Pooling)
 let client;
-let dbConfig; // ประกาศ dbConfig ไว้ด้านนอกเพื่อเก็บค่าที่แยกออกมา
+let dbConfig;
 
-// Handler function สำหรับ Netlify Function
+// --- การตั้งค่า Rate Limiting (ในหน่วยความจำ, ต่ออินสแตนซ์ของฟังก์ชัน) ---
+// ในสถานการณ์จริงสำหรับการจำกัด Rate Limiting แบบกระจาย (distributed rate limiting)
+// ควรพิจารณาใช้ persistent store เช่น Redis หรือฐานข้อมูล
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // กำหนดช่วงเวลา 1 นาที (60,000 มิลลิวินาที)
+const RATE_LIMIT_MAX_REQUESTS = 10; // กำหนดจำนวนคำขอสูงสุดที่อนุญาตต่อ IP ภายในช่วงเวลาที่กำหนด
+const requestCounts = new Map(); // Map สำหรับเก็บข้อมูล { ip: { count: number, lastReset: timestamp } }
+
+// --- ฟังก์ชันช่วยสำหรับการตรวจสอบความถูกต้องของข้อมูล (Input Validation) ---
+
+/**
+ * ตรวจสอบความถูกต้องของ ID โปรเจกต์
+ * @param {string} id - ID ของโปรเจกต์ที่รับเข้ามา
+ * @returns {boolean} - true ถ้า ID ถูกต้องตามรูปแบบ, false ถ้าไม่ถูกต้อง
+ */
+function isValidId(id) {
+  // ตรวจสอบว่า ID เป็นสตริงที่ไม่ว่างเปล่า และประกอบด้วยตัวอักษร (a-z, A-Z), ตัวเลข (0-9),
+  // ขีดกลาง (-) หรือขีดล่าง (_) เท่านั้น
+  // รูปแบบนี้ช่วยป้องกัน SQL Injection และการส่งค่าที่ไม่พึงประสงค์
+  return typeof id === 'string' && id.length > 0 && /^[a-zA-Z0-9_-]+$/.test(id);
+}
+
+/**
+ * ตรวจสอบความถูกต้องของประเภท (type) ที่รับเข้ามา
+ * @param {string} type - ประเภทที่รับเข้ามา (เช่น 'like', 'share', 'view')
+ * @param {string[]} allowedTypes - อาร์เรย์ของประเภทที่อนุญาต
+ * @returns {boolean} - true ถ้า type เป็นหนึ่งในประเภทที่อนุญาต, false ถ้าไม่ถูกต้อง
+ */
+function isValidType(type, allowedTypes) {
+  // ตรวจสอบว่า type เป็นสตริงและอยู่ในรายการ allowedTypes ที่กำหนดไว้
+  return typeof type === 'string' && allowedTypes.includes(type);
+}
+
+// --- Handler function สำหรับ Netlify Function ---
 exports.handler = async (event) => {
   // ดึงค่า parameters จาก Query String
   const id = event.queryStringParameters?.id; // project_id
@@ -17,11 +49,42 @@ exports.handler = async (event) => {
   const getTotal = event.queryStringParameters?.total; // 'true' สำหรับดึงยอดรวม
   const clearAll = event.queryStringParameters?.clear_all; // 'true' สำหรับล้างข้อมูลทั้งหมด
   const method = event.httpMethod; // HTTP method ของ request (GET, POST, DELETE)
+  // ดึง IP Address ของ Client จาก Header (Netlify จะส่งมาใน Header นี้)
+  const clientIp = event.headers['x-nf-client-connection-ip'] || event.headers['client-ip'] || 'unknown';
+
+  // --- การจำกัดจำนวนครั้งในการส่งคำขอ (Rate Limiting) สำหรับ POST requests ---
+  // ใช้สำหรับป้องกันการสแปมหรือ Brute-force ในการเพิ่มสถิติ
+  if (method === "POST") {
+    const now = Date.now();
+    const ipData = requestCounts.get(clientIp) || { count: 0, lastReset: now };
+
+    if (now - ipData.lastReset > RATE_LIMIT_WINDOW_MS) {
+      // หากเกินช่วงเวลาที่กำหนด ให้รีเซ็ตจำนวนคำขอและเวลา
+      ipData.count = 1;
+      ipData.lastReset = now;
+    } else {
+      // หากยังอยู่ในช่วงเวลา ให้เพิ่มจำนวนคำขอ
+      ipData.count++;
+    }
+    requestCounts.set(clientIp, ipData); // อัปเดตข้อมูลใน Map
+
+    if (ipData.count > RATE_LIMIT_MAX_REQUESTS) {
+      console.warn(`Rate limit exceeded for IP: ${clientIp}`);
+      return {
+        statusCode: 429, // รหัสสถานะ HTTP สำหรับ "Too Many Requests"
+        body: JSON.stringify({ error: "Too many requests. Please try again later." }),
+        headers: {
+          // แนะนำให้ client ลองส่งคำขอใหม่หลังจากผ่านไปกี่วินาที
+          'Retry-After': Math.ceil((ipData.lastReset + RATE_LIMIT_WINDOW_MS - now) / 1000).toString(),
+        }
+      };
+    }
+  }
 
   try {
     // ตรวจสอบและตั้งค่า dbConfig หากยังไม่ถูกตั้งค่า
     if (!dbConfig) {
-      const databaseUrl = process.env.NETLIFY_DATABASE_URL; // ดึง NETLIFY_DATABASE_URL
+      const databaseUrl = process.env.NETLIFY_DATABASE_URL; // ดึง NETLIFY_DATABASE_URL จาก Environment Variables
       if (!databaseUrl) {
         console.error("NETLIFY_DATABASE_URL is not set in environment variables.");
         // ส่งข้อความ error ที่ชัดเจนกลับไป
@@ -69,9 +132,43 @@ exports.handler = async (event) => {
       }
     }
 
-    // --- กรณี: ล้างข้อมูลสถิติทั้งหมด (DELETE request) ---
+    // --- ระบบยืนยันตัวตนและการอนุญาต (Authentication and Authorization) สำหรับ DELETE request ---
+    // การดำเนินการ DELETE (clearAll) ต้องมีโทเค็นผู้ดูแลระบบที่ถูกต้อง
     if (clearAll === "true" && method === "DELETE") {
-      console.log("Received DELETE request to clear all stats.");
+      const adminToken = process.env.ADMIN_TOKEN; // ดึง ADMIN_TOKEN จาก Environment Variables
+      const authHeader = event.headers.authorization; // ดึง Authorization Header
+
+      // ตรวจสอบว่ามีการตั้งค่า ADMIN_TOKEN ใน Environment Variables หรือไม่
+      if (!adminToken) {
+        console.error("ADMIN_TOKEN is not set in environment variables for DELETE operation.");
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ error: "Server configuration error: ADMIN_TOKEN not set." }),
+        };
+      }
+
+      // ตรวจสอบว่ามี Authorization Header และเริ่มต้นด้วย 'Bearer ' หรือไม่
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        console.warn("Unauthorized DELETE attempt: Missing or invalid Authorization header.");
+        return {
+          statusCode: 401, // Unauthorized
+          body: JSON.stringify({ error: "Unauthorized: Bearer token required." }),
+        };
+      }
+
+      // แยกโทเค็นออกจาก Header
+      const token = authHeader.split(' ')[1];
+      // ตรวจสอบว่าโทเค็นที่ส่งมาตรงกับ ADMIN_TOKEN ที่กำหนดไว้หรือไม่
+      if (token !== adminToken) {
+        console.warn("Unauthorized DELETE attempt: Invalid token.");
+        return {
+          statusCode: 403, // Forbidden
+          body: JSON.stringify({ error: "Forbidden: Invalid token." }),
+        };
+      }
+
+      console.log("Received authorized DELETE request to clear all stats.");
+      // ดำเนินการล้างข้อมูลสถิติทั้งหมด
       await client.query("UPDATE project_likes SET likes = 0, shares = 0, views = 0;");
       console.log("All project statistics cleared in DB.");
       return {
@@ -82,21 +179,21 @@ exports.handler = async (event) => {
 
     // --- กรณี: ดึงยอดรวมทั้งหมดตามประเภท (GET request with total=true) ---
     if (getTotal === "true" && method === "GET") {
-      console.log(`Received GET request for total ${type}.`);
-      let columnName = '';
-      const validTypes = ['likes', 'shares', 'views'];
-      if (validTypes.includes(type)) {
-        columnName = type;
-      } else {
+      const validTypesForTotal = ['likes', 'shares', 'views'];
+      // ตรวจสอบความถูกต้องของ 'type'
+      if (!isValidType(type, validTypesForTotal)) {
         console.warn(`Invalid type for total count: ${type}`);
         return {
           statusCode: 400,
           body: JSON.stringify({ error: "Invalid type for total count. Must be 'likes', 'shares', or 'views'." }),
         };
       }
+      // 'type' ถูกตรวจสอบแล้วว่าเป็นชื่อคอลัมน์ที่ถูกต้อง
+      const columnName = type;
+      console.log(`Received GET request for total ${columnName}.`);
       const res = await client.query(`SELECT SUM(${columnName}) AS total_count FROM project_likes`);
       const totalCount = res.rows[0]?.total_count || 0;
-      console.log(`Total ${type} fetched: ${totalCount}`);
+      console.log(`Total ${columnName} fetched: ${totalCount}`);
       return {
         statusCode: 200,
         body: JSON.stringify({ totalCount }),
@@ -105,11 +202,12 @@ exports.handler = async (event) => {
 
     // --- กรณี: ดึงข้อมูลสถิติของโปรเจกต์เดียว (GET request) ---
     if (method === "GET") {
-      if (!id) {
-        console.warn("Missing ID for GET request.");
+      // ตรวจสอบความถูกต้องของ 'id'
+      if (!id || !isValidId(id)) {
+        console.warn("Missing or invalid ID for GET request.");
         return {
           statusCode: 400,
-          body: JSON.stringify({ error: "Missing id" }),
+          body: JSON.stringify({ error: "Missing or invalid id" }),
         };
       }
       console.log(`Received GET request for project ID: ${id}`);
@@ -129,28 +227,29 @@ exports.handler = async (event) => {
 
     // --- กรณี: เพิ่มยอดสถิติ (Like, Share, View) (POST request) ---
     if (method === "POST") {
-      if (!id || !type) {
-        console.warn("Missing ID or type for POST request.");
+      // ตรวจสอบความถูกต้องของ 'id'
+      if (!id || !isValidId(id)) {
+        console.warn("Missing or invalid ID for POST request.");
         return {
           statusCode: 400,
-          body: JSON.stringify({ error: "Missing id or type for increment" }),
+          body: JSON.stringify({ error: "Missing or invalid id for increment" }),
         };
       }
-      console.log(`Received POST request to increment ${type} for project ID: ${id}`);
-
-      let updateColumn = '';
       const validIncrementTypes = ['like', 'share', 'view'];
-      if (validIncrementTypes.includes(type)) {
-        updateColumn = `${type}s`; // 'like' -> 'likes', 'share' -> 'shares', 'view' -> 'views'
-      } else {
+      // ตรวจสอบความถูกต้องของ 'type'
+      if (!isValidType(type, validIncrementTypes)) {
         console.warn(`Invalid type for increment: ${type}`);
         return {
           statusCode: 400,
           body: JSON.stringify({ error: "Invalid type for increment. Must be 'like', 'share', or 'view'." }),
         };
       }
+      // สร้างชื่อคอลัมน์ที่จะอัปเดต (เช่น 'like' -> 'likes')
+      const updateColumn = `${type}s`;
 
-      // UPSERT operation: Insert if not exists, otherwise update
+      console.log(`Received POST request to increment ${type} for project ID: ${id}`);
+
+      // UPSERT operation: Insert ถ้ายังไม่มี, มิฉะนั้นให้อัปเดต
       await client.query(
         `
         INSERT INTO project_likes (id, ${updateColumn})
@@ -162,7 +261,7 @@ exports.handler = async (event) => {
       );
       console.log(`Successfully incremented ${type} for project ${id}.`);
 
-      // Fetch updated stats to return to client
+      // ดึงข้อมูลสถิติที่อัปเดตแล้วกลับไปให้ client
       const res = await client.query(
         "SELECT likes, shares, views FROM project_likes WHERE id = $1",
         [id]
@@ -171,7 +270,7 @@ exports.handler = async (event) => {
       console.log(`Updated stats for project ${id}:`, updatedStats);
       return {
         statusCode: 200,
-        body: JSON.stringify({ ...updatedStats, userHasLiked: false }), // userHasLiked is managed client-side
+        body: JSON.stringify({ ...updatedStats, userHasLiked: false }), // userHasLiked ถูกจัดการฝั่ง client
       };
     }
 

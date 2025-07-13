@@ -148,6 +148,22 @@
   <!-- Defer non-critical JavaScript -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
   <script type="module" src="script.js" defer></script>
+  <!-- Fallback to show main content if preloader fails or takes too long -->
+  <script>
+    setTimeout(() => {
+      const preloader = document.getElementById('preloader');
+      const mainContent = document.getElementById('main-content');
+      if (preloader && mainContent && preloader.classList.contains('hidden')) {
+        // If preloader is already hidden, do nothing.
+        // If not hidden, force display main content.
+      } else if (mainContent) {
+        mainContent.classList.remove('hidden');
+        if (preloader) {
+          preloader.style.display = 'none'; // Ensure preloader is fully gone
+        }
+      }
+    }, 3000); // Adjust delay as needed, e.g., 3000ms (3 seconds)
+  </script>
 </body>
 
 </html>
