@@ -1,33 +1,32 @@
 // certificates-script.js
 
 import { certificates } from "./data/certificatesData.js"; // Corrected path
-
-// Function: สร้าง Ripple Effect
-function createRipple(event) {
-  const button = event.currentTarget;
-  const ripple = document.createElement("span");
-  const diameter = Math.max(button.clientWidth, button.clientHeight);
-  const radius = diameter / 2;
-
-  ripple.style.width = ripple.style.height = `${diameter}px`;
-  ripple.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
-  ripple.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
-  ripple.classList.add("ripple-effect");
-
-  // Remove old ripples to prevent accumulation
-  const oldRipple = button.querySelector(".ripple-effect");
-  if (oldRipple) oldRipple.remove();
-
-  button.appendChild(ripple);
-
-  // Remove ripple after animation ends
-  ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
-}
+import {
+  createRipple,
+  mobileMenuToggle,
+  shrinkHeader,
+  backToTop,
+  preloaderHide,
+  aosInit,
+  showInfoModal, // Keep showInfoModal import for logging
+  CONSENT_KEY,
+  PREFERENCES_KEY,
+  getConsentPreferences,
+  hasConsentFor,
+  showConsentBanner,
+  hideConsentBanner,
+  showPreferencesModal,
+  hidePreferencesModal,
+  handleAcceptAllCookies,
+  handleManagePreferences,
+  handleSavePreferences,
+  handleCancelPreferences
+} from "./common-utils.js"; // Import shared utilities
 
 document.addEventListener("DOMContentLoaded", function () {
   // Add Ripple effect to desired elements
   const rippleElements = document.querySelectorAll(
-    ".header-contact a, .header-nav li a, .header-logo a" // Removed .cert-view-btn
+    ".header-contact a, .header-nav li a, .header-logo a"
   );
 
   rippleElements.forEach((element) => {
@@ -48,109 +47,62 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentMediaElement = null;
 
   // --- Cookie Consent & Local Storage Management for certificates.html ---
-  const CONSENT_KEY = 'cookieConsent';
-  const PREFERENCES_KEY = 'cookiePreferences';
-
-  const cookieConsentBanner = document.getElementById('cookie-consent-banner');
   const acceptAllCookiesBtn = document.getElementById('accept-all-cookies');
   const managePreferencesBtn = document.getElementById('manage-preferences');
 
   const cookiePreferencesModal = document.getElementById('cookie-preferences-modal');
   const essentialStorageCheckbox = document.getElementById('essential-storage');
   const analyticsStorageCheckbox = document.getElementById('analytics-storage');
+  const uiStorageCheckbox = document.getElementById('ui-storage'); // New checkbox for UI preferences
   const savePreferencesBtn = document.getElementById('save-preferences');
   const cancelPreferencesBtn = document.getElementById('cancel-preferences');
 
-  // Function to get current consent preferences
-  function getConsentPreferences() {
-    const preferences = localStorage.getItem(PREFERENCES_KEY);
-    return preferences ? JSON.parse(preferences) : { essential: false, analytics: false, preferences: false };
-  }
-
-  // Function to show the cookie consent banner
-  function showConsentBanner() {
-    if (cookieConsentBanner) {
-      cookieConsentBanner.classList.add('show');
-    }
-  }
-
-  // Function to hide the cookie consent banner
-  function hideConsentBanner() {
-    if (cookieConsentBanner) {
-      cookieConsentBanner.classList.remove('show');
-    }
-  }
-
-  // Function to show the preferences modal
-  function showPreferencesModal() {
-    if (cookiePreferencesModal) {
-      cookiePreferencesModal.classList.add('show');
-      document.body.classList.add('cookie-modal-open'); // Prevent scrolling
-      const preferences = getConsentPreferences();
-      analyticsStorageCheckbox.checked = preferences.analytics;
-    }
-  }
-
-  // Function to hide the preferences modal
-  function hidePreferencesModal() {
-    if (cookiePreferencesModal) {
-      cookiePreferencesModal.classList.remove('show');
-      document.body.classList.remove('cookie-modal-open'); // Allow scrolling
-    }
-  }
-
   // Handle "Accept All"
   if (acceptAllCookiesBtn) {
-    acceptAllCookiesBtn.addEventListener('click', () => {
-      localStorage.setItem(CONSENT_KEY, 'granted');
-      localStorage.setItem(PREFERENCES_KEY, JSON.stringify({ essential: true, analytics: true, preferences: true }));
-      hideConsentBanner();
-      // No specific features to re-init on this page based on consent, but good practice
-    });
+    acceptAllCookiesBtn.addEventListener('click', () => handleAcceptAllCookies(initFeaturesBasedOnConsent));
   }
 
   // Handle "Manage Preferences"
   if (managePreferencesBtn) {
-    managePreferencesBtn.addEventListener('click', () => {
-      hideConsentBanner();
-      showPreferencesModal();
-    });
+    managePreferencesBtn.addEventListener('click', handleManagePreferences);
   }
 
   // Handle "Save Preferences"
   if (savePreferencesBtn) {
-    savePreferencesBtn.addEventListener('click', () => {
-      const newPreferences = {
-        essential: true, // Essential is always true
-        analytics: analyticsStorageCheckbox.checked,
-        preferences: analyticsStorageCheckbox.checked
-      };
-      localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPreferences));
-
-      if (newPreferences.analytics || newPreferences.preferences) {
-        localStorage.setItem(CONSENT_KEY, 'granted');
-      } else {
-        localStorage.setItem(CONSENT_KEY, 'denied_non_essential');
-      }
-
-      hidePreferencesModal();
-    });
+    savePreferencesBtn.addEventListener('click', () => handleSavePreferences(initFeaturesBasedOnConsent));
   }
 
   // Handle "Cancel Preferences"
   if (cancelPreferencesBtn) {
-    cancelPreferencesBtn.addEventListener('click', () => {
-      hidePreferencesModal();
-      if (!localStorage.getItem(CONSENT_KEY)) {
-        showConsentBanner();
+    cancelPreferencesBtn.addEventListener('click', handleCancelPreferences);
+  }
+
+  // Function to initialize/re-initialize features based on consent (simplified for certificates.html)
+  function initFeaturesBasedOnConsent() {
+    const preferences = getConsentPreferences();
+
+    // Dark Mode (if applicable on this page)
+    const darkModeToggle = document.getElementById("dark-mode-toggle"); // Assuming this might exist on certificates.html header
+    if (darkModeToggle) {
+      if (preferences.ui) { // Check for 'ui' consent
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (isDarkMode) {
+          document.body.classList.add('dark-mode');
+        }
+      } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.removeItem('darkMode');
       }
-    });
+    }
+    // No project stats on this page, so no need to re-render gallery
   }
 
   // Check consent on initial load for certificates.html
   const initialConsent = localStorage.getItem(CONSENT_KEY);
   if (!initialConsent) {
     showConsentBanner();
+  } else {
+    initFeaturesBasedOnConsent();
   }
   // --- End Cookie Consent & Local Storage Management ---
 
@@ -167,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
       certItem.setAttribute('data-aos-delay', (index * 100).toString()); // Stagger animation delay
 
       certItem.innerHTML = `
-        <div class="cert-grid-image">
-          <img src="${cert.thumbnail}" alt="${cert.title}">
+        <div class="cert-grid-image" aria-label="ดูประกาศนียบัตร ${cert.title} ขนาดเต็ม">
+          <img src="${cert.thumbnail}" alt="${cert.title}" loading="lazy">
         </div>
         <div class="cert-grid-details">
           <h3>${cert.title}</h3>
@@ -209,6 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mediaElement.src = item.src;
     mediaElement.alt = item.title;
     mediaElement.style.display = 'block';
+    mediaElement.setAttribute('loading', 'lazy'); // Add lazy loading to lightbox images
 
     mediaElement.style.left = `${triggerRect.left}px`;
     mediaElement.style.top = `${triggerRect.top}px`;
@@ -230,12 +183,14 @@ document.addEventListener("DOMContentLoaded", function () {
       controls.innerHTML = '';
     }
 
-
     lightboxOverlay.classList.add('active');
     lightboxContainer.classList.add('active');
     lightboxClose.classList.add('active');
     document.body.classList.add("lightbox-open");
     document.documentElement.classList.add("lightbox-open");
+    lightboxContainer.setAttribute('role', 'dialog'); // A11y
+    lightboxContainer.setAttribute('aria-modal', 'true'); // A11y
+    lightboxClose.setAttribute('aria-label', 'ปิด'); // A11y
   }
 
   function setupLightboxCaption(item) {
@@ -262,13 +217,17 @@ document.addEventListener("DOMContentLoaded", function () {
       const readMoreBtn = document.createElement('button');
       readMoreBtn.className = 'read-more-btn';
       readMoreBtn.textContent = 'เพิ่มเติม';
+      readMoreBtn.setAttribute('aria-expanded', 'false'); // A11y
+      readMoreBtn.setAttribute('aria-controls', 'lightbox-caption-content'); // A11y
+      captionContent.id = 'lightbox-caption-content'; // A11y
 
       lightboxCaption.appendChild(readMoreBtn);
 
       readMoreBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        lightboxCaption.classList.toggle('expanded');
-        readMoreBtn.textContent = lightboxCaption.classList.contains('expanded') ? 'ย่อลง' : 'เพิ่มเติม';
+        const isExpanded = lightboxCaption.classList.toggle('expanded');
+        readMoreBtn.textContent = isExpanded ? 'ย่อลง' : 'เพิ่มเติม';
+        readMoreBtn.setAttribute('aria-expanded', isExpanded); // A11y
       });
     }
   }
@@ -345,6 +304,8 @@ document.addEventListener("DOMContentLoaded", function () {
       lightboxImage.style.display = 'none';
       document.body.classList.remove("lightbox-open");
       document.documentElement.classList.remove("lightbox-open");
+      lightboxContainer.removeAttribute('role'); // A11y
+      lightboxContainer.removeAttribute('aria-modal'); // A11y
     }, 400);
   }
 
@@ -355,61 +316,19 @@ document.addEventListener("DOMContentLoaded", function () {
     e.stopPropagation();
   });
 
-  // Mobile Menu Toggle (copied from script.js)
+  // Mobile Menu Toggle
   const menuToggle = document.querySelector('.menu-toggle');
-  const headerList = document.querySelector('.header-list');
+  if (menuToggle) {
+    menuToggle.addEventListener('click', mobileMenuToggle); // Use the imported shared function
+  }
 
-  menuToggle.addEventListener('click', function () {
-    this.classList.toggle('open');
-    headerList.classList.toggle('active');
-    const menuItems = document.querySelectorAll('.header-nav li');
+  // Shrink Header on Scroll
+  window.addEventListener('scroll', shrinkHeader, { passive: true }); // Use the imported shared function
 
-    if (headerList.classList.contains('active')) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
+  // Back to Top Button visibility
+  window.addEventListener('scroll', backToTop); // Use the imported shared function
 
-      // Add 'show' class to each menu item with a delay
-      menuItems.forEach((item, index) => {
-        setTimeout(() => {
-          item.classList.add('show');
-        }, index * 100 + 100); // Delay each item by 100ms + 100ms base delay
-      });
-    } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      // Remove 'show' class from all menu items when closing
-      menuItems.forEach(item => {
-        item.classList.remove('show');
-      });
-    }
-  });
-
-  // Shrink Header on Scroll (copied from script.js, simplified for this page)
-  window.addEventListener('scroll', function () {
-    const currentScrollPosition = window.pageYOffset;
-    const header = document.querySelector('.header-section');
-
-    if (currentScrollPosition > 100) {
-      header.classList.add('shrink');
-      header.style.transition = 'all 0.5s ease-out';
-    } else {
-      header.classList.remove('shrink');
-    }
-  }, { passive: true }); // Use passive listener for better scroll performance
-
-  // Back to Top Button visibility (copied from script.js)
-  const backToTopBtn = document.querySelector('.back-to-top-btn');
-  window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) { // Show button after scrolling 300px
-      backToTopBtn.style.opacity = '1';
-      backToTopBtn.style.visibility = 'visible';
-    } else {
-      backToTopBtn.style.opacity = '0';
-      backToTopBtn.style.visibility = 'hidden';
-    }
-  });
-
-  backToTopBtn.addEventListener('click', (e) => {
+  document.querySelector('.back-to-top-btn')?.addEventListener('click', (e) => {
     e.preventDefault();
     window.scrollTo({
       top: 0,
@@ -417,31 +336,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Preloader Hide Logic (copied from script.js)
-  window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    const mainContent = document.getElementById('main-content');
+  // Preloader Hide Logic
+  window.addEventListener('load', preloaderHide); // Use the imported shared function
 
-    if (preloader) {
-      preloader.classList.add('hidden');
-      preloader.addEventListener('transitionend', () => {
-        preloader.style.display = 'none';
-      }, { once: true });
-    }
-    if (mainContent) {
-      mainContent.style.display = 'block';
-    }
-
-    // Initialize AOS after the page has loaded
-    AOS.init({
-      duration: 800, // Animation duration
-      easing: 'ease-out-quad', // Animation easing
-      once: true, // Animation plays only once when scrolling down
-      mirror: false, // Do not replay animation when scrolling up
-      anchorPlacement: 'top-bottom', // Element position to trigger animation
-      offset: 120, // Distance from the top of the screen when triggered
-    });
-  });
+  // Initialize AOS after the page has loaded
+  window.addEventListener('load', aosInit); // Use the imported shared function
 
   // Initial render of certificates
   renderCertificates();

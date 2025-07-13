@@ -13,6 +13,11 @@
 
   <meta name="description"
     content="ดูประกาศนียบัตรและรางวัลทั้งหมดของ ธนภัทร การะจักษ์ ในรูปแบบเต็มและรายละเอียดเพิ่มเติม">
+
+  <!-- Note: For NotoSansTamil, consider using Google Fonts CDN for better caching and performance if traffic is high.
+       Example: <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+       Then update style.css to use 'Noto Sans Thai' instead of 'NotoSansTamil'.
+  -->
 </head>
 
 <body>
@@ -26,7 +31,7 @@
   <main id="main-content" style="display: none;">
     <header class="header-section" data-aos="fade-down" data-aos-duration="800">
       <div class="header-logo">
-        <a href="index.html" class="logo-text">ธนภัทร</a>
+        <a href="index.html" class="logo-text" aria-label="กลับสู่หน้าหลัก">ธนภัทร</a>
         <div class="logo-dots">
           <span class="dot dot-1"></span>
           <span class="dot dot-2"></span>
@@ -34,17 +39,17 @@
         </div>
       </div>
 
-      <nav class="header-list">
+      <nav class="header-list" role="navigation" aria-label="เมนูนำทางหลัก">
         <ul class="header-nav">
-          <li><a href="index.html">กลับหน้าหลัก</a></li>
-          <li><a href="index.html#Certificates">ดูประกาศนียบัตรแบบสไลด์</a></li>
+          <li><a href="index.html" aria-label="กลับหน้าหลัก">กลับหน้าหลัก</a></li>
+          <li><a href="index.html#Certificates" aria-label="ดูประกาศนียบัตรแบบสไลด์">ดูประกาศนียบัตรแบบสไลด์</a></li>
         </ul>
       </nav>
-      <div class="menu-toggle">
+      <button class="menu-toggle" aria-label="สลับเมนูนำทาง">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
     </header>
 
     <!-- Certificates Grid Section -->
@@ -63,8 +68,8 @@
 
     <!-- Back to Top Button -->
     <div class="back-to-top">
-      <a href="#" class="back-to-top-btn">
-        <i class="fas fa-arrow-up"></i>
+      <a href="#" class="back-to-top-btn" aria-label="กลับสู่ด้านบน">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
       </a>
     </div>
 
@@ -72,7 +77,7 @@
     <footer class="footer-section" data-aos="fade-up" data-aos-duration="1000">
       <div class="footer-container">
         <div class="footer-logo">
-          <a href="index.html">ธนภัทร</a>
+          <a href="index.html" aria-label="กลับสู่หน้าหลัก">ธนภัทร</a>
           <span></span>
           <span></span>
           <span></span>
@@ -82,29 +87,29 @@
           <div class="footer-column">
             <h3>การนำทาง</h3>
             <ul>
-              <li><a href="index.html">หน้าหลัก</a></li>
-              <li><a href="index.html#About">เกี่ยวกับ</a></li>
-              <li><a href="index.html#Skills">ทักษะ</a></li>
-              <li><a href="index.html#Projects">ผลงาน</a></li>
-              <li><a href="index.html#Certificates">ประกาศนียบัตร</a></li>
-              <li><a href="index.html#Contact">ติดต่อ</a></li>
+              <li><a href="index.html" aria-label="ไปยังหน้าหลัก">หน้าหลัก</a></li>
+              <li><a href="index.html#About" aria-label="ไปยังส่วนเกี่ยวกับ">เกี่ยวกับ</a></li>
+              <li><a href="index.html#Skills" aria-label="ไปยังส่วนทักษะ">ทักษะ</a></li>
+              <li><a href="index.html#Projects" aria-label="ไปยังส่วนผลงาน">ผลงาน</a></li>
+              <li><a href="index.html#Certificates" aria-label="ไปยังส่วนประกาศนียบัตร">ประกาศนียบัตร</a></li>
+              <li><a href="index.html#Contact" aria-label="ไปยังส่วนติดต่อ">ติดต่อ</a></li>
             </ul>
           </div>
 
           <div class="footer-column">
             <h3>ประกาศนียบัตร</h3>
             <ul>
-              <li><a href="certificates.html">ดูทั้งหมด</a></li>
-              <li><a href="index.html#Certificates">ดูแบบสไลด์</a></li>
+              <li><a href="certificates.html" aria-label="ดูประกาศนียบัตรทั้งหมด">ดูทั้งหมด</a></li>
+              <li><a href="index.html#Certificates" aria-label="ดูประกาศนียบัตรแบบสไลด์">ดูแบบสไลด์</a></li>
             </ul>
           </div>
 
           <div class="footer-column">
             <h3>แหล่งข้อมูล</h3>
             <ul>
-              <li><a href="#" target="_blank">แฟ้มสะสมผลงาน (PDF)</a></li>
-              <li><a href="./privacy-policy.html">นโยบายความเป็นส่วนตัว</a></li>
-              <li><a href="./terms-of-use.html">เงื่อนไขการใช้งาน</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer" aria-label="ดาวน์โหลดแฟ้มสะสมผลงาน (PDF)">แฟ้มสะสมผลงาน (PDF)</a></li>
+              <li><a href="./privacy-policy.html" aria-label="อ่านนโยบายความเป็นส่วนตัว">นโยบายความเป็นส่วนตัว</a></li>
+              <li><a href="./terms-of-use.html" aria-label="อ่านเงื่อนไขการใช้งาน">เงื่อนไขการใช้งาน</a></li>
             </ul>
           </div>
         </div>
@@ -119,18 +124,58 @@
 
   <!-- Lightbox Elements (for viewing full-size certificates) -->
   <div id="lightbox-overlay" class="lightbox-overlay"></div>
-  <div id="lightbox-content-container" class="lightbox-content-container">
-    <img id="lightbox-image" class="lightbox-media" src="" alt="รูปภาพขยาย" style="display: none;">
+  <div id="lightbox-content-container" class="lightbox-content-container" role="dialog" aria-modal="true" aria-label="ประกาศนียบัตรขนาดเต็ม">
+    <img id="lightbox-image" class="lightbox-media" src="" alt="รูปภาพขยาย" style="display: none;" loading="lazy">
     <div id="lightbox-info-container">
       <div id="lightbox-caption" class="lightbox-caption">
-        <div class="lightbox-caption-content"></div>
+        <div id="lightbox-caption-content" class="lightbox-caption-content"></div>
       </div>
       <div class="lightbox-controls"></div>
     </div>
   </div>
-  <button id="lightbox-close" class="lightbox-close">
-    <i class="fas fa-times"></i>
+  <button id="lightbox-close" class="lightbox-close" aria-label="ปิดประกาศนียบัตร">
+    <i class="fas fa-times" aria-hidden="true"></i>
   </button>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookie-consent-banner" class="cookie-consent-banner" role="alertdialog" aria-labelledby="cookie-consent-title" aria-describedby="cookie-consent-description">
+    <div class="cookie-consent-content">
+      <p id="cookie-consent-description">เว็บไซต์นี้ใช้เทคโนโลยีการจัดเก็บข้อมูล เพื่อปรับปรุงประสบการณ์การใช้งานของคุณ <a
+          href="./privacy-policy.html" aria-label="อ่านนโยบายความเป็นส่วนตัว">นโยบายความเป็นส่วนตัว</a>
+        และรวบรวมสถิติการเข้าชมที่ไม่ระบุตัวตน <a href="./terms-of-use.html" aria-label="อ่านเงื่อนไขการใช้งาน">เงื่อนไขการใช้งาน</a></p>
+      <div class="cookie-consent-buttons">
+        <button id="accept-all-cookies" class="cookie-btn accept-all" aria-label="ยอมรับคุกกี้ทั้งหมด">ยอมรับทั้งหมด</button>
+        <button id="manage-preferences" class="cookie-btn manage" aria-label="จัดการการตั้งค่าคุกกี้">จัดการการตั้งค่า</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookie Preferences Modal -->
+  <div id="cookie-preferences-modal" class="cookie-preferences-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-preferences-title">
+    <div class="cookie-preferences-content">
+      <h2 id="cookie-preferences-title">การตั้งค่าความเป็นส่วนตัว</h2>
+      <p>คุณสามารถเลือกประเภทของข้อมูลที่เราจัดเก็บได้</p>
+      <div class="preference-option">
+        <input type="checkbox" id="essential-storage" checked disabled aria-label="ข้อมูลที่จำเป็น">
+        <label for="essential-storage">ข้อมูลที่จำเป็น (Essential)</label>
+        <p class="description">จำเป็นสำหรับการทำงานพื้นฐานของเว็บไซต์</p>
+      </div>
+      <div class="preference-option">
+        <input type="checkbox" id="analytics-storage" aria-label="สถิติและการตั้งค่า">
+        <label for="analytics-storage">สถิติและการตั้งค่า (Analytics)</label>
+        <p class="description">ใช้เพื่อรวบรวมสถิติการเข้าชมที่ไม่ระบุตัวตน</p>
+      </div>
+      <div class="preference-option">
+        <input type="checkbox" id="ui-storage" aria-label="การตั้งค่า UI">
+        <label for="ui-storage">การตั้งค่า UI (เช่น โหมดมืด)</label>
+        <p class="description">ใช้เพื่อบันทึกการตั้งค่าส่วนตัวของคุณ เช่น การเปิด/ปิดโหมดมืด</p>
+      </div>
+      <div class="modal-buttons">
+        <button id="save-preferences" class="cookie-btn accept-all" aria-label="บันทึกการตั้งค่า">บันทึกการตั้งค่า</button>
+        <button id="cancel-preferences" class="cookie-btn manage" aria-label="ยกเลิกการตั้งค่า">ยกเลิก</button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script type="module" src="certificates-script.js"></script>
