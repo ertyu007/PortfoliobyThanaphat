@@ -25,6 +25,7 @@ function createRipple(event) {
 
 document.addEventListener("DOMContentLoaded", function () {
   // --- START: Data Loading Check and Error Display ---
+  // ตรวจสอบว่าข้อมูลประกาศนียบัตรโหลดสำเร็จหรือไม่
   if (!certificates || certificates.length === 0) {
     console.error("CertificateData.js: ไม่สามารถโหลดข้อมูลประกาศนียบัตรได้ หรือข้อมูลว่างเปล่า กรุณาตรวจสอบ Path ของไฟล์ './data/CertificateData.js' และเนื้อหาของไฟล์บนเซิร์ฟเวอร์จริง (ตรวจสอบตัวพิมพ์เล็ก-ใหญ่).");
     const certificatesGrid = document.getElementById('certificates-grid');
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("CertificateData.js: โหลดข้อมูลประกาศนียบัตรสำเร็จ.");
   }
 
+  // ตรวจสอบว่าข้อมูลโปรเจกต์โหลดสำเร็จหรือไม่
   if (!projects || projects.length === 0) {
     console.error("projectsData.js: ไม่สามารถโหลดข้อมูลโปรเจกต์ได้ หรือข้อมูลว่างเปล่า กรุณาตรวจสอบ Path ของไฟล์ './data/projectsData.js' และเนื้อหาของไฟล์บนเซิร์ฟเวอร์จริง (ตรวจสอบตัวพิมพ์เล็ก-ใหญ่).");
     const galleryEl = document.getElementById("gallery");
